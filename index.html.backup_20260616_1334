@@ -277,13 +277,7 @@
             <button class="idioma-btn" onclick="selecionarIdioma('ro', this)">RO</button>
         </div>
 
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-          <div id="avatar-preview" onclick="document.getElementById('foto-input').click()" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#f6d860,#e5b800);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold;color:#1a0a3e;cursor:pointer;border:3px solid rgba(246,216,96,0.5);overflow:hidden;flex-shrink:0;" title="Clica para adicionar foto">?</div>
-          <div style="flex:1;">
-            <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20" oninput="atualizarAvatar()">
-          </div>
-        </div>
-        <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
+        <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
         <button id="btn-ranking" onclick="toggleRanking()">Ver Ranking Semanal (Top 10)</button>

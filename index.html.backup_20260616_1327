@@ -243,16 +243,6 @@
         /* Screens */
         #jogo { display: none; }
         #resultado { display: none; }
-        .ranking-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); margin-bottom:8px; }
-        .ranking-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; flex-shrink:0; }
-        .ranking-pos { font-family:serif; font-size:18px; font-weight:bold; width:28px; text-align:center; }
-        .ranking-pos.ouro { color:#f6d860; }
-        .ranking-pos.prata { color:#c0c0c0; }
-        .ranking-pos.bronze { color:#cd7f32; }
-        .ranking-nome { flex:1; font-weight:600; }
-        .ranking-pts { color:#f6d860; font-weight:bold; }
-        #btn-ranking { background:rgba(246,216,96,0.15); border:1px solid rgba(246,216,96,0.3); color:#f6d860; padding:10px; border-radius:10px; width:100%; cursor:pointer; margin-top:12px; font-size:14px; font-weight:600; }
-        #painel-ranking { display:none; margin-top:16px; }
     </style>
 </head>
 <body>
@@ -280,10 +270,6 @@
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
-        <button id="btn-ranking" onclick="toggleRanking()">Ver Ranking Semanal (Top 10)</button>
-        <div id="painel-ranking">
-          <div id="ranking-lista"><p style="text-align:center;color:rgba(255,255,255,0.5);padding:16px;">A carregar...</p></div>
-        </div>
     </div>
 
     <!-- ===== TELA DO JOGO ===== -->
@@ -490,76 +476,9 @@ function renderizarRodada(pergunta) {
 function bloquearAlternativas() {
     document.querySelectorAll(".alt-btn").forEach(b => b.disabled = true);
 }
-
-let fotoBase64 = null;
-
-function carregarFoto(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        fotoBase64 = e.target.result;
-        const preview = document.getElementById("avatar-preview");
-        preview.innerHTML = "";
-        const img = document.createElement("img");
-        img.src = fotoBase64;
-        img.style = "width:100%;height:100%;object-fit:cover;";
-        preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-}
-
-function atualizarAvatar() {
-    const nome = document.getElementById("nomeUsuario").value.trim();
-    const preview = document.getElementById("avatar-preview");
-    if (!fotoBase64 && nome) {
-        preview.innerHTML = nome.charAt(0).toUpperCase();
-    } else if (!fotoBase64) {
-        preview.innerHTML = "?";
-    }
-}
-
-async function toggleRanking() {
-    const painel = document.getElementById("painel-ranking");
-    if (painel.style.display === "block") {
-        painel.style.display = "none";
-        document.getElementById("btn-ranking").textContent = "Ver Ranking Semanal (Top 10)";
-        return;
-    }
-    painel.style.display = "block";
-    document.getElementById("btn-ranking").textContent = "Fechar Ranking";
-    try {
-        const r = await fetch(BACKEND_URL + "/api/duelo/ranking");
-        const d = await r.json();
-        const lista = document.getElementById("ranking-lista");
-        if (!d.ranking || d.ranking.length === 0) {
-            lista.innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Nenhuma partida ainda!</p>";
-            return;
-        }
-        let html = "";
-        if (d.pixAtivo) {
-            html += "<div style='background:linear-gradient(135deg,#f6d860,#e5b800);border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;color:#1a0a3e;'><strong>Premio PIX: " + d.pixValor + "</strong><br><small>Lider no domingo ganha!</small></div>";
-        }
-        d.ranking.forEach((j, i) => {
-            const pos = i + 1;
-            const cls = pos===1?"ouro":pos===2?"prata":pos===3?"bronze":"";
-            const ini = j.nome.charAt(0).toUpperCase();
-            html += "<div class='ranking-item'>";
-            html += "<div class='ranking-pos " + cls + "'>" + pos + "</div>";
-            html += "<div class='ranking-avatar' style='background:linear-gradient(135deg,#f6d860,#e5b800);display:flex;align-items:center;justify-content:center;font-weight:bold;color:#1a0a3e;font-size:16px;'>" + ini + "</div>";
-            html += "<div class='ranking-nome'>" + j.nome + "</div>";
-            html += "<div class='ranking-pts'>" + j.pontos + " pts</div>";
-            html += "</div>";
-        });
-        lista.innerHTML = html;
-    } catch(e) {
-        document.getElementById("ranking-lista").innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Servidor a acordar... tente novamente.</p>";
-    }
-}
 aplicarTraducao("pt");
 </script>
 
 </body>
 </html>
-
 

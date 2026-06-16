@@ -382,8 +382,7 @@ function selecionarIdioma(idioma, btn) {
 
 function conectarAoJogo() {
     const nome = document.getElementById("nomeUsuario").value.trim();
-    if (!nome) { alert("Por favor, escreve o teu nome!"); return; }
-    window.meuNomeGlobal = nome;
+    if (!nome) { alert("Por favor,EScreve o teu nome!"); return; }
 
     document.getElementById("status").innerText = " A conectar ao servidor...";
     socket = io(BACKEND_URL, {path: "/duelo/socket.io"});
@@ -568,7 +567,6 @@ aplicarTraducao("pt");
 
 </body>
 </html>
-
 
 
 

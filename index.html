@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Duelo Biblico â€” Sigo com Fe</title>
+    <title> Duelo Biblico  Sigo com Fe</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -248,7 +248,7 @@
 
 <div class="card">
     <h1> Duelo Biblico</h1>
-    <p class="subtitulo">Sigo com Fe â€” 7 Idiomas</p>
+    <p class="subtitulo">Sigo com Fe  7 Idiomas</p>
 
     <!-- ===== TELA DE ENTRADA ===== -->
     <div id="lobby">
@@ -267,14 +267,14 @@
         </div>
 
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
-        <button class="btn" onclick="conectarAoJogo()">âš”ï¸ Procurar Oponente</button>
+        <button class="btn" onclick="conectarAoJogo()"> Procurar Oponente</button>
         <p id="status"></p>
     </div>
 
     <!-- ===== TELA DO JOGO ===== -->
     <div id="jogo">
         <div class="info-jogo">
-            <span id="infoOponente"> â€”</span>
+            <span id="infoOponente"> </span>
             <span class="pontos-badge" id="meusPontos">0 pts</span>
         </div>
 
@@ -286,7 +286,7 @@
 
         <h2 id="perguntaTexto"></h2>
         <div id="alternativas"></div>
-        <p class="notif-oponente" id="notifOponente">âœ”ï¸ Oponente jÃ¡ respondeu!</p>
+        <p class="notif-oponente" id="notifOponente"> Oponente jÃ¡ respondeu!</p>
     </div>
 
     <!-- ===== TELA DE RESULTADO ===== -->
@@ -304,7 +304,7 @@
 
 <script>
 // ============================================================
-// âš ï¸ SUBSTITUI ESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
+//  ï¸ SUBSTITUI ESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
 // Exemplo: https://sigo-com-fe-backend.onrender.com
 // ============================================================
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
@@ -318,13 +318,13 @@ const TOTAL_PERGUNTAS = 10;
 
 // Textos por idioma para a UI
 const UI_TEXTOS = {
-    pt: { procurando: "â³ Aguardando um irmÃ£o para o duelo...", oponente: "Oponente" },
-    en: { procurando: "â³ Waiting for an opponent...", oponente: "Opponent" },
-    es: { procurando: "â³ Esperando un oponente...", oponente: "Oponente" },
-    fr: { procurando: "â³ En attente d'un adversaire...", oponente: "Adversaire" },
-    de: { procurando: "â³ Warte auf einen Gegner...", oponente: "Gegner" },
-    it: { procurando: "â³ Aspettando un avversario...", oponente: "Avversario" },
-    ro: { procurando: "â³ AÈ™teptÃ¢nd un adversar...", oponente: "Adversar" }
+    pt: { procurando: " Aguardando um irmÃ£o para o duelo...", oponente: "Oponente" },
+    en: { procurando: " Waiting for an opponent...", oponente: "Opponent" },
+    es: { procurando: " Esperando un oponente...", oponente: "Oponente" },
+    fr: { procurando: " En attente d'un adversaire...", oponente: "Adversaire" },
+    de: { procurando: " Warte auf einen Gegner...", oponente: "Gegner" },
+    it: { procurando: " Aspettando un avversario...", oponente: "Avversario" },
+    ro: { procurando: " AÈ™teptÃ¢nd un adversar...", oponente: "Adversar" }
 };
 
 // Ping para acordar o Render antes do utilizador jogar
@@ -363,7 +363,7 @@ function conectarAoJogo() {
         document.getElementById("jogo").style.display = "block";
 
         const txtOponente = UI_TEXTOS[idiomaAtual]?.oponente || "Oponente";
-        document.getElementById("infoOponente").innerText = `âš”ï¸ ${txtOponente}: ${dados.oponente}`;
+        document.getElementById("infoOponente").innerText = ` ${txtOponente}: ${dados.oponente}`;
 
         renderizarRodada(dados.pergunta);
     });

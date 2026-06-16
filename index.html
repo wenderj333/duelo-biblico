@@ -331,12 +331,32 @@ const UI_TEXTOS = {
 function acordarServidor() {
     fetch(BACKEND_URL + "/ping").catch(() => {});
 }
-acordarServidor();
+acordarServidor(); aplicarTraducao("pt");
+
+const TRADUCOES = {
+  pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
+  en: { titulo:'Bible Duel', sub:'Sigo com Fe - 7 Languages', escolha:'Choose your language:', nome:'Your name or nickname...', procurar:'Find Opponent', fim:'End of Duel!', novamente:'Play Again' },
+  es: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Elige tu idioma:', nome:'Tu nombre o apodo...', procurar:'Buscar Oponente', fim:'Fin del Duelo!', novamente:'Jugar de Nuevo' },
+  fr: { titulo:'Duel Biblique', sub:'Sigo com Fe - 7 Langues', escolha:'Choisissez votre langue:', nome:'Votre nom ou surnom...', procurar:'Chercher Adversaire', fim:'Fin du Duel!', novamente:'Rejouer' },
+  de: { titulo:'Bibel Duell', sub:'Sigo com Fe - 7 Sprachen', escolha:'Waehle deine Sprache:', nome:'Dein Name oder Spitzname...', procurar:'Gegner suchen', fim:'Ende des Duells!', novamente:'Nochmal spielen' },
+  it: { titulo:'Duello Biblico', sub:'Sigo com Fe - 7 Lingue', escolha:'Scegli la tua lingua:', nome:'Il tuo nome o soprannome...', procurar:'Cerca Avversario', fim:'Fine del Duello!', novamente:'Gioca ancora' },
+  ro: { titulo:'Duel Biblic', sub:'Sigo com Fe - 7 Limbi', escolha:'Alege limba ta:', nome:'Numele sau porecla ta...', procurar:'Cauta Adversar', fim:'Sfarsitul Duelului!', novamente:'Joaca din nou' }
+};
+
+function aplicarTraducao(idioma) {
+  const t = TRADUCOES[idioma] || TRADUCOES.pt;
+  document.querySelector('h1').textContent = t.titulo;
+  document.querySelector('.subtitulo').textContent = t.sub;
+  document.querySelector('#lobby p').textContent = t.escolha;
+  document.getElementById('nomeUsuario').placeholder = t.nome;
+  document.querySelector('#lobby .btn').textContent = t.procurar;
+}
 
 function selecionarIdioma(idioma, btn) {
     idiomaAtual = idioma;
     document.querySelectorAll(".idioma-btn").forEach(b => b.classList.remove("ativo"));
     btn.classList.add("ativo");
+    aplicarTraducao(idioma);
 }
 
 function conectarAoJogo() {

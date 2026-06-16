@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Duelo Biblico  Sigo com Fe</title>
+    <title>Duelo Biblico  Sigo com Fe</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,7 +45,7 @@
             margin-bottom: 24px;
         }
 
-        /* Seletor de idioma */
+        /* SeletorDE idioma */
         .idiomas {
             display: flex;
             flex-wrap: wrap;
@@ -130,7 +130,7 @@
         .timer-normal { color: #f6d860; }
 
         @keyframes pulsar {
-            from { transform: scale(1); }
+           FRom { transform: scale(1); }
             to { transform: scale(1.1); }
         }
 
@@ -156,7 +156,7 @@
             font-size: 13px;
         }
 
-        /* Barra de progresso */
+        /* BarraDE progresso */
         .progresso-barra {
             height: 4px;
             background: rgba(255,255,255,0.1);
@@ -209,7 +209,7 @@
         .alt-btn.correta { background: rgba(72,199,142,0.3) !important; border-color: #48c78e !important; }
         .alt-btn.errada  { background: rgba(255,68,68,0.3)  !important; border-color: #ff4444 !important; }
 
-        /* NotificaÃ§Ã£o oponente respondeu */
+        /* Notificacao oponente respondeu */
         .notif-oponente {
             text-align: center;
             font-size: 12px;
@@ -247,27 +247,27 @@
 <body>
 
 <div class="card">
-    <h1> Duelo Biblico</h1>
-    <p class="subtitulo">Sigo com Fe  7 Idiomas</p>
+    <h1>Duelo Biblico</h1>
+    <p class="subtitulo">Sigo com Fe - 7 Idiomas</p>
 
-    <!-- ===== TELA DE ENTRADA ===== -->
+    <!-- ===== TELADEENTRADA ===== -->
     <div id="lobby">
         <p style="color:rgba(255,255,255,0.6); font-size:13px; text-align:center; margin-bottom:14px;">
-            Escolhe o teu idioma:
+           EScolhe o teu idioma:
         </p>
 
         <div class="idiomas">
-            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)"> PT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('en', this)"> EN</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('es', this)"> ES</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)"> FR</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('de', this)"> DE</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('it', this)"> IT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)"> RO</button>
+            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)">PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('en', this)">EN</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('es', this)">ES</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)">FR</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('de', this)">DE</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('it', this)">IT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)">RO</button>
         </div>
 
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
-        <button class="btn" onclick="conectarAoJogo()"> Procurar Oponente</button>
+        <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
     </div>
 
@@ -275,7 +275,7 @@
     <div id="jogo">
         <div class="info-jogo">
             <span id="infoOponente"> </span>
-            <span class="pontos-badge" id="meusPontos">0 pts</span>
+            <span class="pontos-badge" id="meusPontos">0PTs</span>
         </div>
 
         <div class="progresso-barra">
@@ -286,17 +286,17 @@
 
         <h2 id="perguntaTexto"></h2>
         <div id="alternativas"></div>
-        <p class="notif-oponente" id="notifOponente"> Oponente jÃ¡ respondeu!</p>
+        <p class="notif-oponente" id="notifOponente"> Oponente ja respondeu!</p>
     </div>
 
-    <!-- ===== TELA DE RESULTADO ===== -->
+    <!-- ===== TELADE RESULTADO ===== -->
     <div id="resultado">
         <h2 style="text-align:center; font-size:22px; margin-bottom:20px; color:#f6d860;">
-             Fim do Duelo!
+            Fim do Duelo!
         </h2>
         <div id="placarFinal"></div>
         <button class="btn" style="margin-top:20px;" onclick="window.location.reload()">
-             Jogar Novamente
+            Jogar Novamente
         </button>
     </div>
 
@@ -304,7 +304,7 @@
 
 <script>
 // ============================================================
-//  ï¸ SUBSTITUI ESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
+//   SUBSTITUIESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
 // Exemplo: https://sigo-com-fe-backend.onrender.com
 // ============================================================
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
@@ -318,13 +318,13 @@ const TOTAL_PERGUNTAS = 10;
 
 // Textos por idioma para a UI
 const UI_TEXTOS = {
-    pt: { procurando: " Aguardando um irmÃ£o para o duelo...", oponente: "Oponente" },
-    en: { procurando: " Waiting for an opponent...", oponente: "Opponent" },
-    es: { procurando: " Esperando un oponente...", oponente: "Oponente" },
-    fr: { procurando: " En attente d'un adversaire...", oponente: "Adversaire" },
-    de: { procurando: " Warte auf einen Gegner...", oponente: "Gegner" },
-    it: { procurando: " Aspettando un avversario...", oponente: "Avversario" },
-    ro: { procurando: " AÈ™teptÃ¢nd un adversar...", oponente: "Adversar" }
+   PT: { procurando: " Aguardando um irmao para o duelo...", oponente: "Oponente" },
+   EN: { procurando: " Waiting for an opponent...", oponente: "Opponent" },
+   ES: { procurando: "ESperando un oponente...", oponente: "Oponente" },
+   FR: { procurando: "EN attente d'un adversaire...", oponente: "Adversaire" },
+   DE: { procurando: " Warte auf einen Gegner...", oponente: "Gegner" },
+   IT: { procurando: " Aspettando un avversario...", oponente: "Avversario" },
+   RO: { procurando: " Asteptand un adversar...", oponente: "Adversar" }
 };
 
 // Ping para acordar o Render antes do utilizador jogar
@@ -341,7 +341,7 @@ function selecionarIdioma(idioma, btn) {
 
 function conectarAoJogo() {
     const nome = document.getElementById("nomeUsuario").value.trim();
-    if (!nome) { alert("Por favor, escreve o teu nome!"); return; }
+    if (!nome) { alert("Por favor,EScreve o teu nome!"); return; }
 
     document.getElementById("status").innerText = " A conectar ao servidor...";
     socket = io(BACKEND_URL);
@@ -401,7 +401,7 @@ function conectarAoJogo() {
             div.className = `placar-item${i === 0 ? " vencedor" : ""}`;
             div.innerHTML = `
                 <span>${emojis[i]} <b>${j.nome}</b></span>
-                <span style="font-size:18px; font-weight:bold; color:#f6d860">${Math.round(j.pontos)} pts</span>
+                <span style="font-size:18px; font-weight:bold; color:#f6d860">${Math.round(j.pontos)}PTs</span>
             `;
             placar.appendChild(div);
         });
@@ -423,7 +423,7 @@ function renderizarRodada(pergunta) {
     document.getElementById("progressoFill").style.width = `${progresso}%`;
 
     document.getElementById("perguntaTexto").innerText = pergunta.q;
-    document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)} pts`;
+    document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
 
     const container = document.getElementById("alternativas");
     container.innerHTML = "";
@@ -435,18 +435,18 @@ function renderizarRodada(pergunta) {
 
         btn.onclick = () => {
             bloquearAlternativas();
-            // Visual de resposta
+            // VisualDE resposta
             if (idx === pergunta.c) {
                 btn.classList.add("correta");
                 meuspontos += 100;
-                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)} pts`;
+                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
             } else {
                 btn.classList.add("errada");
                 // Mostrar a correta
                 const botoes = document.querySelectorAll(".alt-btn");
                 botoes[pergunta.c].classList.add("correta");
             }
-            socket.emit("enviarResposta", { salaId: salaAtual, escolha: idx });
+            socket.emit("enviarResposta", { salaId: salaAtual,EScolha: idx });
         };
         container.appendChild(btn);
     });

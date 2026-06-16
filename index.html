@@ -479,8 +479,8 @@ function renderizarRodada(pergunta) {
             // VisualDE resposta
             if (idx === pergunta.c) {
                 btn.classList.add("correta");
-                meuspontos += 100;
-                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
+                const t = parseInt(document.getElementById("timer").innerText)||0; meuspontos += 100 + (t*5);
+                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)} pts`;
             } else {
                 btn.classList.add("errada");
                 // Mostrar a correta
@@ -567,5 +567,6 @@ aplicarTraducao("pt");
 
 </body>
 </html>
+
 
 

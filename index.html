@@ -132,7 +132,7 @@ const TX = {
 };
 let lang='pt', socket=null, salaId=null, respondeu=false, pAtual=0, ptsEu=0, ptsOp=0;
 function t(k){return TX[lang][k]||TX.pt[k]||k;}
-function tela(id){['inicio','espera','jogo','fim'].forEach(n=>document.getElementById('tela-'+n).style.display='none');document.getElementById('tela-'+id).style.display='block';}
+function tela(id){['inicio','espera','jogo','fim','ranking','admin'].forEach(n=>{const el=document.getElementById('tela-'+n);if(el)el.style.display='none';});const el=document.getElementById('tela-'+id);if(el)el.style.display='block';}
 function setLang(l,btn){lang=l;document.querySelectorAll('.btn-lang').forEach(b=>b.classList.remove('active'));btn.classList.add('active');atualizar();}
 function atualizar(){document.getElementById('txt-sub').textContent=t('sub');document.getElementById('txt-lang').textContent=t('lang');document.getElementById('txt-nome-label').textContent=t('nome');document.getElementById('nome').placeholder=t('ph');document.getElementById('btn-jogar').textContent=t('jogar');document.getElementById('btn-cancel').textContent=t('cancel');document.getElementById('btn-novo').textContent=t('novo');}
 function jogar(){
@@ -217,5 +217,6 @@ async function zerarRanking() {
 </script>
 </body>
 </html>
+
 
 

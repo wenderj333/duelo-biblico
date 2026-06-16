@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ðŸ† Duelo BÃ­blico â€” Sigo com FÃ©</title>
+    <title> Duelo Biblico â€” Sigo com Fe</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -247,8 +247,8 @@
 <body>
 
 <div class="card">
-    <h1>ðŸ† Duelo BÃ­blico</h1>
-    <p class="subtitulo">Sigo com FÃ© â€” 7 Idiomas</p>
+    <h1> Duelo Biblico</h1>
+    <p class="subtitulo">Sigo com Fe â€” 7 Idiomas</p>
 
     <!-- ===== TELA DE ENTRADA ===== -->
     <div id="lobby">
@@ -257,13 +257,13 @@
         </p>
 
         <div class="idiomas">
-            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)">ðŸ‡§ðŸ‡· PT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('en', this)">ðŸ‡ºðŸ‡¸ EN</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('es', this)">ðŸ‡ªðŸ‡¸ ES</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)">ðŸ‡«ðŸ‡· FR</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('de', this)">ðŸ‡©ðŸ‡ª DE</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('it', this)">ðŸ‡®ðŸ‡¹ IT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)">ðŸ‡·ðŸ‡´ RO</button>
+            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)"> PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('en', this)"> EN</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('es', this)"> ES</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)"> FR</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('de', this)"> DE</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('it', this)"> IT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)"> RO</button>
         </div>
 
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
@@ -274,7 +274,7 @@
     <!-- ===== TELA DO JOGO ===== -->
     <div id="jogo">
         <div class="info-jogo">
-            <span id="infoOponente">ðŸ‘¤ â€”</span>
+            <span id="infoOponente"> â€”</span>
             <span class="pontos-badge" id="meusPontos">0 pts</span>
         </div>
 
@@ -292,11 +292,11 @@
     <!-- ===== TELA DE RESULTADO ===== -->
     <div id="resultado">
         <h2 style="text-align:center; font-size:22px; margin-bottom:20px; color:#f6d860;">
-            ðŸŽ‰ Fim do Duelo!
+             Fim do Duelo!
         </h2>
         <div id="placarFinal"></div>
         <button class="btn" style="margin-top:20px;" onclick="window.location.reload()">
-            ðŸ”„ Jogar Novamente
+             Jogar Novamente
         </button>
     </div>
 
@@ -343,7 +343,7 @@ function conectarAoJogo() {
     const nome = document.getElementById("nomeUsuario").value.trim();
     if (!nome) { alert("Por favor, escreve o teu nome!"); return; }
 
-    document.getElementById("status").innerText = "ðŸ”Œ A conectar ao servidor...";
+    document.getElementById("status").innerText = " A conectar ao servidor...";
     socket = io(BACKEND_URL);
 
     socket.on("connect", () => {
@@ -395,7 +395,7 @@ function conectarAoJogo() {
 
         jogadores.sort((a, b) => b.pontos - a.pontos);
 
-        const emojis = ["ðŸ¥‡", "ðŸ¥ˆ"];
+        const emojis = ["", ""];
         jogadores.forEach((j, i) => {
             const div = document.createElement("div");
             div.className = `placar-item${i === 0 ? " vencedor" : ""}`;
@@ -408,7 +408,7 @@ function conectarAoJogo() {
     });
 
     socket.on("oponenteSaiu", () => {
-        alert("O oponente saiu do jogo. ðŸ˜¢");
+        alert("O oponente saiu do jogo. ");
         window.location.reload();
     });
 

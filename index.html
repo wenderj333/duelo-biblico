@@ -57,6 +57,8 @@ button { width: 100%; padding: 14px; border-radius: 10px; border: none; font-siz
     <button class="btn-primary" id="btn-jogar" onclick="jogar()">Procurar Oponente</button>
     <button onclick="verRanking()" style="width:100%;padding:12px;border-radius:10px;border:none;background:rgba(255,255,255,0.08);color:#f0c040;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px">Ver Ranking Semanal</button>
     <button onclick="tela('admin')" style="width:100%;padding:8px;border-radius:10px;border:none;background:transparent;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;margin-top:4px">Admin</button>
+    <button onclick="verRanking()" style="width:100%;padding:12px;border-radius:10px;border:none;background:rgba(255,255,255,0.08);color:#f0c040;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px">Ver Ranking Semanal</button>
+    <button onclick="tela('admin')" style="width:100%;padding:8px;border-radius:10px;border:none;background:transparent;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;margin-top:4px">Admin</button>
   </div>
 </div>
 
@@ -102,6 +104,40 @@ button { width: 100%; padding: 14px; border-radius: 10px; border: none; font-siz
   </div>
 </div>
 
+</div>
+
+<div id="tela-ranking" style="display:none">
+  <div class="card">
+    <h2 style="text-align:center;color:#f0c040;margin-bottom:16px">Ranking Semanal</h2>
+    <div id="pix-banner" style="display:none;background:linear-gradient(135deg,#f0c040,#e08020);border-radius:12px;padding:16px;text-align:center;margin-bottom:16px;color:#1a0533;">
+      <p style="font-size:20px;font-weight:bold">Premio PIX desta semana!</p>
+      <p style="font-size:28px;font-weight:bold" id="pix-valor">R$ 10,00</p>
+      <p style="font-size:13px">Jogador com mais pontos no domingo ganha!</p>
+    </div>
+    <div id="ranking-lista" style="margin-bottom:16px"></div>
+    <button class="btn-primary" onclick="voltarInicio()" style="margin-bottom:8px">Voltar</button>
+  </div>
+</div>
+
+<div id="tela-admin" style="display:none">
+  <div class="card">
+    <h2 style="text-align:center;color:#f0c040;margin-bottom:16px">Painel Admin</h2>
+    <input type="password" id="admin-token" placeholder="Token admin..." style="margin-bottom:12px">
+    <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:12px;">
+      <p style="margin-bottom:8px;font-weight:bold">Premio PIX Semanal</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button onclick="setPix(true)" style="flex:1;padding:10px;border-radius:8px;border:none;background:#27ae60;color:white;font-weight:bold;cursor:pointer">Activar PIX</button>
+        <button onclick="setPix(false)" style="flex:1;padding:10px;border-radius:8px;border:none;background:#e74c3c;color:white;font-weight:bold;cursor:pointer">Desactivar PIX</button>
+      </div>
+      <input type="text" id="pix-valor-input" placeholder="Valor ex: R$ 20,00" style="margin-bottom:8px">
+      <div id="admin-status" style="text-align:center;color:#f0c040;font-size:13px"></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:12px;">
+      <p style="margin-bottom:8px;font-weight:bold">Ranking</p>
+      <button onclick="zerarRanking()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#e74c3c;color:white;font-weight:bold;cursor:pointer">Zerar Ranking</button>
+    </div>
+    <button class="btn-primary" onclick="voltarInicio()">Voltar</button>
+  </div>
 </div>
 
 <div id="tela-ranking" style="display:none">

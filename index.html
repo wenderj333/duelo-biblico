@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duelo Biblico  Sigo com Fe</title>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js">aplicarTraducao("pt");
+</script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -331,7 +332,7 @@ const UI_TEXTOS = {
 function acordarServidor() {
     fetch(BACKEND_URL + "/ping").catch(() => {});
 }
-acordarServidor(); aplicarTraducao("pt");
+acordarServidor();
 
 const TRADUCOES = {
   pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
@@ -475,6 +476,7 @@ function renderizarRodada(pergunta) {
 function bloquearAlternativas() {
     document.querySelectorAll(".alt-btn").forEach(b => b.disabled = true);
 }
+aplicarTraducao("pt");
 </script>
 
 </body>

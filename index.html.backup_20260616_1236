@@ -365,7 +365,7 @@ function conectarAoJogo() {
     if (!nome) { alert("Por favor,EScreve o teu nome!"); return; }
 
     document.getElementById("status").innerText = " A conectar ao servidor...";
-    socket = io(BACKEND_URL, {path: "/duelo"});
+    socket = io(BACKEND_URL);
 
     socket.on("connect", () => {
         socket.emit("procurarPartida", { nome, idioma: idiomaAtual });

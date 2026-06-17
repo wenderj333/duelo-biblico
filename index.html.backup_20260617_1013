@@ -455,7 +455,7 @@ function aplicarTraducao(idioma){
     const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
     const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome;
     const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar;
-    const ap=document.getElementById("aviso-pix"); if(ap)ap.innerHTML=t.aviso_pix;
+    const ap=document.getElementById("aviso-pix"); if(ap)ap.textContent=t.aviso_pix;
     const al=document.getElementById("aviso-logado"); if(al)al.textContent=t.aviso_logado;
 }
 function selecionarIdioma(idioma,btn){    idiomaAtual=idioma;
@@ -662,7 +662,6 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
-
 
 
 

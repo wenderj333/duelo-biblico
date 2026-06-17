@@ -388,56 +388,7 @@ function logoClick(){
 }
 
 function acordarServidor(){fetch(BACKEND_URL+"/api/health").catch(()=>{});}
-
-// Carregar perfil da rede social automaticamente
-async function carregarPerfilSigo(){
-    try{
-        // Verificar token na URL (?token=xxx) ou localStorage
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token') || localStorage.getItem('sigo_token');
-        if(!token) return;
-        
-        const r = await fetch('https://sigo-com-fe-api.onrender.com/api/profile', {
-            headers: {'Authorization': 'Bearer ' + token}
-        });
-        if(!r.ok) return;
-        const d = await r.json();
-        
-        // Preencher nome
-        if(d.full_name || d.name){
-            document.getElementById('nomeUsuario').value = d.full_name || d.name;
-            atualizarAvatar();
-        }
-        
-        // Preencher foto
-        if(d.profile_photo || d.avatar_url || d.photo){
-            const fotoUrl = d.profile_photo || d.avatar_url || d.photo;
-            // Converter URL para base64
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = 100; canvas.height = 100;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, 100, 100);
-                fotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
-                const preview = document.getElementById('avatar-preview');
-                preview.innerHTML = '';
-                const imgEl = document.createElement('img');
-                imgEl.src = fotoBase64;
-                imgEl.style = 'width:100%;height:100%;object-fit:cover;';
-                preview.appendChild(imgEl);
-            };
-            img.src = fotoUrl;
-        }
-        
-        // Guardar token
-        if(params.get('token')) localStorage.setItem('sigo_token', token);
-        
-    }catch(e){ console.log('Perfil nao carregado:', e); }
-}
 acordarServidor();
-carregarPerfilSigo();
 
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;
@@ -643,7 +594,6 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
-
 
 
 

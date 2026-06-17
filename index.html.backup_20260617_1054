@@ -348,6 +348,40 @@
     </div>
 </div>
 <div class="main-wrap">
+<div class="sidebar">
+    <div class="sidebar-logo" id="logo-click" onclick="logoClick()"><h3>Duelo Biblico</h3><p>Sigo com Fe</p></div>
+    <div id="pix-side" class="pix-side">
+        <div style="font-size:10px;font-weight:700;color:#1a0a3e;text-transform:uppercase;">Premio PIX</div>
+        <div class="valor" id="pix-valor-side">R$ 10,00</div>
+        <div style="font-size:10px;color:rgba(26,10,62,0.7);">Lider no domingo ganha!</div>
+    </div>
+    <div class="section-title">🏆 Mural da Gloria</div>
+    <div class="top3" id="top3-container" style="display:none;">
+        <div class="top3-item pos2"><div class="top3-avatar" id="av2">?</div><div class="top3-nome" id="nm2">-</div><div class="top3-pts" id="pt2">0</div><div class="top3-pos">2</div></div>
+        <div class="top3-item pos1"><div style="font-size:14px;">👑</div><div class="top3-avatar" id="av1">?</div><div class="top3-nome" id="nm1">-</div><div class="top3-pts" id="pt1">0</div><div class="top3-pos">1</div></div>
+        <div class="top3-item pos3"><div class="top3-avatar" id="av3">?</div><div class="top3-nome" id="nm3">-</div><div class="top3-pts" id="pt3">0</div><div class="top3-pos">3</div></div>
+    </div>
+    <div id="ranking-lista-side"><div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div></div>
+    <hr class="sidebar-divider">
+    <div class="section-title">⭐ Conquistas</div>
+    <div id="conquistas-side"><div class="sem-dados">Joga para ganhar!</div></div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:12px 0;">
+    <div style="text-align:center;margin-bottom:8px;">
+        <button onclick="var el=document.getElementById('admin-easter');el.style.display=el.style.display==='none'?'block':'none'" style="background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.3);color:#f0c040;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🔐 Admin PIX</button>
+    </div>
+    <div id="admin-easter" style="display:none;margin-top:8px;">
+        <hr class="sidebar-divider">
+        <div class="section-title">🔐 Admin</div>
+        <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:11px;margin-bottom:6px;">
+        <div style="display:flex;gap:5px;margin-bottom:5px;">
+            <button onclick="setPix(true)" style="flex:1;padding:6px;border-radius:6px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:10px;">Activar PIX</button>
+            <button onclick="setPix(false)" style="flex:1;padding:6px;border-radius:6px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:10px;">Desactivar</button>
+        </div>
+        <input type="text" id="pix-valor-input" placeholder="Valor ex: R$ 20,00" style="width:100%;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:11px;margin-bottom:5px;">
+        <button onclick="zerarRanking()" style="width:100%;padding:6px;border-radius:6px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:10px;margin-bottom:5px;">Zerar Ranking</button>
+        <div id="admin-status" style="text-align:center;color:#f0c040;font-size:10px;min-height:14px;"></div>
+    </div>
+</div>
 <div class="main-wrap">
 <div class="card">
     <h1>Duelo Biblico</h1>
@@ -662,7 +696,6 @@ aplicarTraducao("pt");
 </div>
 </body>
 </html>
-
 
 
 

@@ -332,7 +332,14 @@
         </div>
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
-
+        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
+            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
+            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
+            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
+            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
+        </div>
         
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
             <div style="width:8px;height:8px;border-radius:50%;background:#48c78e;"></div>
@@ -500,7 +507,6 @@ function conectarAoJogo(){
     socket.on("inicioJogo",dados=>{
         window.fotosJogadores = {};
         window.fotosJogadores[window.meuNomeGlobal] = fotoBase64||null;
-        if(dados.fotoOponente) window.fotosJogadores[dados.oponente] = dados.fotoOponente;
         salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
         document.getElementById("lobby").style.display="none";
         document.getElementById("jogo").style.display="block";

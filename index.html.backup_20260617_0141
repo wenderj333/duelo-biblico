@@ -1,0 +1,575 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duelo Biblico  Sigo com Fe</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js">aplicarTraducao("pt");
+</script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: url('https://res.cloudinary.com/degxiuf43/image/upload/v1781603430/duelo-biblico/qvbrhcoqnithannhxjga.jpg') center center / cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            max-width: 520px;
+            width: 100%;
+            padding: 32px 28px;
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            font-size: 26px;
+            text-align: center;
+            color: #f6d860;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        /* SeletorDE idioma */
+        .idiomas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .idioma-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .idioma-btn:hover { border-color: #f6d860; color: #f6d860; }
+        .idioma-btn.ativo {
+            background: #f6d860;
+            color: #1a0a3e;
+            font-weight: bold;
+            border-color: #f6d860;
+        }
+
+        /* Input nome */
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus { border-color: #f6d860; }
+        input[type="text"]::placeholder { color: rgba(255,255,255,0.4); }
+
+        /* BotÃµes principais */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f6d860, #e5b800);
+            color: #1a0a3e;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 15px rgba(246,216,96,0.3);
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(246,216,96,0.4); }
+        .btn:active { transform: translateY(0); }
+
+        /* Status */
+        #status {
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        /* Timer */
+        #timer {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            transition: color 0.3s;
+        }
+
+        .timer-urgente { color: #ff4444 !important; animation: pulsar 0.5s infinite alternate; }
+        .timer-normal { color: #f6d860; }
+
+        @keyframes pulsar {
+           FRom { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* Info do jogo */
+        .info-jogo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .pontos-badge {
+            background: #f6d860;
+            color: #1a0a3e;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* BarraDE progresso */
+        .progresso-barra {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progresso-fill {
+            height: 100%;
+            background: #f6d860;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Pergunta */
+        #perguntaTexto {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #fff;
+            min-height: 60px;
+        }
+
+        /* Alternativas */
+        .alt-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #fff;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .alt-btn:hover:not([disabled]) {
+            background: rgba(246,216,96,0.15);
+            border-color: #f6d860;
+            transform: translateX(4px);
+        }
+
+        .alt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .alt-btn.correta { background: rgba(72,199,142,0.3) !important; border-color: #48c78e !important; }
+        .alt-btn.errada  { background: rgba(255,68,68,0.3)  !important; border-color: #ff4444 !important; }
+
+        /* Notificacao oponente respondeu */
+        .notif-oponente {
+            text-align: center;
+            font-size: 12px;
+            color: #f6d860;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Resultado */
+        #resultado { display: none; }
+
+        .placar-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .placar-item.vencedor {
+            background: rgba(246,216,96,0.2);
+            border: 1px solid #f6d860;
+        }
+
+        .emoji-resultado { font-size: 28px; }
+
+        /* Screens */
+        #jogo { display: none; }
+        #resultado { display: none; }
+        .ranking-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); margin-bottom:8px; }
+        .ranking-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+        .ranking-pos { font-family:serif; font-size:18px; font-weight:bold; width:28px; text-align:center; }
+        .ranking-pos.ouro { color:#f6d860; }
+        .ranking-pos.prata { color:#c0c0c0; }
+        .ranking-pos.bronze { color:#cd7f32; }
+        .ranking-nome { flex:1; font-weight:600; }
+        .ranking-pts { color:#f6d860; font-weight:bold; }
+        #btn-ranking { background:rgba(246,216,96,0.15); border:1px solid rgba(246,216,96,0.3); color:#f6d860; padding:10px; border-radius:10px; width:100%; cursor:pointer; margin-top:12px; font-size:14px; font-weight:600; }
+        #painel-ranking { display:none; margin-top:16px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Duelo Biblico</h1>
+    <p class="subtitulo">Sigo com Fe - 7 Idiomas</p>
+
+    <!-- ===== TELADEENTRADA ===== -->
+    <div id="lobby">
+        <p style="color:rgba(255,255,255,0.6); font-size:13px; text-align:center; margin-bottom:14px;">
+           EScolhe o teu idioma:
+        </p>
+
+        <div class="idiomas">
+            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)">PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('en', this)">EN</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('es', this)">ES</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)">FR</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('de', this)">DE</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('it', this)">IT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)">RO</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div id="avatar-preview" onclick="document.getElementById('foto-input').click()" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#f6d860,#e5b800);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold;color:#1a0a3e;cursor:pointer;border:3px solid rgba(246,216,96,0.5);overflow:hidden;flex-shrink:0;" title="Clica para adicionar foto">?</div>
+          <div style="flex:1;">
+            <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20" oninput="atualizarAvatar()">
+          </div>
+        </div>
+        <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
+        <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
+        <p id="status"></p>
+        <button id="btn-ranking" onclick="toggleRanking()">Ver Ranking Semanal (Top 10)</button>
+        <div id="painel-ranking">
+          <div id="ranking-lista"><p style="text-align:center;color:rgba(255,255,255,0.5);padding:16px;">A carregar...</p></div>
+        </div>
+    </div>
+
+    <!-- ===== TELA DO JOGO ===== -->
+    <div id="jogo">
+        <div class="info-jogo">
+            <span id="infoOponente"> </span>
+            <span class="pontos-badge" id="meusPontos">0PTs</span>
+        </div>
+
+        <div class="progresso-barra">
+            <div class="progresso-fill" id="progressoFill" style="width:10%"></div>
+        </div>
+
+        <div id="timer" class="timer-normal">15</div>
+
+        <h2 id="perguntaTexto"></h2>
+        <div id="alternativas"></div>
+        <p class="notif-oponente" id="notifOponente"> Oponente ja respondeu!</p>
+    </div>
+
+    <!-- ===== TELADE RESULTADO ===== -->
+    <div id="resultado">
+        <h2 style="text-align:center; font-size:22px; margin-bottom:20px; color:#f6d860;">
+            Fim do Duelo!
+        </h2>
+        <div id="placarFinal"></div>
+        <button class="btn" style="margin-top:20px;" onclick="window.location.reload()">
+            Jogar Novamente
+        </button>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+//   SUBSTITUIESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
+// Exemplo: https://sigo-com-fe-backend.onrender.com
+// ============================================================
+const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
+
+let socket;
+let salaAtual = "";
+let idiomaAtual = "pt";
+let meuspontos = 0;
+let perguntaAtualNum = 0;
+const TOTAL_PERGUNTAS = 10;
+
+// Textos por idioma para a UI
+const UI_TEXTOS = {
+   PT: { procurando: " Aguardando um irmao para o duelo...", oponente: "Oponente" },
+   EN: { procurando: " Waiting for an opponent...", oponente: "Opponent" },
+   ES: { procurando: "ESperando un oponente...", oponente: "Oponente" },
+   FR: { procurando: "EN attente d'un adversaire...", oponente: "Adversaire" },
+   DE: { procurando: " Warte auf einen Gegner...", oponente: "Gegner" },
+   IT: { procurando: " Aspettando un avversario...", oponente: "Avversario" },
+   RO: { procurando: " Asteptand un adversar...", oponente: "Adversar" }
+};
+
+// Ping para acordar o Render antes do utilizador jogar
+function acordarServidor() {
+    fetch(BACKEND_URL + "/ping").catch(() => {});
+}
+acordarServidor();
+
+const TRADUCOES = {
+  pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
+  en: { titulo:'Bible Duel', sub:'Sigo com Fe - 7 Languages', escolha:'Choose your language:', nome:'Your name or nickname...', procurar:'Find Opponent', fim:'End of Duel!', novamente:'Play Again' },
+  es: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Elige tu idioma:', nome:'Tu nombre o apodo...', procurar:'Buscar Oponente', fim:'Fin del Duelo!', novamente:'Jugar de Nuevo' },
+  fr: { titulo:'Duel Biblique', sub:'Sigo com Fe - 7 Langues', escolha:'Choisissez votre langue:', nome:'Votre nom ou surnom...', procurar:'Chercher Adversaire', fim:'Fin du Duel!', novamente:'Rejouer' },
+  de: { titulo:'Bibel Duell', sub:'Sigo com Fe - 7 Sprachen', escolha:'Waehle deine Sprache:', nome:'Dein Name oder Spitzname...', procurar:'Gegner suchen', fim:'Ende des Duells!', novamente:'Nochmal spielen' },
+  it: { titulo:'Duello Biblico', sub:'Sigo com Fe - 7 Lingue', escolha:'Scegli la tua lingua:', nome:'Il tuo nome o soprannome...', procurar:'Cerca Avversario', fim:'Fine del Duello!', novamente:'Gioca ancora' },
+  ro: { titulo:'Duel Biblic', sub:'Sigo com Fe - 7 Limbi', escolha:'Alege limba ta:', nome:'Numele sau porecla ta...', procurar:'Cauta Adversar', fim:'Sfarsitul Duelului!', novamente:'Joaca din nou' }
+};
+
+function aplicarTraducao(idioma) {
+  const t = TRADUCOES[idioma] || TRADUCOES.pt;
+  document.querySelector('h1').textContent = t.titulo;
+  document.querySelector('.subtitulo').textContent = t.sub;
+  document.querySelector('#lobby p').textContent = t.escolha;
+  document.getElementById('nomeUsuario').placeholder = t.nome;
+  document.querySelector('#lobby .btn').textContent = t.procurar;
+}
+
+function selecionarIdioma(idioma, btn) {
+    idiomaAtual = idioma;
+    document.querySelectorAll(".idioma-btn").forEach(b => b.classList.remove("ativo"));
+    btn.classList.add("ativo");
+    aplicarTraducao(idioma);
+}
+
+function conectarAoJogo() {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    if (!nome) { alert("Por favor, escreve o teu nome!"); return; }
+    window.meuNomeGlobal = nome;
+
+    document.getElementById("status").innerText = " A conectar ao servidor...";
+    socket = io(BACKEND_URL, {path: "/duelo/socket.io"});
+
+    socket.on("connect", () => {
+        socket.emit("procurarPartida", { nome, idioma: idiomaAtual });
+    });
+
+    socket.on("status", (msg) => {
+        document.getElementById("status").innerText = UI_TEXTOS[idiomaAtual]?.procurando || msg;
+    });
+
+    socket.on("inicioJogo", (dados) => {
+        salaAtual = dados.salaId;
+        meuspontos = 0;
+        perguntaAtualNum = 0;
+
+        document.getElementById("lobby").style.display = "none";
+        document.getElementById("jogo").style.display = "block";
+
+        const txtOponente = UI_TEXTOS[idiomaAtual]?.oponente || "Oponente";
+        document.getElementById("infoOponente").innerText = ` ${txtOponente}: ${dados.oponente}`;
+
+        renderizarRodada(dados.pergunta);
+    });
+
+    socket.on("atualizarTimer", (tempo) => {
+        const el = document.getElementById("timer");
+        el.innerText = tempo;
+        el.className = tempo <= 5 ? "timer-urgente" : "timer-normal";
+    });
+
+    socket.on("oponenteRespondeu", () => {
+        const notif = document.getElementById("notifOponente");
+        notif.style.opacity = "1";
+    });
+
+    socket.on("novaPergunta", (dados) => {
+        perguntaAtualNum++;
+        document.getElementById("notifOponente").style.opacity = "0";
+        document.getElementById("timer").className = "timer-normal";
+        renderizarRodada(dados.pergunta);
+    });
+
+    socket.on("fimJogo", (jogadores) => {
+        document.getElementById("jogo").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+
+        const placar = document.getElementById("placarFinal");
+        placar.innerHTML = "";
+
+        jogadores.sort((a, b) => b.pontos - a.pontos);
+
+        const emojis = ["", ""];
+        jogadores.forEach((j, i) => {
+            const div = document.createElement("div");
+            div.className = `placar-item${i === 0 ? " vencedor" : ""}`;
+            div.innerHTML = `
+                <span>${emojis[i]} <b>${j.nome}</b></span>
+                <span style="font-size:18px; font-weight:bold; color:#f6d860">${Math.round(j.pontos)}PTs</span>
+            `;
+            placar.appendChild(div);
+        });
+    });
+
+    socket.on("oponenteSaiu", () => {
+        alert("O oponente saiu do jogo. ");
+        window.location.reload();
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Desconectado do servidor.");
+    });
+}
+
+function renderizarRodada(pergunta) {
+    // Atualizar progresso
+    const progresso = ((perguntaAtualNum) / TOTAL_PERGUNTAS) * 100;
+    document.getElementById("progressoFill").style.width = `${progresso}%`;
+
+    document.getElementById("perguntaTexto").innerText = pergunta.q;
+    document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
+
+    const container = document.getElementById("alternativas");
+    container.innerHTML = "";
+
+    pergunta.a.forEach((alt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "alt-btn";
+        btn.innerText = `${String.fromCharCode(65+idx)}) ${alt}`;
+
+        btn.onclick = () => {
+            bloquearAlternativas();
+            // VisualDE resposta
+            if (idx === pergunta.c) {
+                btn.classList.add("correta");
+                const t = parseInt(document.getElementById("timer").innerText)||0; meuspontos += 100 + (t*5);
+                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)} pts`;
+            } else {
+                btn.classList.add("errada");
+                // Mostrar a correta
+                const botoes = document.querySelectorAll(".alt-btn");
+                botoes[pergunta.c].classList.add("correta");
+            }
+            socket.emit("enviarResposta", { salaId: salaAtual,EScolha: idx });
+        };
+        container.appendChild(btn);
+    });
+}
+
+function bloquearAlternativas() {
+    document.querySelectorAll(".alt-btn").forEach(b => b.disabled = true);
+}
+
+let fotoBase64 = null;
+
+function carregarFoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        fotoBase64 = e.target.result;
+        const preview = document.getElementById("avatar-preview");
+        preview.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = fotoBase64;
+        img.style = "width:100%;height:100%;object-fit:cover;";
+        preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+}
+
+function atualizarAvatar() {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    const preview = document.getElementById("avatar-preview");
+    if (!fotoBase64 && nome) {
+        preview.innerHTML = nome.charAt(0).toUpperCase();
+    } else if (!fotoBase64) {
+        preview.innerHTML = "?";
+    }
+}
+
+async function toggleRanking() {
+    const painel = document.getElementById("painel-ranking");
+    if (painel.style.display === "block") {
+        painel.style.display = "none";
+        document.getElementById("btn-ranking").textContent = "Ver Ranking Semanal (Top 10)";
+        return;
+    }
+    painel.style.display = "block";
+    document.getElementById("btn-ranking").textContent = "Fechar Ranking";
+    try {
+        const r = await fetch(BACKEND_URL + "/api/duelo/ranking");
+        const d = await r.json();
+        const lista = document.getElementById("ranking-lista");
+        if (!d.ranking || d.ranking.length === 0) {
+            lista.innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Nenhuma partida ainda!</p>";
+            return;
+        }
+        let html = "";
+        if (d.pixAtivo) {
+            html += "<div style='background:linear-gradient(135deg,#f6d860,#e5b800);border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;color:#1a0a3e;'><strong>Premio PIX: " + d.pixValor + "</strong><br><small>Lider no domingo ganha!</small></div>";
+        }
+        d.ranking.forEach((j, i) => {
+            const pos = i + 1;
+            const cls = pos===1?"ouro":pos===2?"prata":pos===3?"bronze":"";
+            const ini = j.nome.charAt(0).toUpperCase();
+            html += "<div class='ranking-item'>";
+            html += "<div class='ranking-pos " + cls + "'>" + pos + "</div>";
+            html += "<div class='ranking-avatar' style='background:linear-gradient(135deg,#f6d860,#e5b800);display:flex;align-items:center;justify-content:center;font-weight:bold;color:#1a0a3e;font-size:16px;'>" + ini + "</div>";
+            html += "<div class='ranking-nome'>" + j.nome + "</div>";
+            html += "<div class='ranking-pts'>" + j.pontos + " pts</div>";
+            html += "</div>";
+        });
+        lista.innerHTML = html;
+    } catch(e) {
+        document.getElementById("ranking-lista").innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Servidor a acordar... tente novamente.</p>";
+    }
+}
+aplicarTraducao("pt");
+</script>
+
+</body>
+</html>
+
+
+
+
+

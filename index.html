@@ -258,7 +258,7 @@
         <div class="sub">Lider no domingo ganha!</div>
     </div>
 
-    <div class="section-title">👑† Mural da Gloria</div>
+    <div class="section-title">ðŸ† Mural da Gloria</div>
 
     <!-- TOP 3 -->
     <div class="top3" id="top3-container" style="display:none;">
@@ -269,7 +269,7 @@
             <div class="top3-pos">2Âº</div>
         </div>
         <div class="top3-item pos1" id="top3-1">
-            <div class="crown">👑‘‘</div>
+            <div class="crown">ðŸ‘‘</div>
             <div class="top3-avatar" id="av1">?</div>
             <div class="top3-nome" id="nm1">-</div>
             <div class="top3-pts" id="pt1">0 pts</div>
@@ -288,7 +288,7 @@
     </div>
 
     <hr class="sidebar-divider">
-    <div class="section-title">⭐ Conquistas</div>
+    <div class="section-title">â­ Conquistas</div>
     <div id="conquistas-lista">
         <div class="sem-dados">Joga para ganhar conquistas!</div>
     </div>
@@ -296,7 +296,7 @@
     <!-- Admin oculto - aparece com 5 cliques no logo -->
     <div id="admin-btn" style="margin-top:16px;">
         <hr class="sidebar-divider">
-        <div class="section-title">👑” Admin</div>
+        <div class="section-title">ðŸ” Admin</div>
         <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:12px;margin-bottom:8px;">
         <div style="display:flex;gap:6px;margin-bottom:6px;">
             <button onclick="setPix(true)" style="flex:1;padding:7px;border-radius:7px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:11px;">Activar PIX</button>
@@ -378,13 +378,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",nome:"O teu nome ou apelido...",jogar:"Procurar Oponente",aviso_pix:"Para concorrer ao Premio PIX entra na Sigo com Fe",aviso_logado:"Logado na Sigo com Fe - Concorres ao Premio PIX!",fim:"Fim do Duelo!",novamente:"Jogar Novamente"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",nome:"Your name...",jogar:"Find Opponent",aviso_pix:"To compete for the PIX Prize login at Sigo com Fe",aviso_logado:"Logged in - You compete for the PIX Prize!",fim:"End of Duel!",novamente:"Play Again"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente",nome:"Tu nombre...",jogar:"Buscar Oponente",aviso_pix:"Para el Premio PIX entra en Sigo com Fe",aviso_logado:"Conectado - Compites por el Premio PIX!",fim:"Fin del Duelo!",novamente:"Jugar de Nuevo"},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",nome:"Votre nom...",jogar:"Chercher Adversaire",aviso_pix:"Pour le Prix PIX connectez-vous sur Sigo com Fe",aviso_logado:"Connecte - Vous concourez au Prix PIX!",fim:"Fin du Duel!",novamente:"Rejouer"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",nome:"Dein Name...",jogar:"Gegner suchen",aviso_pix:"Fuer den PIX Preis melde dich an bei Sigo com Fe",aviso_logado:"Angemeldet - Du nimmst am PIX Preis teil!",fim:"Ende des Duells!",novamente:"Nochmal spielen"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",nome:"Il tuo nome...",jogar:"Cerca Avversario",aviso_pix:"Per il Premio PIX accedi su Sigo com Fe",aviso_logado:"Connesso - Partecipi al Premio PIX!",fim:"Fine del Duello!",novamente:"Gioca ancora"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",nome:"Numele tau...",jogar:"Cauta Adversar",aviso_pix:"Pentru Premiul PIX conecteaza-te la Sigo com Fe",aviso_logado:"Conectat - Concurezi la Premiul PIX!",fim:"Sfarsitul Duelului!",novamente:"Joaca din nou"}
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent"},
+    es:{procurando:"Esperando un oponente...",oponente:"Oponente"},
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar"}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -451,17 +451,10 @@ async function carregarPerfilSigo(){
 acordarServidor();
 carregarPerfilSigo();
 
-function aplicarTraducao(idioma){
-    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
-    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome;
-    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar;
-    const ap=document.getElementById("aviso-pix"); if(ap)ap.innerHTML=t.aviso_pix;
-    const al=document.getElementById("aviso-logado"); if(al)al.textContent=t.aviso_logado;
-}
-function selecionarIdioma(idioma,btn){    idiomaAtual=idioma;
+function selecionarIdioma(idioma,btn){
+    idiomaAtual=idioma;
     document.querySelectorAll(".idioma-btn").forEach(b=>b.classList.remove("ativo"));
     btn.classList.add("ativo");
-    aplicarTraducao(idioma);
 }
 
 function carregarFoto(input){
@@ -622,10 +615,10 @@ async function carregarRanking(){
         const conquistas=document.getElementById("conquistas-lista");
         let html='';
         if(top){
-            html+='<div class="conquista-item"><div class="conquista-icon">👑‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
         }
         if(total>=5){
-            html+='<div class="conquista-item"><div class="conquista-icon">👑”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
         }
         conquistas.innerHTML=html||'<div class="sem-dados">Joga para ganhar conquistas!</div>';
 
@@ -662,8 +655,6 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
-
-
 
 
 

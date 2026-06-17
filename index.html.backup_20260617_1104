@@ -352,7 +352,6 @@
 <div class="card">
     <h1>Duelo Biblico</h1>
     <p class="subtitulo">Sigo com Fe - 7 Idiomas</p>
-    <div style="background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.2);border-radius:12px;padding:12px 16px;margin-bottom:4px;text-align:center;"><p id="msg-incentivo" style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.6;">Chama o teu amigo ou irmao da igreja e <strong style="color:#f0c040;">testa o teu conhecimento</strong> da Biblia num duelo em tempo real! Aprende mais enquanto jogas.</p></div>
 
     <!-- ===== TELADEENTRADA ===== -->
     <div id="lobby">
@@ -663,7 +662,6 @@ aplicarTraducao("pt");
 </div>
 </body>
 </html>
-
 
 
 

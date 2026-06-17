@@ -258,7 +258,7 @@
         <div class="sub">Lider no domingo ganha!</div>
     </div>
 
-    <div class="section-title">ðŸ† Mural da Gloria</div>
+    <div class="section-title">👑† Mural da Gloria</div>
 
     <!-- TOP 3 -->
     <div class="top3" id="top3-container" style="display:none;">
@@ -269,7 +269,7 @@
             <div class="top3-pos">2Âº</div>
         </div>
         <div class="top3-item pos1" id="top3-1">
-            <div class="crown">ðŸ‘‘</div>
+            <div class="crown">👑‘‘</div>
             <div class="top3-avatar" id="av1">?</div>
             <div class="top3-nome" id="nm1">-</div>
             <div class="top3-pts" id="pt1">0 pts</div>
@@ -288,7 +288,7 @@
     </div>
 
     <hr class="sidebar-divider">
-    <div class="section-title">â­ Conquistas</div>
+    <div class="section-title">⭐ Conquistas</div>
     <div id="conquistas-lista">
         <div class="sem-dados">Joga para ganhar conquistas!</div>
     </div>
@@ -296,7 +296,7 @@
     <!-- Admin oculto - aparece com 5 cliques no logo -->
     <div id="admin-btn" style="margin-top:16px;">
         <hr class="sidebar-divider">
-        <div class="section-title">ðŸ” Admin</div>
+        <div class="section-title">👑” Admin</div>
         <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:12px;margin-bottom:8px;">
         <div style="display:flex;gap:6px;margin-bottom:6px;">
             <button onclick="setPix(true)" style="flex:1;padding:7px;border-radius:7px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:11px;">Activar PIX</button>
@@ -622,10 +622,10 @@ async function carregarRanking(){
         const conquistas=document.getElementById("conquistas-lista");
         let html='';
         if(top){
-            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">👑‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
         }
         if(total>=5){
-            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">👑”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
         }
         conquistas.innerHTML=html||'<div class="sem-dados">Joga para ganhar conquistas!</div>';
 
@@ -662,6 +662,7 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
+
 
 
 

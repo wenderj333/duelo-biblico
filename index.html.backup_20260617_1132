@@ -5,33 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duelo Biblico  Sigo com Fe</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js">aplicarTraducao("pt");
-
-function partilharWhatsApp(){
-    const msgs={pt:"Vem jogar Duelo Biblico comigo! ",en:"Come play Bible Duel with me! ",es:"Ven a jugar Duelo Biblico conmigo! ",fr:"Viens jouer au Duel Biblique avec moi! ",de:"Komm Bibel Duell mit mir spielen! ",it:"Vieni a giocare a Duello Biblico con me! ",ro:"Vino sa joci Duel Biblic cu mine! "};
-    const msg=encodeURIComponent((msgs[idiomaAtual]||msgs.pt)+"https://duelo-biblico.vercel.app");
-    window.open("https://wa.me/?text="+msg,"_blank");
-}
-function partilharTelegram(){
-    const msgs={pt:"Vem jogar Duelo Biblico comigo!",en:"Come play Bible Duel with me!",es:"Ven a jugar Duelo Biblico conmigo!",fr:"Viens jouer au Duel Biblique!",de:"Komm Bibel Duell spielen!",it:"Vieni a giocare a Duello Biblico!",ro:"Vino sa joci Duel Biblic!"};
-    window.open("https://t.me/share/url?url="+encodeURIComponent("https://duelo-biblico.vercel.app")+"&text="+encodeURIComponent(msgs[idiomaAtual]||msgs.pt),"_blank");
-}
-function copiarLink(){
-    navigator.clipboard.writeText("https://duelo-biblico.vercel.app").then(()=>{
-        const b=document.getElementById("btn-copiar");
-        if(b){b.textContent="Copiado!";b.style.background="rgba(72,199,142,0.3)";setTimeout(()=>{b.textContent="Copiar";b.style.background="rgba(255,255,255,0.1)";},2000);}
-    });
-}
-async function atualizarOnline(){
-    try{
-        const r=await fetch(BACKEND_URL+"/api/duelo/online");
-        const d=await r.json();
-        const el=document.getElementById("online-count");
-        if(el)el.textContent=(d.online||0)+" jogadores online";
-    }catch(e){}
-}
-atualizarOnline();
-setInterval(atualizarOnline,15000);
-
 </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -692,7 +665,19 @@ async function toggleRanking() {
 }
 aplicarTraducao("pt");
 </script>
+
 </div>
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

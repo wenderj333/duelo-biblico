@@ -451,10 +451,16 @@ async function carregarPerfilSigo(){
 acordarServidor();
 carregarPerfilSigo();
 
+function aplicarTraducao(idioma){
+    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
+    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
+    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar||"Procurar Oponente";
+}
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;
     document.querySelectorAll(".idioma-btn").forEach(b=>b.classList.remove("ativo"));
     btn.classList.add("ativo");
+    aplicarTraducao(idioma);
 }
 
 function carregarFoto(input){
@@ -655,6 +661,7 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
+
 
 
 

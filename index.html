@@ -465,6 +465,8 @@ function aplicarTraducao(idioma) {
   document.querySelector('#lobby p').textContent = t.escolha;
   document.getElementById('nomeUsuario').placeholder = t.nome;
   document.querySelector('#lobby .btn').textContent = t.procurar;
+  const mi = document.getElementById('msg-incentivo');
+  if(mi && t.incentivo) mi.innerHTML = t.incentivo;
 }
 
 function selecionarIdioma(idioma, btn) {
@@ -663,6 +665,7 @@ aplicarTraducao("pt");
 </div>
 </body>
 </html>
+
 
 
 

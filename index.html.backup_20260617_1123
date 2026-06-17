@@ -371,13 +371,8 @@
         </div>
 
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:#48c78e;animation:pulsar 1.5s infinite;"></div>
-            <span id="online-count" style="font-size:13px;color:rgba(255,255,255,0.7);">0 jogadores online</span>
-        </div>
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
-        <div style="margin-top:10px;margin-bottom:4px;"><p style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p><div style="display:flex;gap:8px;"><button onclick="partilharWhatsApp()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#25d366;color:white;font-weight:700;font-size:12px;cursor:pointer;">WhatsApp</button><button onclick="partilharTelegram()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#0088cc;color:white;font-weight:700;font-size:12px;cursor:pointer;">Telegram</button><button onclick="copiarLink()" id="btn-copiar" style="flex:1;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-weight:700;font-size:12px;cursor:pointer;">Copiar</button></div></div>
         <div id="form-registo" style="margin-top:12px;padding:14px;border-radius:12px;background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.25);">
             <p style="font-size:12px;font-weight:700;color:#f0c040;margin-bottom:10px;text-align:center;">Registar para o Premio PIX</p>
             <input type="email" id="reg-email" placeholder="O teu email..." style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;margin-bottom:8px;">
@@ -670,7 +665,6 @@ aplicarTraducao("pt");
 </div>
 </body>
 </html>
-
 
 
 

@@ -449,13 +449,13 @@ function acordarServidor() {
 acordarServidor();
 
 const TRADUCOES = {
-  pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', incentivo:'Chama o teu amigo ou irmao da igreja e <strong style="color:#f0c040;">testa o teu conhecimento</strong> da Biblia num duelo em tempo real! Aprende mais enquanto jogas.', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
-  en: { titulo:'Bible Duel', incentivo:'Call your friend or church brother and <strong style="color:#f0c040;">test your Bible knowledge</strong> in a real-time duel! Learn more while you play.', sub:'Sigo com Fe - 7 Languages', escolha:'Choose your language:', nome:'Your name or nickname...', procurar:'Find Opponent', fim:'End of Duel!', novamente:'Play Again' },
-  es: { titulo:'Duelo Biblico', incentivo:'Llama a tu amigo o hermano de iglesia y <strong style="color:#f0c040;">pon a prueba tu conocimiento</strong> biblico en un duelo en tiempo real! Aprende mas mientras juegas.', sub:'Sigo com Fe - 7 Idiomas', escolha:'Elige tu idioma:', nome:'Tu nombre o apodo...', procurar:'Buscar Oponente', fim:'Fin del Duelo!', novamente:'Jugar de Nuevo' },
-  fr: { titulo:'Duel Biblique', incentivo:'Appelle ton ami ou frere d eglise et <strong style="color:#f0c040;">teste ta connaissance biblique</strong> dans un duel en temps reel! Apprends plus en jouant.', sub:'Sigo com Fe - 7 Langues', escolha:'Choisissez votre langue:', nome:'Votre nom ou surnom...', procurar:'Chercher Adversaire', fim:'Fin du Duel!', novamente:'Rejouer' },
-  de: { titulo:'Bibel Duell', incentivo:'Ruf deinen Freund oder Kirchenbruder an und <strong style="color:#f0c040;">teste dein Bibelwissen</strong> in einem Echtzeit-Duell! Lerne mehr waehrend du spielst.', sub:'Sigo com Fe - 7 Sprachen', escolha:'Waehle deine Sprache:', nome:'Dein Name oder Spitzname...', procurar:'Gegner suchen', fim:'Ende des Duells!', novamente:'Nochmal spielen' },
-  it: { titulo:'Duello Biblico', incentivo:'Chiama il tuo amico o fratello di chiesa e <strong style="color:#f0c040;">metti alla prova la tua conoscenza biblica</strong> in un duello in tempo reale!', sub:'Sigo com Fe - 7 Lingue', escolha:'Scegli la tua lingua:', nome:'Il tuo nome o soprannome...', procurar:'Cerca Avversario', fim:'Fine del Duello!', novamente:'Gioca ancora' },
-  ro: { titulo:'Duel Biblic', incentivo:'Cheama-ti prietenul sau fratele din biserica si <strong style="color:#f0c040;">testeaza-ti cunostintele biblice</strong> intr-un duel in timp real! Invata mai mult.', sub:'Sigo com Fe - 7 Limbi', escolha:'Alege limba ta:', nome:'Numele sau porecla ta...', procurar:'Cauta Adversar', fim:'Sfarsitul Duelului!', novamente:'Joaca din nou' }
+  pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
+  en: { titulo:'Bible Duel', sub:'Sigo com Fe - 7 Languages', escolha:'Choose your language:', nome:'Your name or nickname...', procurar:'Find Opponent', fim:'End of Duel!', novamente:'Play Again' },
+  es: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Elige tu idioma:', nome:'Tu nombre o apodo...', procurar:'Buscar Oponente', fim:'Fin del Duelo!', novamente:'Jugar de Nuevo' },
+  fr: { titulo:'Duel Biblique', sub:'Sigo com Fe - 7 Langues', escolha:'Choisissez votre langue:', nome:'Votre nom ou surnom...', procurar:'Chercher Adversaire', fim:'Fin du Duel!', novamente:'Rejouer' },
+  de: { titulo:'Bibel Duell', sub:'Sigo com Fe - 7 Sprachen', escolha:'Waehle deine Sprache:', nome:'Dein Name oder Spitzname...', procurar:'Gegner suchen', fim:'Ende des Duells!', novamente:'Nochmal spielen' },
+  it: { titulo:'Duello Biblico', sub:'Sigo com Fe - 7 Lingue', escolha:'Scegli la tua lingua:', nome:'Il tuo nome o soprannome...', procurar:'Cerca Avversario', fim:'Fine del Duello!', novamente:'Gioca ancora' },
+  ro: { titulo:'Duel Biblic', sub:'Sigo com Fe - 7 Limbi', escolha:'Alege limba ta:', nome:'Numele sau porecla ta...', procurar:'Cauta Adversar', fim:'Sfarsitul Duelului!', novamente:'Joaca din nou' }
 };
 
 function aplicarTraducao(idioma) {
@@ -663,7 +663,6 @@ aplicarTraducao("pt");
 </div>
 </body>
 </html>
-
 
 
 

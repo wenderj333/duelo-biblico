@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -258,7 +258,7 @@
         <div class="sub">Lider no domingo ganha!</div>
     </div>
 
-    <div class="section-title">🏆 Mural da Gloria</div>
+    <div class="section-title">ðŸ† Mural da Gloria</div>
 
     <!-- TOP 3 -->
     <div class="top3" id="top3-container" style="display:none;">
@@ -266,20 +266,20 @@
             <div class="top3-avatar" id="av2">?</div>
             <div class="top3-nome" id="nm2">-</div>
             <div class="top3-pts" id="pt2">0 pts</div>
-            <div class="top3-pos">2º</div>
+            <div class="top3-pos">2Âº</div>
         </div>
         <div class="top3-item pos1" id="top3-1">
-            <div class="crown">👑</div>
+            <div class="crown">ðŸ‘‘</div>
             <div class="top3-avatar" id="av1">?</div>
             <div class="top3-nome" id="nm1">-</div>
             <div class="top3-pts" id="pt1">0 pts</div>
-            <div class="top3-pos">1º</div>
+            <div class="top3-pos">1Âº</div>
         </div>
         <div class="top3-item pos3" id="top3-3">
             <div class="top3-avatar" id="av3">?</div>
             <div class="top3-nome" id="nm3">-</div>
             <div class="top3-pts" id="pt3">0 pts</div>
-            <div class="top3-pos">3º</div>
+            <div class="top3-pos">3Âº</div>
         </div>
     </div>
 
@@ -288,7 +288,7 @@
     </div>
 
     <hr class="sidebar-divider">
-    <div class="section-title">⭐ Conquistas</div>
+    <div class="section-title">â­ Conquistas</div>
     <div id="conquistas-lista">
         <div class="sem-dados">Joga para ganhar conquistas!</div>
     </div>
@@ -296,7 +296,7 @@
     <!-- Admin oculto - aparece com 5 cliques no logo -->
     <div id="admin-btn" style="margin-top:16px;">
         <hr class="sidebar-divider">
-        <div class="section-title">🔐 Admin</div>
+        <div class="section-title">ðŸ” Admin</div>
         <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:12px;margin-bottom:8px;">
         <div style="display:flex;gap:6px;margin-bottom:6px;">
             <button onclick="setPix(true)" style="flex:1;padding:7px;border-radius:7px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:11px;">Activar PIX</button>
@@ -422,7 +422,7 @@ function conectarAoJogo(){
     window.meuNomeGlobal=nome;
     document.getElementById("status").innerText="A conectar ao servidor...";
     socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
-    socket.on("connect",()=>{socket.emit("procurarPartida",{nome,idioma:idiomaAtual});});
+    socket.on("connect",()=>{socket.emit("procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});});
     socket.on("status",msg=>{document.getElementById("status").innerText=UI_TEXTOS[idiomaAtual]?.procurando||msg;});
     socket.on("inicioJogo",dados=>{
         salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
@@ -518,7 +518,9 @@ async function carregarRanking(){
             const nomes=["av1","av2","av3"]; const nomesN=["nm1","nm2","nm3"]; const pts=["pt1","pt2","pt3"];
             [0,1,2].forEach(i=>{
                 if(d.ranking[i]){
-                    document.getElementById(nomes[i]).innerText=d.ranking[i].nome.charAt(0).toUpperCase();
+                    const avEl=document.getElementById(nomes[i]);
+                    if(d.ranking[i].foto){avEl.innerHTML='<img src="'+d.ranking[i].foto+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';}
+                    else{avEl.innerText=d.ranking[i].nome.charAt(0).toUpperCase();}
                     document.getElementById(nomesN[i]).innerText=d.ranking[i].nome;
                     document.getElementById(pts[i]).innerText=d.ranking[i].pontos+" pts";
                 }
@@ -532,7 +534,7 @@ async function carregarRanking(){
             const pos=i+4;
             return '<div class="rank-item">'
                 +'<div class="rank-num">'+pos+'</div>'
-                +'<div class="rank-av">'+j.nome.charAt(0).toUpperCase()+'</div>'
+                +'<div class="rank-av">'+(j.foto?'<img src="'+j.foto+'" style="width:100%;height:100%;object-fit:cover;">':j.nome.charAt(0).toUpperCase())+'</div>'
                 +'<div class="rank-info"><div class="rank-nome">'+j.nome+'</div></div>'
                 +'<div class="rank-pts-val">'+j.pontos+'</div>'
                 +'</div>';
@@ -544,10 +546,10 @@ async function carregarRanking(){
         const conquistas=document.getElementById("conquistas-lista");
         let html='';
         if(top){
-            html+='<div class="conquista-item"><div class="conquista-icon">👑</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
         }
         if(total>=5){
-            html+='<div class="conquista-item"><div class="conquista-icon">🔥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
+            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
         }
         conquistas.innerHTML=html||'<div class="sem-dados">Joga para ganhar conquistas!</div>';
 
@@ -584,3 +586,4 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
+

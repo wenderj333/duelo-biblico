@@ -3,668 +3,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duelo Biblico - Sigo com Fe</title>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <title>Duelo Biblico  Sigo com Fe</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js">aplicarTraducao("pt");
+</script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: url('https://res.cloudinary.com/degxiuf43/image/upload/v1781603430/duelo-biblico/qvbrhcoqnithannhxjga.jpg') center center / cover no-repeat fixed;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
             color: #fff;
-            display: flex;
         }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 240px;
-            min-height: 100vh;
-            background: rgba(8,3,20,0.88);
-            backdrop-filter: blur(14px);
-            border-right: 1px solid rgba(240,192,64,0.25);
-            padding: 20px 14px;
-            flex-shrink: 0;
-            overflow-y: auto;
-        }
-
-        .sidebar-logo {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(240,192,64,0.2);
-        }
-        .sidebar-logo h2 { font-size: 16px; color: #f0c040; font-weight: 800; letter-spacing: 0.05em; }
-        .sidebar-logo p { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
-
-        .section-title {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.14em;
-            color: #f0c040;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* PIX Banner */
-        .pix-side {
-            background: linear-gradient(135deg, #f0c040, #c07010);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            margin-bottom: 16px;
-            display: none;
-        }
-        .pix-side .label { font-size: 10px; font-weight: 700; color: #1a0a3e; text-transform: uppercase; letter-spacing: 0.08em; }
-        .pix-side .valor { font-size: 22px; font-weight: 900; color: #1a0a3e; line-height: 1.2; }
-        .pix-side .sub { font-size: 10px; color: rgba(26,10,62,0.7); margin-top: 2px; }
-
-        /* TOP 3 */
-        .top3 {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-        .top3-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .top3-item .crown { font-size: 14px; }
-        .top3-avatar {
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f0c040, #c07010);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #1a0a3e;
-            font-size: 14px;
-            border: 2px solid rgba(240,192,64,0.5);
-            overflow: hidden;
-        }
-        .top3-item.pos1 .top3-avatar { width: 46px; height: 46px; font-size: 16px; border-color: #f0c040; }
-        .top3-item.pos2 .top3-avatar { width: 38px; height: 38px; border-color: #c0c0c0; background: linear-gradient(135deg, #c0c0c0, #888); }
-        .top3-item.pos3 .top3-avatar { width: 34px; height: 34px; font-size: 12px; border-color: #cd7f32; background: linear-gradient(135deg, #cd7f32, #8b4513); }
-        .top3-nome { font-size: 10px; font-weight: 700; max-width: 56px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .top3-pts { font-size: 9px; color: #f0c040; font-weight: 700; }
-        .top3-pos { font-size: 9px; background: rgba(240,192,64,0.2); border-radius: 10px; padding: 1px 6px; color: #f0c040; font-weight: 700; }
-
-        /* Ranking lista */
-        .rank-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 8px;
-            border-radius: 8px;
-            margin-bottom: 4px;
-            background: rgba(255,255,255,0.04);
-            transition: background 0.2s;
-        }
-        .rank-item:nth-child(1) { border: 1px solid rgba(255,215,0,0.3); }
-        .rank-item:nth-child(2) { border: 1px solid rgba(192,192,192,0.2); }
-        .rank-item:nth-child(3) { border: 1px solid rgba(205,127,50,0.2); }
-        .rank-item:hover { background: rgba(255,255,255,0.08); }
-        .rank-num { font-size: 11px; font-weight: 800; color: #f0c040; width: 18px; text-align: center; flex-shrink: 0; }
-        .rank-av {
-            width: 28px; height: 28px; border-radius: 50%;
-            background: linear-gradient(135deg,#f0c040,#c07010);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; color: #1a0a3e; font-size: 11px; flex-shrink: 0; overflow: hidden;
-        }
-        .rank-av img { width: 100%; height: 100%; object-fit: cover; }
-        .rank-info { flex: 1; min-width: 0; }
-        .rank-nome { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rank-pts-label { font-size: 10px; color: #f0c040; font-weight: 700; }
-        .rank-pts-val { font-size: 11px; font-weight: 800; color: #f0c040; flex-shrink: 0; }
-
-        .sem-dados { text-align: center; color: rgba(255,255,255,0.35); font-size: 11px; padding: 14px 0; }
-
-        /* Conquistas */
-        .conquista-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 8px;
-            border-radius: 8px;
-            margin-bottom: 4px;
-            background: rgba(255,255,255,0.04);
-        }
-        .conquista-icon { font-size: 18px; flex-shrink: 0; }
-        .conquista-info { flex: 1; }
-        .conquista-nome { font-size: 11px; font-weight: 600; }
-        .conquista-prog { font-size: 9px; color: #f0c040; }
-        .conquista-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 3px; overflow: hidden; }
-        .conquista-fill { height: 100%; background: linear-gradient(90deg,#f0c040,#c07010); border-radius: 3px; }
-
-        .sidebar-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 14px 0; }
-
-        /* ===== MAIN ===== */
-        .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 16px; }
 
         .card {
             background: rgba(255,255,255,0.07);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255,255,255,0.14);
-            max-width: 460px; width: 100%;
-            padding: 28px 22px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            max-width: 520px;
+            width: 100%;
+            padding: 32px 28px;
             border-radius: 20px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
         }
 
-        h1 { font-size: 22px; text-align: center; color: #f0c040; margin-bottom: 3px; font-weight: 900; }
-        .subtitulo { text-align: center; color: rgba(255,255,255,0.45); font-size: 12px; margin-bottom: 18px; }
+        h1 {
+            font-size: 26px;
+            text-align: center;
+            color: #f6d860;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
 
-        .idiomas { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
+        .subtitulo {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        /* SeletorDE idioma */
+        .idiomas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
         .idioma-btn {
-            padding: 5px 13px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.28);
-            background: transparent; color: rgba(255,255,255,0.65); cursor: pointer; font-size: 12px; transition: all 0.2s;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
         }
-        .idioma-btn:hover { border-color: #f0c040; color: #f0c040; }
-        .idioma-btn.ativo { background: #f0c040; color: #1a0a3e; font-weight: 800; border-color: #f0c040; }
 
-        .perfil-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .avatar-upload {
-            width: 56px; height: 56px; border-radius: 50%;
-            background: linear-gradient(135deg,#f0c040,#c07010);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; font-weight: 900; color: #1a0a3e; cursor: pointer;
-            border: 3px solid rgba(240,192,64,0.4); overflow: hidden; flex-shrink: 0; transition: border-color 0.2s;
+        .idioma-btn:hover { border-color: #f6d860; color: #f6d860; }
+        .idioma-btn.ativo {
+            background: #f6d860;
+            color: #1a0a3e;
+            font-weight: bold;
+            border-color: #f6d860;
         }
-        .avatar-upload:hover { border-color: #f0c040; }
-        .avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Input nome */
         input[type="text"] {
-            flex: 1; padding: 11px 13px; border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 10px; background: rgba(255,255,255,0.09); color: #fff;
-            font-size: 14px; outline: none; transition: border 0.2s; width: 100%;
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: border 0.2s;
         }
-        input[type="text"]:focus { border-color: #f0c040; }
-        input[type="text"]::placeholder { color: rgba(255,255,255,0.35); }
 
+        input[type="text"]:focus { border-color: #f6d860; }
+        input[type="text"]::placeholder { color: rgba(255,255,255,0.4); }
+
+        /* BotÃµes principais */
         .btn {
-            width: 100%; padding: 13px; font-size: 15px; font-weight: 800; cursor: pointer;
-            background: linear-gradient(135deg,#f0c040,#c07010); color: #1a0a3e;
-            border: none; border-radius: 10px; transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 4px 15px rgba(240,192,64,0.3); margin-top: 12px;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f6d860, #e5b800);
+            color: #1a0a3e;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 15px rgba(246,216,96,0.3);
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240,192,64,0.45); }
 
-        #status { text-align: center; margin-top: 10px; color: rgba(255,255,255,0.55); font-size: 13px; min-height: 18px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(246,216,96,0.4); }
+        .btn:active { transform: translateY(0); }
 
-        #timer { font-size: 46px; font-weight: 900; text-align: center; margin: 6px 0; transition: color 0.3s; }
+        /* Status */
+        #status {
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        /* Timer */
+        #timer {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            transition: color 0.3s;
+        }
+
         .timer-urgente { color: #ff4444 !important; animation: pulsar 0.5s infinite alternate; }
-        .timer-normal { color: #f0c040; }
-        @keyframes pulsar { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .timer-normal { color: #f6d860; }
 
+        @keyframes pulsar {
+           FRom { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* Info do jogo */
         .info-jogo {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; padding: 9px 13px; background: rgba(255,255,255,0.07); border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
         }
-        .pontos-badge { background: #f0c040; color: #1a0a3e; padding: 2px 10px; border-radius: 18px; font-weight: 800; font-size: 12px; }
 
-        .progresso-barra { height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 14px; overflow: hidden; }
-        .progresso-fill { height: 100%; background: #f0c040; border-radius: 3px; transition: width 0.5s ease; }
+        .pontos-badge {
+            background: #f6d860;
+            color: #1a0a3e;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
 
-        #perguntaTexto { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 16px; line-height: 1.5; min-height: 52px; }
+        /* BarraDE progresso */
+        .progresso-barra {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
 
+        .progresso-fill {
+            height: 100%;
+            background: #f6d860;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Pergunta */
+        #perguntaTexto {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #fff;
+            min-height: 60px;
+        }
+
+        /* Alternativas */
         .alt-btn {
-            display: block; width: 100%; margin: 7px 0; padding: 12px 15px;
-            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13);
-            border-radius: 10px; cursor: pointer; font-size: 14px; color: #fff; text-align: left; transition: all 0.2s;
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #fff;
+            text-align: left;
+            transition: all 0.2s;
         }
-        .alt-btn:hover:not([disabled]) { background: rgba(240,192,64,0.14); border-color: #f0c040; transform: translateX(4px); }
-        .alt-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        .alt-btn:hover:not([disabled]) {
+            background: rgba(246,216,96,0.15);
+            border-color: #f6d860;
+            transform: translateX(4px);
+        }
+
+        .alt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .alt-btn.correta { background: rgba(72,199,142,0.3) !important; border-color: #48c78e !important; }
-        .alt-btn.errada { background: rgba(255,68,68,0.3) !important; border-color: #ff4444 !important; }
+        .alt-btn.errada  { background: rgba(255,68,68,0.3)  !important; border-color: #ff4444 !important; }
 
-        .notif-oponente { text-align: center; font-size: 11px; color: #f0c040; margin-top: 6px; opacity: 0; transition: opacity 0.3s; }
-
-        .placar-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 11px 14px; margin: 7px 0; border-radius: 10px; background: rgba(255,255,255,0.07);
+        /* Notificacao oponente respondeu */
+        .notif-oponente {
+            text-align: center;
+            font-size: 12px;
+            color: #f6d860;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .placar-item.vencedor { background: rgba(240,192,64,0.2); border: 1px solid #f0c040; }
 
-        #jogo { display: none; }
+        /* Resultado */
         #resultado { display: none; }
 
-        /* Admin Easter Egg - 5 clicks no logo */
-        #admin-btn { display: none; }
-
-        @media (max-width: 720px) {
-            .sidebar { display: none; }
-            .main { padding: 10px; }
+        .placar-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
         }
+
+        .placar-item.vencedor {
+            background: rgba(246,216,96,0.2);
+            border: 1px solid #f6d860;
+        }
+
+        .emoji-resultado { font-size: 28px; }
+
+        /* Screens */
+        #jogo { display: none; }
+        #resultado { display: none; }
+        .ranking-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); margin-bottom:8px; }
+        .ranking-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+        .ranking-pos { font-family:serif; font-size:18px; font-weight:bold; width:28px; text-align:center; }
+        .ranking-pos.ouro { color:#f6d860; }
+        .ranking-pos.prata { color:#c0c0c0; }
+        .ranking-pos.bronze { color:#cd7f32; }
+        .ranking-nome { flex:1; font-weight:600; }
+        .ranking-pts { color:#f6d860; font-weight:bold; }
+        #btn-ranking { background:rgba(246,216,96,0.15); border:1px solid rgba(246,216,96,0.3); color:#f6d860; padding:10px; border-radius:10px; width:100%; cursor:pointer; margin-top:12px; font-size:14px; font-weight:600; }
+        #painel-ranking { display:none; margin-top:16px; }
     </style>
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
-<div class="sidebar">
-    <div class="sidebar-logo" id="logo-click" onclick="logoClick()" style="cursor:pointer;">
-        <h2>Duelo Biblico</h2>
-        <p>Sigo com Fe</p>
-    </div>
-
-    <div id="pix-side" class="pix-side">
-        <div class="label">Premio PIX da Semana</div>
-        <div class="valor" id="pix-valor-side">R$ 10,00</div>
-        <div class="sub">Lider no domingo ganha!</div>
-    </div>
-
-    <div class="section-title">ðŸ† Mural da Gloria</div>
-
-    <!-- TOP 3 -->
-    <div class="top3" id="top3-container" style="display:none;">
-        <div class="top3-item pos2" id="top3-2">
-            <div class="top3-avatar" id="av2">?</div>
-            <div class="top3-nome" id="nm2">-</div>
-            <div class="top3-pts" id="pt2">0 pts</div>
-            <div class="top3-pos">2Âº</div>
-        </div>
-        <div class="top3-item pos1" id="top3-1">
-            <div class="crown">ðŸ‘‘</div>
-            <div class="top3-avatar" id="av1">?</div>
-            <div class="top3-nome" id="nm1">-</div>
-            <div class="top3-pts" id="pt1">0 pts</div>
-            <div class="top3-pos">1Âº</div>
-        </div>
-        <div class="top3-item pos3" id="top3-3">
-            <div class="top3-avatar" id="av3">?</div>
-            <div class="top3-nome" id="nm3">-</div>
-            <div class="top3-pts" id="pt3">0 pts</div>
-            <div class="top3-pos">3Âº</div>
-        </div>
-    </div>
-
-    <div id="ranking-lista">
-        <div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div>
-    </div>
-
-    <hr class="sidebar-divider">
-    <div class="section-title">â­ Conquistas</div>
-    <div id="conquistas-lista">
-        <div class="sem-dados">Joga para ganhar conquistas!</div>
-    </div>
-
-    <!-- Admin oculto - aparece com 5 cliques no logo -->
-    <div id="admin-btn" style="margin-top:16px;">
-        <hr class="sidebar-divider">
-        <div class="section-title">ðŸ” Admin</div>
-        <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:12px;margin-bottom:8px;">
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-            <button onclick="setPix(true)" style="flex:1;padding:7px;border-radius:7px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:11px;">Activar PIX</button>
-            <button onclick="setPix(false)" style="flex:1;padding:7px;border-radius:7px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:11px;">Desactivar</button>
-        </div>
-        <input type="text" id="pix-valor-input" placeholder="Valor ex: R$ 20,00" style="margin-bottom:6px;font-size:12px;">
-        <button onclick="zerarRanking()" style="width:100%;padding:7px;border-radius:7px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:11px;margin-bottom:6px;">Zerar Ranking</button>
-        <div id="admin-status" style="text-align:center;color:#f0c040;font-size:11px;min-height:14px;"></div>
-    </div>
-</div>
-
-<!-- ===== MAIN ===== -->
-<div class="main">
 <div class="card">
     <h1>Duelo Biblico</h1>
     <p class="subtitulo">Sigo com Fe - 7 Idiomas</p>
 
-    <!-- LOBBY -->
+    <!-- ===== TELADEENTRADA ===== -->
     <div id="lobby">
-        <p style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
+        <p style="color:rgba(255,255,255,0.6); font-size:13px; text-align:center; margin-bottom:14px;">
+           EScolhe o teu idioma:
+        </p>
+
         <div class="idiomas">
-            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('en',this)">EN</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('es',this)">ES</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('fr',this)">FR</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('de',this)">DE</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('it',this)">IT</button>
-            <button class="idioma-btn" onclick="selecionarIdioma('ro',this)">RO</button>
+            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt', this)">PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('en', this)">EN</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('es', this)">ES</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('fr', this)">FR</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('de', this)">DE</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('it', this)">IT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('ro', this)">RO</button>
         </div>
-        <div class="perfil-row">
-            <div class="avatar-upload" id="avatar-preview" onclick="document.getElementById('foto-input').click()" title="Clica para adicionar foto">?</div>
-            <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20" oninput="atualizarAvatar()">
-        </div>
-        <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
+
+        <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
-        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
-            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
-            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
-        </div>
         <p id="status"></p>
-        <div id="aviso-pix" style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
-            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
+        <button id="btn-ranking" onclick="toggleRanking()">Ver Ranking Semanal (Top 10)</button>
+        <div id="painel-ranking">
+          <div id="ranking-lista"><p style="text-align:center;color:rgba(255,255,255,0.5);padding:16px;">A carregar...</p></div>
         </div>
     </div>
 
-    <!-- JOGO -->
+    <!-- ===== TELA DO JOGO ===== -->
     <div id="jogo">
         <div class="info-jogo">
-            <span id="infoOponente">Oponente</span>
-            <span class="pontos-badge" id="meusPontos">0 pts</span>
+            <span id="infoOponente"> </span>
+            <span class="pontos-badge" id="meusPontos">0PTs</span>
         </div>
+
         <div class="progresso-barra">
             <div class="progresso-fill" id="progressoFill" style="width:10%"></div>
         </div>
+
         <div id="timer" class="timer-normal">15</div>
+
         <h2 id="perguntaTexto"></h2>
         <div id="alternativas"></div>
-        <p class="notif-oponente" id="notifOponente">Oponente ja respondeu!</p>
+        <p class="notif-oponente" id="notifOponente"> Oponente ja respondeu!</p>
     </div>
 
-    <!-- RESULTADO -->
+    <!-- ===== TELADE RESULTADO ===== -->
     <div id="resultado">
-        <h2 style="text-align:center;font-size:20px;margin-bottom:14px;color:#f0c040;">Fim do Duelo!</h2>
+        <h2 style="text-align:center; font-size:22px; margin-bottom:20px; color:#f6d860;">
+            Fim do Duelo!
+        </h2>
         <div id="placarFinal"></div>
-        <button class="btn" style="margin-top:14px;" onclick="window.location.reload()">Jogar Novamente</button>
+        <button class="btn" style="margin-top:20px;" onclick="window.location.reload()">
+            Jogar Novamente
+        </button>
     </div>
-</div>
+
 </div>
 
 <script>
+// ============================================================
+//   SUBSTITUIESTA URL PELA URL DO TEU SERVIDOR NO RENDER!
+// Exemplo: https://sigo-com-fe-backend.onrender.com
+// ============================================================
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-let socket, salaAtual="", idiomaAtual="pt", meuspontos=0, perguntaAtualNum=0;
-let fotoBase64=null;
-window.meuNomeGlobal="";
 
+let socket;
+let salaAtual = "";
+let idiomaAtual = "pt";
+let meuspontos = 0;
+let perguntaAtualNum = 0;
+const TOTAL_PERGUNTAS = 10;
+
+// Textos por idioma para a UI
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente"},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar"}
+   PT: { procurando: " Aguardando um irmao para o duelo...", oponente: "Oponente" },
+   EN: { procurando: " Waiting for an opponent...", oponente: "Opponent" },
+   ES: { procurando: "ESperando un oponente...", oponente: "Oponente" },
+   FR: { procurando: "EN attente d'un adversaire...", oponente: "Adversaire" },
+   DE: { procurando: " Warte auf einen Gegner...", oponente: "Gegner" },
+   IT: { procurando: " Aspettando un avversario...", oponente: "Avversario" },
+   RO: { procurando: " Asteptand un adversar...", oponente: "Adversar" }
 };
 
-// Easter egg - 5 cliques no logo para abrir admin
-let logoClicks=0, logoTimer=null;
-function logoClick(){
-    logoClicks++;
-    clearTimeout(logoTimer);
-    logoTimer=setTimeout(()=>logoClicks=0,3000);
-    if(logoClicks>=5){
-        document.getElementById("admin-btn").style.display="block";
-        logoClicks=0;
-    }
-}
-
-function acordarServidor(){fetch(BACKEND_URL+"/api/health").catch(()=>{});}
-
-// Carregar perfil da rede social automaticamente
-async function carregarPerfilSigo(){
-    try{
-        // Verificar token na URL (?token=xxx) ou localStorage
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token') || localStorage.getItem('sigo_token');
-        if(!token) return;
-        
-        const r = await fetch('https://sigo-com-fe-api.onrender.com/api/profile', {
-            headers: {'Authorization': 'Bearer ' + token}
-        });
-        if(!r.ok) return;
-        const d = await r.json();
-        
-        // Preencher nome
-        if(d.full_name || d.name){
-            document.getElementById('nomeUsuario').value = d.full_name || d.name;
-            atualizarAvatar();
-        }
-        
-        // Preencher foto
-        if(d.profile_photo || d.avatar_url || d.photo){
-            const fotoUrl = d.profile_photo || d.avatar_url || d.photo;
-            // Converter URL para base64
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = 100; canvas.height = 100;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, 100, 100);
-                fotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
-                const preview = document.getElementById('avatar-preview');
-                preview.innerHTML = '';
-                const imgEl = document.createElement('img');
-                imgEl.src = fotoBase64;
-                imgEl.style = 'width:100%;height:100%;object-fit:cover;';
-                preview.appendChild(imgEl);
-            };
-            img.src = fotoUrl;
-        }
-        
-        // Guardar token
-        if(params.get('token')) localStorage.setItem('sigo_token', token);
-        
-    }catch(e){ console.log('Perfil nao carregado:', e); }
+// Ping para acordar o Render antes do utilizador jogar
+function acordarServidor() {
+    fetch(BACKEND_URL + "/ping").catch(() => {});
 }
 acordarServidor();
-carregarPerfilSigo();
 
-function aplicarTraducao(idioma){
-    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
-    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
-    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar||"Procurar Oponente";
+const TRADUCOES = {
+  pt: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Escolhe o teu idioma:', nome:'O teu nome ou apelido...', procurar:'Procurar Oponente', fim:'Fim do Duelo!', novamente:'Jogar Novamente' },
+  en: { titulo:'Bible Duel', sub:'Sigo com Fe - 7 Languages', escolha:'Choose your language:', nome:'Your name or nickname...', procurar:'Find Opponent', fim:'End of Duel!', novamente:'Play Again' },
+  es: { titulo:'Duelo Biblico', sub:'Sigo com Fe - 7 Idiomas', escolha:'Elige tu idioma:', nome:'Tu nombre o apodo...', procurar:'Buscar Oponente', fim:'Fin del Duelo!', novamente:'Jugar de Nuevo' },
+  fr: { titulo:'Duel Biblique', sub:'Sigo com Fe - 7 Langues', escolha:'Choisissez votre langue:', nome:'Votre nom ou surnom...', procurar:'Chercher Adversaire', fim:'Fin du Duel!', novamente:'Rejouer' },
+  de: { titulo:'Bibel Duell', sub:'Sigo com Fe - 7 Sprachen', escolha:'Waehle deine Sprache:', nome:'Dein Name oder Spitzname...', procurar:'Gegner suchen', fim:'Ende des Duells!', novamente:'Nochmal spielen' },
+  it: { titulo:'Duello Biblico', sub:'Sigo com Fe - 7 Lingue', escolha:'Scegli la tua lingua:', nome:'Il tuo nome o soprannome...', procurar:'Cerca Avversario', fim:'Fine del Duello!', novamente:'Gioca ancora' },
+  ro: { titulo:'Duel Biblic', sub:'Sigo com Fe - 7 Limbi', escolha:'Alege limba ta:', nome:'Numele sau porecla ta...', procurar:'Cauta Adversar', fim:'Sfarsitul Duelului!', novamente:'Joaca din nou' }
+};
+
+function aplicarTraducao(idioma) {
+  const t = TRADUCOES[idioma] || TRADUCOES.pt;
+  document.querySelector('h1').textContent = t.titulo;
+  document.querySelector('.subtitulo').textContent = t.sub;
+  document.querySelector('#lobby p').textContent = t.escolha;
+  document.getElementById('nomeUsuario').placeholder = t.nome;
+  document.querySelector('#lobby .btn').textContent = t.procurar;
 }
-function selecionarIdioma(idioma,btn){
-    idiomaAtual=idioma;
-    document.querySelectorAll(".idioma-btn").forEach(b=>b.classList.remove("ativo"));
+
+function selecionarIdioma(idioma, btn) {
+    idiomaAtual = idioma;
+    document.querySelectorAll(".idioma-btn").forEach(b => b.classList.remove("ativo"));
     btn.classList.add("ativo");
     aplicarTraducao(idioma);
 }
 
-function carregarFoto(input){
-    const file=input.files[0]; if(!file)return;
-    const reader=new FileReader();
-    reader.onload=e=>{
-        fotoBase64=e.target.result;
-        const preview=document.getElementById("avatar-preview");
-        preview.innerHTML="";
-        const img=document.createElement("img");
-        img.src=fotoBase64; img.style="width:100%;height:100%;object-fit:cover;";
-        preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-}
+function conectarAoJogo() {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    if (!nome) { alert("Por favor,EScreve o teu nome!"); return; }
 
-function atualizarAvatar(){
-    const nome=document.getElementById("nomeUsuario").value.trim();
-    const preview=document.getElementById("avatar-preview");
-    if(!fotoBase64) preview.innerHTML=nome?nome.charAt(0).toUpperCase():"?";
-}
+    document.getElementById("status").innerText = " A conectar ao servidor...";
+    socket = io(BACKEND_URL, {path: "/duelo/socket.io"});
 
-function conectarAoJogo(){
-    const nome=document.getElementById("nomeUsuario").value.trim();
-    if(!nome){alert("Por favor, escreve o teu nome!");return;}
-    window.meuNomeGlobal=nome;
-    document.getElementById("status").innerText="A conectar ao servidor...";
-    socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
-    socket.on("connect",()=>{socket.emit("procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});});
-    socket.on("status",msg=>{document.getElementById("status").innerText=UI_TEXTOS[idiomaAtual]?.procurando||msg;});
-    socket.on("inicioJogo",dados=>{
-        window.fotosJogadores = {};
-        window.fotosJogadores[window.meuNomeGlobal] = fotoBase64||null;
-        salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
-        document.getElementById("lobby").style.display="none";
-        document.getElementById("jogo").style.display="block";
-        document.getElementById("infoOponente").innerText=(UI_TEXTOS[idiomaAtual]?.oponente||"Oponente")+": "+dados.oponente;
+    socket.on("connect", () => {
+        socket.emit("procurarPartida", { nome, idioma: idiomaAtual });
+    });
+
+    socket.on("status", (msg) => {
+        document.getElementById("status").innerText = UI_TEXTOS[idiomaAtual]?.procurando || msg;
+    });
+
+    socket.on("inicioJogo", (dados) => {
+        salaAtual = dados.salaId;
+        meuspontos = 0;
+        perguntaAtualNum = 0;
+
+        document.getElementById("lobby").style.display = "none";
+        document.getElementById("jogo").style.display = "block";
+
+        const txtOponente = UI_TEXTOS[idiomaAtual]?.oponente || "Oponente";
+        document.getElementById("infoOponente").innerText = ` ${txtOponente}: ${dados.oponente}`;
+
         renderizarRodada(dados.pergunta);
     });
-    socket.on("atualizarTimer",tempo=>{
-        const el=document.getElementById("timer");
-        el.innerText=tempo;
-        el.className=tempo<=5?"timer-urgente":"timer-normal";
+
+    socket.on("atualizarTimer", (tempo) => {
+        const el = document.getElementById("timer");
+        el.innerText = tempo;
+        el.className = tempo <= 5 ? "timer-urgente" : "timer-normal";
     });
-    socket.on("oponenteRespondeu",()=>{document.getElementById("notifOponente").style.opacity="1";});
-    socket.on("novaPergunta",dados=>{
+
+    socket.on("oponenteRespondeu", () => {
+        const notif = document.getElementById("notifOponente");
+        notif.style.opacity = "1";
+    });
+
+    socket.on("novaPergunta", (dados) => {
         perguntaAtualNum++;
-        document.getElementById("notifOponente").style.opacity="0";
-        document.getElementById("timer").className="timer-normal";
+        document.getElementById("notifOponente").style.opacity = "0";
+        document.getElementById("timer").className = "timer-normal";
         renderizarRodada(dados.pergunta);
     });
-    socket.on("fimJogo",jogadores=>{
-        document.getElementById("jogo").style.display="none";
-        document.getElementById("resultado").style.display="block";
-        const placar=document.getElementById("placarFinal");
-        placar.innerHTML="";
-        jogadores.sort((a,b)=>b.pontos-a.pontos);
-        jogadores.forEach((j,i)=>{
-            const div=document.createElement("div");
-            const euSou=j.nome===window.meuNomeGlobal;
-            div.className="placar-item"+(i===0?" vencedor":"");
-            const foto=j.foto||(window.fotosJogadores&&window.fotosJogadores[j.nome])||null;
-            const av=foto
-                ?'<img src="'+foto+'" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
-                :'<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#c07010);display:flex;align-items:center;justify-content:center;font-weight:900;color:#1a0a3e;font-size:16px;flex-shrink:0;">'+j.nome.charAt(0).toUpperCase()+'</div>';
-            div.innerHTML='<div style="display:flex;align-items:center;gap:12px;flex:1;">'+av
-                +'<div><div style="font-weight:800;font-size:15px;">'+j.nome+(euSou?' <span style="font-size:11px;color:#f0c040;">(Tu)</span>':'')+'</div>'
-                +'<div style="font-size:13px;color:#f0c040;font-weight:700;">'+(i===0?'Vencedor!':i===1?'2º lugar':'')+'</div></div></div>'
-                +'<div style="font-size:20px;font-weight:900;color:#f0c040;">'+Math.round(j.pontos)+' pts</div>';
+
+    socket.on("fimJogo", (jogadores) => {
+        document.getElementById("jogo").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+
+        const placar = document.getElementById("placarFinal");
+        placar.innerHTML = "";
+
+        jogadores.sort((a, b) => b.pontos - a.pontos);
+
+        const emojis = ["", ""];
+        jogadores.forEach((j, i) => {
+            const div = document.createElement("div");
+            div.className = `placar-item${i === 0 ? " vencedor" : ""}`;
+            div.innerHTML = `
+                <span>${emojis[i]} <b>${j.nome}</b></span>
+                <span style="font-size:18px; font-weight:bold; color:#f6d860">${Math.round(j.pontos)}PTs</span>
+            `;
             placar.appendChild(div);
         });
-        setTimeout(carregarRanking,2000);
     });
-    socket.on("oponenteSaiu",()=>{alert("O oponente saiu do jogo.");window.location.reload();});
+
+    socket.on("oponenteSaiu", () => {
+        alert("O oponente saiu do jogo. ");
+        window.location.reload();
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Desconectado do servidor.");
+    });
 }
 
-function renderizarRodada(pergunta){
-    const prog=((perguntaAtualNum)/10)*100;
-    document.getElementById("progressoFill").style.width=prog+"%";
-    document.getElementById("perguntaTexto").innerText=pergunta.q;
-    document.getElementById("meusPontos").innerText=Math.round(meuspontos)+" pts";
-    const container=document.getElementById("alternativas");
-    container.innerHTML="";
-    pergunta.a.forEach((alt,idx)=>{
-        const btn=document.createElement("button");
-        btn.className="alt-btn";
-        btn.innerText=String.fromCharCode(65+idx)+") "+alt;
-        btn.onclick=()=>{
+function renderizarRodada(pergunta) {
+    // Atualizar progresso
+    const progresso = ((perguntaAtualNum) / TOTAL_PERGUNTAS) * 100;
+    document.getElementById("progressoFill").style.width = `${progresso}%`;
+
+    document.getElementById("perguntaTexto").innerText = pergunta.q;
+    document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
+
+    const container = document.getElementById("alternativas");
+    container.innerHTML = "";
+
+    pergunta.a.forEach((alt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "alt-btn";
+        btn.innerText = `${String.fromCharCode(65+idx)}) ${alt}`;
+
+        btn.onclick = () => {
             bloquearAlternativas();
-            if(idx===pergunta.c){
+            // VisualDE resposta
+            if (idx === pergunta.c) {
                 btn.classList.add("correta");
-                const t=parseInt(document.getElementById("timer").innerText)||0;
-                meuspontos+=100+(t*5);
-                document.getElementById("meusPontos").innerText=Math.round(meuspontos)+" pts";
-            }else{
+                meuspontos += 100;
+                document.getElementById("meusPontos").innerText = `${Math.round(meuspontos)}PTs`;
+            } else {
                 btn.classList.add("errada");
-                document.querySelectorAll(".alt-btn")[pergunta.c]?.classList.add("correta");
+                // Mostrar a correta
+                const botoes = document.querySelectorAll(".alt-btn");
+                botoes[pergunta.c].classList.add("correta");
             }
-            socket.emit("enviarResposta",{salaId:salaAtual,escolha:idx});
+            socket.emit("enviarResposta", { salaId: salaAtual,EScolha: idx });
         };
         container.appendChild(btn);
     });
 }
 
-function bloquearAlternativas(){document.querySelectorAll(".alt-btn").forEach(b=>b.disabled=true);}
+function bloquearAlternativas() {
+    document.querySelectorAll(".alt-btn").forEach(b => b.disabled = true);
+}
 
-// ===== RANKING =====
-async function carregarRanking(){
-    try{
-        const r=await fetch(BACKEND_URL+"/api/duelo/ranking");
-        const d=await r.json();
+let fotoBase64 = null;
 
-        // PIX banner
-        const pixSide=document.getElementById("pix-side");
-        if(d.pixAtivo){pixSide.style.display="block";document.getElementById("pix-valor-side").textContent=d.pixValor;}
-        else pixSide.style.display="none";
+function carregarFoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        fotoBase64 = e.target.result;
+        const preview = document.getElementById("avatar-preview");
+        preview.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = fotoBase64;
+        img.style = "width:100%;height:100%;object-fit:cover;";
+        preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+}
 
-        const lista=document.getElementById("ranking-lista");
-        const top3=document.getElementById("top3-container");
-
-        if(!d.ranking||d.ranking.length===0){
-            lista.innerHTML='<div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div>';
-            top3.style.display="none";
-            return;
-        }
-
-        // TOP 3 destaque
-        if(d.ranking.length>=1){
-            top3.style.display="flex";
-            const nomes=["av1","av2","av3"]; const nomesN=["nm1","nm2","nm3"]; const pts=["pt1","pt2","pt3"];
-            [0,1,2].forEach(i=>{
-                if(d.ranking[i]){
-                    const avEl=document.getElementById(nomes[i]);
-                    if(d.ranking[i].foto){avEl.innerHTML='<img src="'+d.ranking[i].foto+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';}
-                    else{avEl.innerText=d.ranking[i].nome.charAt(0).toUpperCase();}
-                    document.getElementById(nomesN[i]).innerText=d.ranking[i].nome;
-                    document.getElementById(pts[i]).innerText=d.ranking[i].pontos+" pts";
-                }
-            });
-        }
-
-        // Lista completa (posicoes 4+)
-        const restantes=d.ranking.slice(3);
-        if(restantes.length===0){lista.innerHTML="";return;}
-        lista.innerHTML=restantes.map((j,i)=>{
-            const pos=i+4;
-            return '<div class="rank-item">'
-                +'<div class="rank-num">'+pos+'</div>'
-                +'<div class="rank-av">'+(j.foto?'<img src="'+j.foto+'" style="width:100%;height:100%;object-fit:cover;">':j.nome.charAt(0).toUpperCase())+'</div>'
-                +'<div class="rank-info"><div class="rank-nome">'+j.nome+'</div></div>'
-                +'<div class="rank-pts-val">'+j.pontos+'</div>'
-                +'</div>';
-        }).join('');
-
-        // Conquistas dinamicas
-        const top=d.ranking[0];
-        const total=d.ranking.length;
-        const conquistas=document.getElementById("conquistas-lista");
-        let html='';
-        if(top){
-            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ‘‘</div><div class="conquista-info"><div class="conquista-nome">'+top.nome+'</div><div class="conquista-prog">Lider da semana</div></div></div>';
-        }
-        if(total>=5){
-            html+='<div class="conquista-item"><div class="conquista-icon">ðŸ”¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
-        }
-        conquistas.innerHTML=html||'<div class="sem-dados">Joga para ganhar conquistas!</div>';
-
-    }catch(e){
-        document.getElementById("ranking-lista").innerHTML='<div class="sem-dados">Servidor a acordar...</div>';
+function atualizarAvatar() {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    const preview = document.getElementById("avatar-preview");
+    if (!fotoBase64 && nome) {
+        preview.innerHTML = nome.charAt(0).toUpperCase();
+    } else if (!fotoBase64) {
+        preview.innerHTML = "?";
     }
 }
 
-// Admin
-async function setPix(ativo){
-    const token=document.getElementById("admin-token").value;
-    const valor=document.getElementById("pix-valor-input").value;
-    try{
-        const r=await fetch(BACKEND_URL+"/api/duelo/pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token,ativo,valor})});
-        const d=await r.json();
-        document.getElementById("admin-status").textContent=d.ok?(ativo?"PIX ACTIVADO: "+(valor||d.pixValor):"PIX DESACTIVADO"):"Token invalido";
-        if(d.ok)carregarRanking();
-    }catch(e){document.getElementById("admin-status").textContent="Erro de ligacao";}
+async function toggleRanking() {
+    const painel = document.getElementById("painel-ranking");
+    if (painel.style.display === "block") {
+        painel.style.display = "none";
+        document.getElementById("btn-ranking").textContent = "Ver Ranking Semanal (Top 10)";
+        return;
+    }
+    painel.style.display = "block";
+    document.getElementById("btn-ranking").textContent = "Fechar Ranking";
+    try {
+        const r = await fetch(BACKEND_URL + "/api/duelo/ranking");
+        const d = await r.json();
+        const lista = document.getElementById("ranking-lista");
+        if (!d.ranking || d.ranking.length === 0) {
+            lista.innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Nenhuma partida ainda!</p>";
+            return;
+        }
+        let html = "";
+        if (d.pixAtivo) {
+            html += "<div style='background:linear-gradient(135deg,#f6d860,#e5b800);border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;color:#1a0a3e;'><strong>Premio PIX: " + d.pixValor + "</strong><br><small>Lider no domingo ganha!</small></div>";
+        }
+        d.ranking.forEach((j, i) => {
+            const pos = i + 1;
+            const cls = pos===1?"ouro":pos===2?"prata":pos===3?"bronze":"";
+            const ini = j.nome.charAt(0).toUpperCase();
+            html += "<div class='ranking-item'>";
+            html += "<div class='ranking-pos " + cls + "'>" + pos + "</div>";
+            html += "<div class='ranking-avatar' style='background:linear-gradient(135deg,#f6d860,#e5b800);display:flex;align-items:center;justify-content:center;font-weight:bold;color:#1a0a3e;font-size:16px;'>" + ini + "</div>";
+            html += "<div class='ranking-nome'>" + j.nome + "</div>";
+            html += "<div class='ranking-pts'>" + j.pontos + " pts</div>";
+            html += "</div>";
+        });
+        lista.innerHTML = html;
+    } catch(e) {
+        document.getElementById("ranking-lista").innerHTML = "<p style='text-align:center;color:rgba(255,255,255,0.5);padding:16px;'>Servidor a acordar... tente novamente.</p>";
+    }
 }
-
-async function zerarRanking(){
-    const token=document.getElementById("admin-token").value;
-    if(!confirm("Tens a certeza?"))return;
-    try{
-        const r=await fetch(BACKEND_URL+"/api/duelo/zerar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token})});
-        const d=await r.json();
-        document.getElementById("admin-status").textContent=d.ok?"Ranking zerado!":"Token invalido";
-        if(d.ok)carregarRanking();
-    }catch(e){document.getElementById("admin-status").textContent="Erro de ligacao";}
-}
-
-carregarRanking();
-setInterval(carregarRanking,30000);
+aplicarTraducao("pt");
 </script>
+
 </body>
 </html>
-
-
-
-
-
 
 

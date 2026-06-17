@@ -281,34 +281,6 @@
         .sidebar-divider { border:none;border-top:1px solid rgba(255,255,255,0.08);margin:12px 0; }
         .main-wrap { flex:1;display:flex;align-items:center;justify-content:center;padding:16px; }
         @media(max-width:720px){ .sidebar{display:none!important;} }
-        
-        body { display: flex !important; }
-        .sidebar { width:220px;min-height:100vh;background:rgba(8,3,20,0.88);backdrop-filter:blur(14px);border-right:1px solid rgba(240,192,64,0.25);padding:20px 14px;flex-shrink:0;overflow-y:auto; }
-        .sidebar-logo { text-align:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(240,192,64,0.2);cursor:pointer; }
-        .sidebar-logo h3 { font-size:14px;color:#f0c040;font-weight:800; }
-        .sidebar-logo p { font-size:10px;color:rgba(255,255,255,0.4); }
-        .section-title { font-size:10px;font-weight:800;letter-spacing:0.14em;color:#f0c040;text-transform:uppercase;margin-bottom:10px; }
-        .top3 { display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-bottom:12px; }
-        .top3-item { display:flex;flex-direction:column;align-items:center;gap:3px; }
-        .top3-avatar { border-radius:50%;background:linear-gradient(135deg,#f0c040,#c07010);display:flex;align-items:center;justify-content:center;font-weight:900;color:#1a0a3e;border:2px solid rgba(240,192,64,0.5);overflow:hidden; }
-        .top3-item.pos1 .top3-avatar { width:44px;height:44px;font-size:16px;border-color:#f0c040; }
-        .top3-item.pos2 .top3-avatar { width:36px;height:36px;border-color:#c0c0c0;background:linear-gradient(135deg,#c0c0c0,#888); }
-        .top3-item.pos3 .top3-avatar { width:32px;height:32px;font-size:12px;border-color:#cd7f32;background:linear-gradient(135deg,#cd7f32,#8b4513); }
-        .top3-nome { font-size:10px;font-weight:700;max-width:54px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
-        .top3-pts { font-size:9px;color:#f0c040;font-weight:700; }
-        .top3-pos { font-size:9px;background:rgba(240,192,64,0.15);border-radius:10px;padding:1px 5px;color:#f0c040;font-weight:700; }
-        .rank-item { display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:8px;margin-bottom:4px;background:rgba(255,255,255,0.04); }
-        .rank-num { font-size:11px;font-weight:800;color:#f0c040;width:18px;text-align:center;flex-shrink:0; }
-        .rank-av { width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#f0c040,#c07010);display:flex;align-items:center;justify-content:center;font-weight:700;color:#1a0a3e;font-size:11px;flex-shrink:0;overflow:hidden; }
-        .rank-av img { width:100%;height:100%;object-fit:cover; }
-        .rank-nome { flex:1;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-        .rank-pts-val { font-size:11px;font-weight:800;color:#f0c040;flex-shrink:0; }
-        .sem-dados { text-align:center;color:rgba(255,255,255,0.35);font-size:11px;padding:12px 0; }
-        .pix-side { background:linear-gradient(135deg,#f0c040,#c07010);border-radius:10px;padding:10px;text-align:center;margin-bottom:12px;display:none; }
-        .pix-side .valor { font-size:20px;font-weight:900;color:#1a0a3e; }
-        .sidebar-divider { border:none;border-top:1px solid rgba(255,255,255,0.08);margin:12px 0; }
-        .main-wrap { flex:1;display:flex;align-items:center;justify-content:center;padding:16px; }
-        @media(max-width:720px){ .sidebar{display:none!important;} }
         </style>
 </head>
 <body>
@@ -330,46 +302,7 @@
     <hr class="sidebar-divider">
     <div class="section-title">⭐ Conquistas</div>
     <div id="conquistas-side"><div class="sem-dados">Joga para ganhar!</div></div>
-    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:12px 0;">
-    <div style="text-align:center;margin-bottom:8px;">
-        <button onclick="var el=document.getElementById('admin-easter');el.style.display=el.style.display==='none'?'block':'none'" style="background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.3);color:#f0c040;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🔐 Admin PIX</button>
-    </div>
-    <div id="admin-easter" style="display:none;margin-top:8px;">
-        <hr class="sidebar-divider">
-        <div class="section-title">🔐 Admin</div>
-        <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:11px;margin-bottom:6px;">
-        <div style="display:flex;gap:5px;margin-bottom:5px;">
-            <button onclick="setPix(true)" style="flex:1;padding:6px;border-radius:6px;border:none;background:#27ae60;color:white;font-weight:700;cursor:pointer;font-size:10px;">Activar PIX</button>
-            <button onclick="setPix(false)" style="flex:1;padding:6px;border-radius:6px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:10px;">Desactivar</button>
-        </div>
-        <input type="text" id="pix-valor-input" placeholder="Valor ex: R$ 20,00" style="width:100%;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:11px;margin-bottom:5px;">
-        <button onclick="zerarRanking()" style="width:100%;padding:6px;border-radius:6px;border:none;background:#e74c3c;color:white;font-weight:700;cursor:pointer;font-size:10px;margin-bottom:5px;">Zerar Ranking</button>
-        <div id="admin-status" style="text-align:center;color:#f0c040;font-size:10px;min-height:14px;"></div>
-    </div>
-</div>
-<div class="main-wrap">
-<div class="sidebar">
-    <div class="sidebar-logo" id="logo-click" onclick="logoClick()"><h3>Duelo Biblico</h3><p>Sigo com Fe</p></div>
-    <div id="pix-side" class="pix-side">
-        <div style="font-size:10px;font-weight:700;color:#1a0a3e;text-transform:uppercase;">Premio PIX</div>
-        <div class="valor" id="pix-valor-side">R$ 10,00</div>
-        <div style="font-size:10px;color:rgba(26,10,62,0.7);">Lider no domingo ganha!</div>
-    </div>
-    <div class="section-title">🏆 Mural da Gloria</div>
-    <div class="top3" id="top3-container" style="display:none;">
-        <div class="top3-item pos2"><div class="top3-avatar" id="av2">?</div><div class="top3-nome" id="nm2">-</div><div class="top3-pts" id="pt2">0</div><div class="top3-pos">2</div></div>
-        <div class="top3-item pos1"><div style="font-size:14px;">👑</div><div class="top3-avatar" id="av1">?</div><div class="top3-nome" id="nm1">-</div><div class="top3-pts" id="pt1">0</div><div class="top3-pos">1</div></div>
-        <div class="top3-item pos3"><div class="top3-avatar" id="av3">?</div><div class="top3-nome" id="nm3">-</div><div class="top3-pts" id="pt3">0</div><div class="top3-pos">3</div></div>
-    </div>
-    <div id="ranking-lista-side"><div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div></div>
-    <hr class="sidebar-divider">
-    <div class="section-title">⭐ Conquistas</div>
-    <div id="conquistas-side"><div class="sem-dados">Joga para ganhar!</div></div>
-    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:12px 0;">
-    <div style="text-align:center;margin-bottom:8px;">
-        <button onclick="var el=document.getElementById('admin-easter');el.style.display=el.style.display==='none'?'block':'none'" style="background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.3);color:#f0c040;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;">🔐 Admin PIX</button>
-    </div>
-    <div id="admin-easter" style="display:none;margin-top:8px;">
+    <div id="admin-easter" style="display:none;margin-top:12px;">
         <hr class="sidebar-divider">
         <div class="section-title">🔐 Admin</div>
         <input type="password" id="admin-token" placeholder="Token..." style="width:100%;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;outline:none;font-size:11px;margin-bottom:6px;">
@@ -406,14 +339,7 @@
         <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
-        <div id="form-registo" style="margin-top:12px;padding:14px;border-radius:12px;background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.25);">
-            <p style="font-size:12px;font-weight:700;color:#f0c040;margin-bottom:10px;text-align:center;">Registar para o Premio PIX</p>
-            <input type="email" id="reg-email" placeholder="O teu email..." style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;margin-bottom:8px;">
-            <input type="text" id="reg-pix" placeholder="Chave PIX (email, CPF ou telefone)..." style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;margin-bottom:8px;">
-            <button onclick="registarPix()" style="width:100%;padding:10px;border-radius:8px;border:none;background:linear-gradient(135deg,#f0c040,#c07010);color:#1a0a3e;font-weight:700;font-size:13px;cursor:pointer;">Registar para o Premio</button>
-            <div id="reg-status" style="text-align:center;font-size:12px;margin-top:8px;min-height:16px;"></div>
-        </div>
-        
+        <button id="btn-ranking" onclick="toggleRanking()">Ver Ranking Semanal (Top 10)</button>
         <div id="painel-ranking">
           <div id="ranking-lista"><p style="text-align:center;color:rgba(255,255,255,0.5);padding:16px;">A carregar...</p></div>
         </div>
@@ -693,10 +619,8 @@ aplicarTraducao("pt");
 </script>
 
 </div>
-</div>
 </body>
 </html>
-
 
 
 

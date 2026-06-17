@@ -664,29 +664,6 @@ async function zerarRanking(){
     }catch(e){document.getElementById("admin-status").textContent="Erro de ligacao";}
 }
 
-
-// Receber dados do Sigo com Fe via postMessage
-window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://sigo-com-fe.vercel.app') return;
-    if (event.data.type === 'LOGIN_DATA') {
-        const u = event.data.user;
-        if (u.nome) {
-            document.getElementById('nomeUsuario').value = u.nome;
-            atualizarAvatar();
-        }
-        if (u.foto) {
-            fotoBase64 = u.foto;
-            const preview = document.getElementById('avatar-preview');
-            preview.innerHTML = '';
-            const img = document.createElement('img');
-            img.src = u.foto;
-            img.style = 'width:100%;height:100%;object-fit:cover;';
-            preview.appendChild(img);
-        }
-        if (u.token) localStorage.setItem('sigo_token', u.token);
-    }
-});
-
 carregarRanking();
 setInterval(carregarRanking,30000);
 

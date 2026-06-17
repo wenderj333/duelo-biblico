@@ -378,13 +378,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",nome:"O teu nome ou apelido...",jogar:"Procurar Oponente",aviso_pix:"Para concorrer ao Premio PIX entra na Sigo com Fe",aviso_logado:"Logado na Sigo com Fe - Concorres ao Premio PIX!",fim:"Fim do Duelo!",novamente:"Jogar Novamente"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",nome:"Your name...",jogar:"Find Opponent",aviso_pix:"To compete for the PIX Prize login at Sigo com Fe",aviso_logado:"Logged in - You compete for the PIX Prize!",fim:"End of Duel!",novamente:"Play Again"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente",nome:"Tu nombre...",jogar:"Buscar Oponente",aviso_pix:"Para el Premio PIX entra en Sigo com Fe",aviso_logado:"Conectado - Compites por el Premio PIX!",fim:"Fin del Duelo!",novamente:"Jugar de Nuevo"},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",nome:"Votre nom...",jogar:"Chercher Adversaire",aviso_pix:"Pour le Prix PIX connectez-vous sur Sigo com Fe",aviso_logado:"Connecte - Vous concourez au Prix PIX!",fim:"Fin du Duel!",novamente:"Rejouer"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",nome:"Dein Name...",jogar:"Gegner suchen",aviso_pix:"Fuer den PIX Preis melde dich an bei Sigo com Fe",aviso_logado:"Angemeldet - Du nimmst am PIX Preis teil!",fim:"Ende des Duells!",novamente:"Nochmal spielen"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",nome:"Il tuo nome...",jogar:"Cerca Avversario",aviso_pix:"Per il Premio PIX accedi su Sigo com Fe",aviso_logado:"Connesso - Partecipi al Premio PIX!",fim:"Fine del Duello!",novamente:"Gioca ancora"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",nome:"Numele tau...",jogar:"Cauta Adversar",aviso_pix:"Pentru Premiul PIX conecteaza-te la Sigo com Fe",aviso_logado:"Conectat - Concurezi la Premiul PIX!",fim:"Sfarsitul Duelului!",novamente:"Joaca din nou"}
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",idioma:"Escolhe o teu idioma:",nome:"O teu nome ou apelido...",jogar:"Procurar Oponente",aviso_pix:"Para concorrer ao Premio PIX entra na Sigo com Fe",aviso_logado:"Logado na Sigo com Fe - Concorres ao Premio PIX!",fim:"Fim do Duelo!",novamente:"Jogar Novamente"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",idioma:"Choose your language:",nome:"Your name...",jogar:"Find Opponent",aviso_pix:"To compete for the PIX Prize login at Sigo com Fe",aviso_logado:"Logged in - You compete for the PIX Prize!",fim:"End of Duel!",novamente:"Play Again"},
+    es:{procurando:"Esperando un oponente...",oponente:"Oponente",idioma:"Elige tu idioma:",nome:"Tu nombre...",jogar:"Buscar Oponente",aviso_pix:"Para el Premio PIX entra en Sigo com Fe",aviso_logado:"Conectado - Compites por el Premio PIX!",fim:"Fin del Duelo!",novamente:"Jugar de Nuevo"},
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",idioma:"Choisissez votre langue:",nome:"Votre nom...",jogar:"Chercher Adversaire",aviso_pix:"Pour le Prix PIX connectez-vous sur Sigo com Fe",aviso_logado:"Connecte - Vous concourez au Prix PIX!",fim:"Fin du Duel!",novamente:"Rejouer"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",idioma:"Waehle deine Sprache:",nome:"Dein Name...",jogar:"Gegner suchen",aviso_pix:"Fuer den PIX Preis melde dich an bei Sigo com Fe",aviso_logado:"Angemeldet - Du nimmst am PIX Preis teil!",fim:"Ende des Duells!",novamente:"Nochmal spielen"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",idioma:"Scegli la tua lingua:",nome:"Il tuo nome...",jogar:"Cerca Avversario",aviso_pix:"Per il Premio PIX accedi su Sigo com Fe",aviso_logado:"Connesso - Partecipi al Premio PIX!",fim:"Fine del Duello!",novamente:"Gioca ancora"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",idioma:"Alege limba ta:",nome:"Numele tau...",jogar:"Cauta Adversar",aviso_pix:"Pentru Premiul PIX conecteaza-te la Sigo com Fe",aviso_logado:"Conectat - Concurezi la Premiul PIX!",fim:"Sfarsitul Duelului!",novamente:"Joaca din nou"}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -451,17 +451,18 @@ async function carregarPerfilSigo(){
 acordarServidor();
 carregarPerfilSigo();
 
-function aplicarTraducao(idioma){
-    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
-    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome;
-    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar;
-    const ap=document.getElementById("aviso-pix"); if(ap)ap.textContent=t.aviso_pix;
-    const al=document.getElementById("aviso-logado"); if(al)al.textContent=t.aviso_logado;
-}
-function selecionarIdioma(idioma,btn){    idiomaAtual=idioma;
+function selecionarIdioma(idioma,btn){
+    idiomaAtual=idioma;
     document.querySelectorAll(".idioma-btn").forEach(b=>b.classList.remove("ativo"));
     btn.classList.add("ativo");
     aplicarTraducao(idioma);
+}
+function aplicarTraducao(idioma){
+    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
+    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome;
+    const ap=document.getElementById("aviso-pix"); if(ap)ap.textContent=t.aviso_pix;
+    const al=document.getElementById("aviso-logado"); if(al)al.textContent=t.aviso_logado;
+    const bf=document.querySelector("#resultado .btn"); if(bf)bf.textContent=t.novamente;
 }
 
 function carregarFoto(input){
@@ -662,6 +663,7 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
+
 
 
 

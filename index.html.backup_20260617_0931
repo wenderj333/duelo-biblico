@@ -333,10 +333,6 @@
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
         <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
         <p id="status"></p>
-        <div id="aviso-pix" style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
-            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
-        </div>
     </div>
 
     <!-- JOGO -->
@@ -647,7 +643,6 @@ setInterval(carregarRanking,30000);
 </script>
 </body>
 </html>
-
 
 
 

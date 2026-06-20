@@ -121,6 +121,40 @@
             padding: 18px 24px; z-index: 9999; color: white; text-align: center;
             min-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
+
+        .chat-bolha {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+        }
+        .chat-toggle {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg,#f6d860,#e5b800);
+            border: none; cursor: pointer; font-size: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .chat-box {
+            display: none; position: absolute; bottom: 60px; right: 0;
+            width: 280px; background: #1a0a3e;
+            border: 1px solid rgba(246,216,96,0.3);
+            border-radius: 14px; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .chat-header {
+            padding: 10px 14px; background: linear-gradient(135deg,#3d1a7a,#6c47d4);
+            font-size: 13px; font-weight: 700; color: #f6d860;
+        }
+        .chat-msgs {
+            height: 200px; overflow-y: auto; padding: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .chat-msg { font-size: 12px; padding: 6px 10px; border-radius: 10px; max-width: 85%; }
+        .chat-msg.eu { background: rgba(246,216,96,0.2); color: white; align-self: flex-end; }
+        .chat-msg.op { background: rgba(255,255,255,0.1); color: white; align-self: flex-start; }
+        .chat-input-row { display: flex; gap: 6px; padding: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .chat-input { flex: 1; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); color: white; font-size: 12px; }
+        .chat-send { padding: 7px 12px; border-radius: 8px; border: none; background: #f6d860; color: #1a0a3e; font-weight: 700; cursor: pointer; font-size: 12px; }
+        .chat-msgs-rapidas { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .msg-rapida { padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(246,216,96,0.3); background: transparent; color: #f6d860; font-size: 10px; cursor: pointer; }
 /* Ranking lista */
         .rank-item {
             display: flex;
@@ -439,7 +473,7 @@
 
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-let socket, salaAtual="", idiomaAtual="pt", meuspontos=0, perguntaAtualNum=0;
+const browserLang=(navigator.language||"pt").substring(0,2).toLowerCase();const idiomasSuportados=["pt","en","es","fr","de","it","ro"];let socket,salaAtual="",idiomaAtual=idiomasSuportados.includes(browserLang)?browserLang:"pt",meuspontos=0,perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
 
@@ -564,6 +598,8 @@ function conectarAoJogo(){
         salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
         document.getElementById("lobby").style.display="none";
         document.getElementById("jogo").style.display="block";
+        document.getElementById("chat-bolha").style.display="block";
+        document.getElementById("chat-msgs").innerHTML="";
         document.getElementById("infoOponente").innerText=(UI_TEXTOS[idiomaAtual]?.oponente||"Oponente")+": "+dados.oponente;
         renderizarRodada(dados.pergunta);
     });
@@ -580,11 +616,16 @@ function conectarAoJogo(){
         renderizarRodada(dados.pergunta);
     });
     
-    socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
+    
+    socket.on("chatMsg", function(d){
+        if(d.nome !== window.meuNomeGlobal) adicionarMsgChat(d.nome, d.msg, false);
+    });
+socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
     socket.on("desafioAceite",function(){ document.getElementById("btn-procurar").click(); });
 socket.on("fimJogo",jogadores=>{
         document.getElementById("jogo").style.display="none";
         document.getElementById("resultado").style.display="block";
+        document.getElementById("chat-bolha").style.display="none";
         const placar=document.getElementById("placarFinal");
         placar.innerHTML="";
         jogadores.sort((a,b)=>b.pontos-a.pontos);
@@ -690,6 +731,44 @@ function atualizarMobileInfo(){
 }
 atualizarMobileInfo();
 atualizarJogadoresOnline();
+
+// ===== CHAT =====
+let chatAberto = false;
+let chatNovaMensagem = false;
+
+function toggleChat(){
+    chatAberto = !chatAberto;
+    document.getElementById("chat-box").style.display = chatAberto ? "block" : "none";
+    if(chatAberto){ chatNovaMensagem=false; document.getElementById("chat-btn").innerText="x"; }
+    else { document.getElementById("chat-btn").innerHTML="&#x1F4AC;"; }
+}
+
+function enviarChat(){
+    const input = document.getElementById("chat-input");
+    const msg = input.value.trim();
+    if(!msg || !socket || !salaAtual) return;
+    socket.emit("chatMsg", {salaId: salaAtual, msg: msg, nome: window.meuNomeGlobal});
+    adicionarMsgChat(window.meuNomeGlobal, msg, true);
+    input.value = "";
+}
+
+function enviarMsgRapida(msg){
+    if(!socket || !salaAtual) return;
+    socket.emit("chatMsg", {salaId: salaAtual, msg: msg, nome: window.meuNomeGlobal});
+    adicionarMsgChat(window.meuNomeGlobal, msg, true);
+}
+
+function adicionarMsgChat(nome, msg, eu){
+    const div = document.getElementById("chat-msgs");
+    const el = document.createElement("div");
+    el.className = "chat-msg " + (eu ? "eu" : "op");
+    el.textContent = eu ? msg : nome+": "+msg;
+    div.appendChild(el);
+    div.scrollTop = div.scrollHeight;
+    if(!eu && !chatAberto){
+        document.getElementById("chat-btn").innerHTML="&#x1F4AC; &#x1F534;";
+    }
+}
 // ===== RANKING =====
 async function carregarRanking(){
     try{
@@ -829,6 +908,25 @@ function atualizarOnline(){
 atualizarOnline();
 setInterval(atualizarOnline,15000);
 </script>
+
+<!-- CHAT BOLHA -->
+<div class="chat-bolha" id="chat-bolha" style="display:none;">
+    <div class="chat-box" id="chat-box">
+        <div class="chat-header">&#x1F4AC; Chat com oponente</div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-msgs-rapidas" id="msgs-rapidas">
+            <button class="msg-rapida" onclick="enviarMsgRapida('Amem!')">Amem!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Boa pergunta!')">Boa pergunta!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Bom jogo!')">Bom jogo!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Gloria a Deus!')">Gloria a Deus!</button>
+        </div>
+        <div class="chat-input-row">
+            <input class="chat-input" id="chat-input" placeholder="Mensagem..." onkeydown="if(event.key==='Enter')enviarChat()">
+            <button class="chat-send" onclick="enviarChat()">&#x27A4;</button>
+        </div>
+    </div>
+    <button class="chat-toggle" onclick="toggleChat()" id="chat-btn">&#x1F4AC;</button>
+</div>
 </body>
 </html>
 

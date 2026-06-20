@@ -398,7 +398,7 @@
     <div id="lobby">
         <p style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
         <div class="idiomas">
-            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('pt',this)" id="btn-pt">PT</button>
             <button class="idioma-btn" onclick="selecionarIdioma('en',this)">EN</button>
             <button class="idioma-btn" onclick="selecionarIdioma('es',this)">ES</button>
             <button class="idioma-btn" onclick="selecionarIdioma('fr',this)">FR</button>
@@ -473,7 +473,7 @@
 
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-const browserLang=(navigator.language||"pt").substring(0,2).toLowerCase();const idiomasSuportados=["pt","en","es","fr","de","it","ro"];let socket,salaAtual="",idiomaAtual=idiomasSuportados.includes(browserLang)?browserLang:"pt",meuspontos=0,perguntaAtualNum=0;
+let socket,salaAtual="",idiomaAtual=window._autoLang||"pt",meuspontos=0,perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
 

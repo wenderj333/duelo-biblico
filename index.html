@@ -473,7 +473,7 @@
 
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-let socket,salaAtual="",idiomaAtual=window._autoLang||"pt",meuspontos=0,perguntaAtualNum=0;
+let socket,salaAtual="",idiomaAtual=localStorage.getItem("duelo_lang")||window._autoLang||"pt",meuspontos=0,perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
 

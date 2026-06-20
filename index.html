@@ -245,6 +245,8 @@
             border-radius: 10px; cursor: pointer; font-size: 14px; color: #fff; text-align: left; transition: all 0.2s;
         }
         .alt-btn:hover:not([disabled]) { background: rgba(240,192,64,0.14); border-color: #f0c040; transform: translateX(4px); }
+        @media (hover: none) { .alt-btn:hover:not([disabled]) { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.13); transform: none; } }
+        .alt-btn:active:not([disabled]) { background: rgba(240,192,64,0.14); border-color: #f0c040; }
         .alt-btn:disabled { opacity: 0.55; cursor: not-allowed; }
         .alt-btn.correta { background: rgba(72,199,142,0.3) !important; border-color: #48c78e !important; }
         .alt-btn.errada { background: rgba(255,68,68,0.3) !important; border-color: #ff4444 !important; }
@@ -263,10 +265,18 @@
         /* Admin Easter Egg - 5 clicks no logo */
         #admin-btn { display: none; }
 
+
         @media (max-width: 720px) {
             .sidebar { display: none; }
-            .main { padding: 10px; }
+            .main { padding: 8px !important; }
+            .card { padding: 16px 12px !important; }
+            #perguntaTexto { font-size: 15px !important; min-height: auto !important; margin-bottom: 12px !important; }
+            .alt-btn { font-size: 13px !important; padding: 10px 12px !important; margin: 5px 0 !important; }
+            .timer-normal, .timer-urgente { font-size: 28px !important; }
+            #lobby { padding: 16px 12px !important; }
+            .lang-btn { padding: 5px 10px !important; font-size: 12px !important; }
         }
+
     </style>
 </head>
 <body>

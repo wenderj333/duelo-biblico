@@ -764,6 +764,10 @@ window.addEventListener('message', (event) => {
             preview.appendChild(img);
         }
         if (u.token) localStorage.setItem('sigo_token', u.token);
+        if (u.idioma) {
+            const btn = document.querySelector('.idioma-btn[onclick*="' + u.idioma + '"]');
+            if (btn) { document.querySelectorAll('.idioma-btn').forEach(b=>b.classList.remove('ativo')); btn.classList.add('ativo'); selecionarIdioma(u.idioma, btn); }
+        }
     }
 });
 

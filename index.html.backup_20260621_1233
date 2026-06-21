@@ -121,6 +121,40 @@
             padding: 18px 24px; z-index: 9999; color: white; text-align: center;
             min-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
+
+        .chat-bolha {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+        }
+        .chat-toggle {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg,#f6d860,#e5b800);
+            border: none; cursor: pointer; font-size: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .chat-box {
+            display: none; position: absolute; bottom: 60px; right: 0;
+            width: 280px; background: #1a0a3e;
+            border: 1px solid rgba(246,216,96,0.3);
+            border-radius: 14px; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .chat-header {
+            padding: 10px 14px; background: linear-gradient(135deg,#3d1a7a,#6c47d4);
+            font-size: 13px; font-weight: 700; color: #f6d860;
+        }
+        .chat-msgs {
+            height: 200px; overflow-y: auto; padding: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .chat-msg { font-size: 12px; padding: 6px 10px; border-radius: 10px; max-width: 85%; }
+        .chat-msg.eu { background: rgba(246,216,96,0.2); color: white; align-self: flex-end; }
+        .chat-msg.op { background: rgba(255,255,255,0.1); color: white; align-self: flex-start; }
+        .chat-input-row { display: flex; gap: 6px; padding: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .chat-input { flex: 1; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); color: white; font-size: 12px; }
+        .chat-send { padding: 7px 12px; border-radius: 8px; border: none; background: #f6d860; color: #1a0a3e; font-weight: 700; cursor: pointer; font-size: 12px; }
+        .chat-msgs-rapidas { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .msg-rapida { padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(246,216,96,0.3); background: transparent; color: #f6d860; font-size: 10px; cursor: pointer; }
 /* Ranking lista */
         .rank-item {
             display: flex;
@@ -266,6 +300,10 @@
         #admin-btn { display: none; }
 
 
+
+        @media (max-width: 720px) {
+            #mobile-info { display: block !important; }
+        }
         @media (max-width: 720px) {
             .sidebar { display: none; }
             .main { padding: 8px !important; }
@@ -360,7 +398,7 @@
     <div id="lobby">
         <p style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
         <div class="idiomas">
-            <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
+            <button class="idioma-btn" onclick="selecionarIdioma('pt',this)" id="btn-pt">PT</button>
             <button class="idioma-btn" onclick="selecionarIdioma('en',this)">EN</button>
             <button class="idioma-btn" onclick="selecionarIdioma('es',this)">ES</button>
             <button class="idioma-btn" onclick="selecionarIdioma('fr',this)">FR</button>
@@ -373,7 +411,7 @@
             <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20" oninput="atualizarAvatar()">
         </div>
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
-        <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
+        <button class="btn" id="btn-procurar" onclick="conectarAoJogo()">Procurar Oponente</button>
 
         
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
@@ -411,30 +449,44 @@
         <p class="notif-oponente" id="notifOponente">Oponente ja respondeu!</p>
     </div>
 
+
+    <!-- INFO MOBILE (so aparece no telemovel) -->
+    <div id="mobile-info" style="display:none; margin-top:14px;">
+        <div style="background:linear-gradient(135deg,#1a0a3e,#3d1a7a);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(246,216,96,0.3);margin-bottom:10px;">
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:700;letter-spacing:1px;">PREMIO PIX DA SEMANA</div>
+            <div id="pix-valor-mobile" style="font-size:26px;font-weight:900;color:#f6d860;">R$ 10,00</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);">Lider no domingo ganha!</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,0.1);">
+            <div style="font-size:12px;font-weight:800;color:#f6d860;margin-bottom:10px;">&#x1F3C6; MURAL DA GLORIA</div>
+            <div id="top3-mobile" style="font-size:12px;color:rgba(255,255,255,0.8);">Carregando...</div>
+        </div>
+    </div>
     <!-- RESULTADO -->
     <div id="resultado">
-        <h2 style="text-align:center;font-size:20px;margin-bottom:14px;color:#f0c040;">Fim do Duelo!</h2>
+        <h2 id="txt-fim-duelo" style="text-align:center;font-size:20px;margin-bottom:14px;color:#f0c040;">Fim do Duelo!</h2>
         <div id="placarFinal"></div>
-        <button class="btn" style="margin-top:14px;" onclick="window.location.reload()">Jogar Novamente</button>
+        <button class="btn" id="btn-jogar-nov" style="margin-top:14px;" onclick="window.location.reload()">Jogar Novamente</button>
     </div>
 </div>
 </div>
 
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-let socket, salaAtual="", idiomaAtual="pt", meuspontos=0, perguntaAtualNum=0;
+let socket,salaAtual="",idiomaAtual=localStorage.getItem("duelo_lang")||window._autoLang||"pt",meuspontos=0,perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente"},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar"}
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",desafiar:"Desafiar",desafioEnviado:"Desafio enviado!",desafioRec:"te desafia!",aceitar:"Aceitar",recusar:"Recusar",jogadoresOnline:"Jogadores Online",procurar:"Procurar Oponente",jogarNov:"Jogar Novamente",fimDuelo:"Fim do Duelo!",chatHeader:"Chat com oponente",amen:"Amem!",boaP:"Boa pergunta!",bomJ:"Bom jogo!",gloria:"Gloria a Deus!"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",desafiar:"Challenge",desafioEnviado:"Challenge sent!",desafioRec:"challenges you!",aceitar:"Accept",recusar:"Decline",jogadoresOnline:"Online Players",procurar:"Find Opponent",jogarNov:"Play Again",fimDuelo:"End of Duel!",chatHeader:"Chat with opponent",amen:"Amen!",boaP:"Good question!",bomJ:"Good game!",gloria:"Glory to God!"},
+    es:{procurando:"Esperando un oponente...",oponente:"Oponente",desafiar:"Desafiar",desafioEnviado:"Desafio enviado!",desafioRec:"te desafia!",aceitar:"Aceptar",recusar:"Rechazar",jogadoresOnline:"Jugadores en Linea",procurar:"Buscar Oponente",jogarNov:"Jugar de Nuevo",fimDuelo:"Fin del Duelo!",chatHeader:"Chat con oponente",amen:"Amen!",boaP:"Buena pregunta!",bomJ:"Buen juego!",gloria:"Gloria a Dios!"},
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",desafiar:"Defier",desafioEnviado:"Defi envoye!",desafioRec:"vous defie!",aceitar:"Accepter",recusar:"Refuser",jogadoresOnline:"Joueurs en Ligne",procurar:"Trouver Adversaire",jogarNov:"Rejouer",fimDuelo:"Fin du Duel!",chatHeader:"Chat avec adversaire",amen:"Amen!",boaP:"Bonne question!",bomJ:"Bon jeu!",gloria:"Gloire a Dieu!"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",desafiar:"Herausfordern",desafioEnviado:"Herausforderung gesendet!",desafioRec:"fordert dich heraus!",aceitar:"Annehmen",recusar:"Ablehnen",jogadoresOnline:"Spieler Online",procurar:"Gegner suchen",jogarNov:"Nochmal spielen",fimDuelo:"Ende des Duells!",chatHeader:"Chat mit Gegner",amen:"Amen!",boaP:"Gute Frage!",bomJ:"Gutes Spiel!",gloria:"Ehre sei Gott!"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",desafiar:"Sfidare",desafioEnviado:"Sfida inviata!",desafioRec:"ti sfida!",aceitar:"Accetta",recusar:"Rifiuta",jogadoresOnline:"Giocatori Online",procurar:"Trova Avversario",jogarNov:"Gioca ancora",fimDuelo:"Fine del Duello!",chatHeader:"Chat con avversario",amen:"Amen!",boaP:"Buona domanda!",bomJ:"Buona partita!",gloria:"Gloria a Dio!"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",desafiar:"Provoaca",desafioEnviado:"Provocare trimisa!",desafioRec:"te provoaca!",aceitar:"Accepta",recusar:"Refuza",jogadoresOnline:"Jucatori Online",procurar:"Cauta Adversar",jogarNov:"Joaca din nou",fimDuelo:"Sfarsitul Duelului!",chatHeader:"Chat cu adversarul",amen:"Amin!",boaP:"Intrebare buna!",bomJ:"Joc bun!",gloria:"Slava lui Dumnezeu!"}
 };
+function t(chave){ return (UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt)[chave]||chave; }
 
 // Easter egg - 5 cliques no logo para abrir admin
 let logoClicks=0, logoTimer=null;
@@ -500,16 +552,24 @@ async function carregarPerfilSigo(){
 acordarServidor();
 carregarPerfilSigo();
 
-function aplicarTraducao(idioma){
-    const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
-    const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
-    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar||"Procurar Oponente";
+function aplicarTraducoes(){
+    const tx=UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt;
+    const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    s("btn-procurar",tx.procurar||"Procurar Oponente");
+    s("btn-jogar-nov",tx.jogarNov||"Jogar Novamente");
+    s("txt-fim-duelo",tx.fimDuelo||"Fim do Duelo!");
+    s("label-jogadores-online",tx.jogadoresOnline||"Jogadores Online");
+    const ch=document.querySelector(".chat-header");if(ch)ch.textContent="\u{1F4AC} "+(tx.chatHeader||"Chat");
+    const btns=document.querySelectorAll(".msg-rapida");
+    const msgs=[tx.amen,tx.boaP,tx.bomJ,tx.gloria];
+    btns.forEach((b,i)=>{if(msgs[i])b.textContent=msgs[i];});
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;
+    localStorage.setItem("duelo_lang",idioma);
     document.querySelectorAll(".idioma-btn").forEach(b=>b.classList.remove("ativo"));
     btn.classList.add("ativo");
-    aplicarTraducao(idioma);
+    aplicarTraducoes();
 }
 
 function carregarFoto(input){
@@ -547,6 +607,8 @@ function conectarAoJogo(){
         salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
         document.getElementById("lobby").style.display="none";
         document.getElementById("jogo").style.display="block";
+        document.getElementById("chat-bolha").style.display="block";
+        document.getElementById("chat-msgs").innerHTML="";
         document.getElementById("infoOponente").innerText=(UI_TEXTOS[idiomaAtual]?.oponente||"Oponente")+": "+dados.oponente;
         renderizarRodada(dados.pergunta);
     });
@@ -563,11 +625,16 @@ function conectarAoJogo(){
         renderizarRodada(dados.pergunta);
     });
     
-    socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
+    
+    socket.on("chatMsg", function(d){
+        if(d.nome !== window.meuNomeGlobal) adicionarMsgChat(d.nome, d.msg, false);
+    });
+socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
     socket.on("desafioAceite",function(){ document.getElementById("btn-procurar").click(); });
 socket.on("fimJogo",jogadores=>{
         document.getElementById("jogo").style.display="none";
         document.getElementById("resultado").style.display="block";
+        document.getElementById("chat-bolha").style.display="none";
         const placar=document.getElementById("placarFinal");
         placar.innerHTML="";
         jogadores.sort((a,b)=>b.pontos-a.pontos);
@@ -654,7 +721,63 @@ function aceitarDesafio(de,el){
     document.getElementById("btn-procurar").click();
 }
 setInterval(atualizarJogadoresOnline,10000);
+
+// Mobile info
+function atualizarMobileInfo(){
+    if(window.innerWidth > 720) return;
+    fetch(BACKEND_URL+"/api/duelo/ranking").then(r=>r.json()).then(d=>{
+        if(d.pix) document.getElementById("pix-valor-mobile").textContent="R$ "+d.pix;
+        const top=d.ranking||[];
+        const el=document.getElementById("top3-mobile");
+        if(!el) return;
+        if(top.length===0){el.textContent="Nenhuma partida ainda. Seja o primeiro!";return;}
+        el.innerHTML=top.slice(0,3).map((j,i)=>
+            '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.08)">'+
+            '<span>'+(i===0?"&#x1F947; ":i===1?"&#x1F948; ":"&#x1F949; ")+j.nome+'</span>'+
+            '<span style="color:#f6d860;font-weight:700">'+j.pontos+' pts</span></div>'
+        ).join("");
+    }).catch(()=>{});
+}
+atualizarMobileInfo();
 atualizarJogadoresOnline();
+
+// ===== CHAT =====
+let chatAberto = false;
+let chatNovaMensagem = false;
+
+function toggleChat(){
+    chatAberto = !chatAberto;
+    document.getElementById("chat-box").style.display = chatAberto ? "block" : "none";
+    if(chatAberto){ chatNovaMensagem=false; document.getElementById("chat-btn").innerText="x"; }
+    else { document.getElementById("chat-btn").innerHTML="&#x1F4AC;"; }
+}
+
+function enviarChat(){
+    const input = document.getElementById("chat-input");
+    const msg = input.value.trim();
+    if(!msg || !socket || !salaAtual) return;
+    socket.emit("chatMsg", {salaId: salaAtual, msg: msg, nome: window.meuNomeGlobal});
+    adicionarMsgChat(window.meuNomeGlobal, msg, true);
+    input.value = "";
+}
+
+function enviarMsgRapida(msg){
+    if(!socket || !salaAtual) return;
+    socket.emit("chatMsg", {salaId: salaAtual, msg: msg, nome: window.meuNomeGlobal});
+    adicionarMsgChat(window.meuNomeGlobal, msg, true);
+}
+
+function adicionarMsgChat(nome, msg, eu){
+    const div = document.getElementById("chat-msgs");
+    const el = document.createElement("div");
+    el.className = "chat-msg " + (eu ? "eu" : "op");
+    el.textContent = eu ? msg : nome+": "+msg;
+    div.appendChild(el);
+    div.scrollTop = div.scrollHeight;
+    if(!eu && !chatAberto){
+        document.getElementById("chat-btn").innerHTML="&#x1F4AC; &#x1F534;";
+    }
+}
 // ===== RANKING =====
 async function carregarRanking(){
     try{
@@ -794,6 +917,25 @@ function atualizarOnline(){
 atualizarOnline();
 setInterval(atualizarOnline,15000);
 </script>
+
+<!-- CHAT BOLHA -->
+<div class="chat-bolha" id="chat-bolha" style="display:none;">
+    <div class="chat-box" id="chat-box">
+        <div class="chat-header">&#x1F4AC; Chat com oponente</div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-msgs-rapidas" id="msgs-rapidas">
+            <button class="msg-rapida" onclick="enviarMsgRapida('Amem!')">Amem!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Boa pergunta!')">Boa pergunta!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Bom jogo!')">Bom jogo!</button>
+            <button class="msg-rapida" onclick="enviarMsgRapida('Gloria a Deus!')">Gloria a Deus!</button>
+        </div>
+        <div class="chat-input-row">
+            <input class="chat-input" id="chat-input" placeholder="Mensagem..." onkeydown="if(event.key==='Enter')enviarChat()">
+            <button class="chat-send" onclick="enviarChat()">&#x27A4;</button>
+        </div>
+    </div>
+    <button class="chat-toggle" onclick="toggleChat()" id="chat-btn">&#x1F4AC;</button>
+</div>
 </body>
 </html>
 

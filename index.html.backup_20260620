@@ -95,33 +95,7 @@
         .top3-pts { font-size: 9px; color: #f0c040; font-weight: 700; }
         .top3-pos { font-size: 9px; background: rgba(240,192,64,0.2); border-radius: 10px; padding: 1px 6px; color: #f0c040; font-weight: 700; }
 
-        
-        .jogador-online-item {
-            display: flex; align-items: center; gap: 8px;
-            padding: 7px 10px;
-            background: rgba(255,255,255,0.07);
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 5px;
-        }
-        .jogador-online-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg,#6C3FA0,#4A2270);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; overflow: hidden;
-        }
-        .jogador-online-nome { flex: 1; font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; }
-        .btn-desafiar { padding: 4px 10px; border-radius: 8px; border: none;
-            background: linear-gradient(135deg,#f6d860,#e5b800);
-            color: #1a0a3e; font-size: 11px; font-weight: 700; cursor: pointer; }
-        .notif-desafio {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg,#1a0a3e,#3d1a7a);
-            border: 2px solid #f6d860; border-radius: 16px;
-            padding: 18px 24px; z-index: 9999; color: white; text-align: center;
-            min-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
-/* Ranking lista */
+        /* Ranking lista */
         .rank-item {
             display: flex;
             align-items: center;
@@ -245,8 +219,6 @@
             border-radius: 10px; cursor: pointer; font-size: 14px; color: #fff; text-align: left; transition: all 0.2s;
         }
         .alt-btn:hover:not([disabled]) { background: rgba(240,192,64,0.14); border-color: #f0c040; transform: translateX(4px); }
-        @media (hover: none) { .alt-btn:hover:not([disabled]) { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.13); transform: none; } }
-        .alt-btn:active:not([disabled]) { background: rgba(240,192,64,0.14); border-color: #f0c040; }
         .alt-btn:disabled { opacity: 0.55; cursor: not-allowed; }
         .alt-btn.correta { background: rgba(72,199,142,0.3) !important; border-color: #48c78e !important; }
         .alt-btn.errada { background: rgba(255,68,68,0.3) !important; border-color: #ff4444 !important; }
@@ -265,18 +237,10 @@
         /* Admin Easter Egg - 5 clicks no logo */
         #admin-btn { display: none; }
 
-
         @media (max-width: 720px) {
             .sidebar { display: none; }
-            .main { padding: 8px !important; }
-            .card { padding: 16px 12px !important; }
-            #perguntaTexto { font-size: 15px !important; min-height: auto !important; margin-bottom: 12px !important; }
-            .alt-btn { font-size: 13px !important; padding: 10px 12px !important; margin: 5px 0 !important; }
-            .timer-normal, .timer-urgente { font-size: 28px !important; }
-            #lobby { padding: 16px 12px !important; }
-            .lang-btn { padding: 5px 10px !important; font-size: 12px !important; }
+            .main { padding: 10px; }
         }
-
     </style>
 </head>
 <body>
@@ -289,7 +253,7 @@
     </div>
 
     
-    <div id="pix-side" class="pix-side">
+    <a href="https://sigo-com-fe.vercel.app/mural" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:linear-gradient(135deg,#6c47d4,#4a2270);color:white;text-decoration:none;font-size:12px;font-weight:700;margin-bottom:14px;justify-content:center;">&#8592; Voltar ao Mural</a><div id="pix-side" class="pix-side">
         <div class="label">Premio PIX da Semana</div>
         <div class="valor" id="pix-valor-side">R$ 10,00</div>
         <div class="sub">Lider no domingo ganha!</div>
@@ -328,11 +292,6 @@
     <div class="section-title">⭐ Conquistas</div>
     <div id="conquistas-lista">
         <div class="sem-dados">Joga para ganhar conquistas!</div>
-    </div>
-
-    <div class="section-title" style="margin-top:14px;">&#x1F465; <span id="label-jogadores-online">Jogadores Online</span></div>
-    <div id="lista-online-jogadores" style="margin-bottom:8px;">
-      <div class="sem-dados">Nenhum jogador online</div>
     </div>
 
     <!-- Admin oculto - aparece com 5 cliques no logo -->
@@ -378,8 +337,7 @@
         
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
             <div style="width:8px;height:8px;border-radius:50%;background:#48c78e;"></div>
-            
-<span id="online-count" style="font-size:13px;color:rgba(255,255,255,0.7);">0 jogadores online</span>
+            <span id="online-count" style="font-size:13px;color:rgba(255,255,255,0.7);">0 jogadores online</span>
         </div>
         <div style="margin-bottom:12px;">
             <p style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p>
@@ -562,10 +520,7 @@ function conectarAoJogo(){
         document.getElementById("timer").className="timer-normal";
         renderizarRodada(dados.pergunta);
     });
-    
-    socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
-    socket.on("desafioAceite",function(){ document.getElementById("btn-procurar").click(); });
-socket.on("fimJogo",jogadores=>{
+    socket.on("fimJogo",jogadores=>{
         document.getElementById("jogo").style.display="none";
         document.getElementById("resultado").style.display="block";
         const placar=document.getElementById("placarFinal");
@@ -620,41 +575,6 @@ function renderizarRodada(pergunta){
 
 function bloquearAlternativas(){document.querySelectorAll(".alt-btn").forEach(b=>b.disabled=true);}
 
-
-// ===== JOGADORES ONLINE =====
-function atualizarJogadoresOnline(){
-    fetch(BACKEND_URL+"/api/duelo/online-jogadores").then(r=>r.json()).then(d=>{
-        const lista=document.getElementById("lista-online-jogadores");
-        const label=document.getElementById("label-jogadores-online");
-        if(label) label.textContent=t("jogadoresOnline")||"Jogadores Online";
-        const jogadores=(d.jogadores||[]).filter(j=>j!==window.meuNomeGlobal);
-        if(!lista) return;
-        if(jogadores.length===0){lista.innerHTML='<div class="sem-dados">'+( window.idiomaAtual==="EN"?"No players online":"Nenhum jogador online")+'</div>';return;}
-        lista.innerHTML=jogadores.slice(0,5).map(nome=>{
-            const av=(window.fotosJogadores&&window.fotosJogadores[nome])?'<img src="'+(window.fotosJogadores[nome])+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':nome.charAt(0).toUpperCase();
-            return '<div class="jogador-online-item"><div class="jogador-online-avatar">'+av+'</div><div class="jogador-online-nome">'+nome+'</div><button class="btn-desafiar" onclick="desafiarJogador(\''+nome+'\')">&#x2694; '+t("desafiar")+'</button></div>';
-        }).join("");
-    }).catch(()=>{});
-}
-function desafiarJogador(nome){
-    if(!socket||!window.meuNomeGlobal) return;
-    socket.emit("desafiarJogador",{de:window.meuNomeGlobal,para:nome});
-    alert(t("desafioEnviado")||"Desafio enviado!");
-}
-function mostrarNotifDesafio(de){
-    const div=document.createElement("div");
-    div.className="notif-desafio";
-    div.innerHTML='<div style="font-size:28px;margin-bottom:8px">&#x2694;</div><p style="font-weight:700;font-size:14px;margin:0 0 4px">'+de+'</p><p style="font-size:12px;opacity:0.8;margin:0 0 14px">'+t("desafioRec")+'</p><div style="display:flex;gap:10px;justify-content:center"><button onclick="aceitarDesafio(\''+de+'\',this.parentElement.parentElement)" style="padding:8px 18px;border-radius:10px;background:linear-gradient(135deg,#f6d860,#e5b800);color:#1a0a3e;border:none;font-weight:700;cursor:pointer">'+t("aceitar")+'</button><button onclick="this.parentElement.parentElement.remove()" style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.15);color:white;border:none;font-weight:700;cursor:pointer">'+t("recusar")+'</button></div>';
-    document.body.appendChild(div);
-    setTimeout(()=>div.remove(),30000);
-}
-function aceitarDesafio(de,el){
-    el.remove();
-    socket.emit("aceitarDesafio",{de:de,para:window.meuNomeGlobal});
-    document.getElementById("btn-procurar").click();
-}
-setInterval(atualizarJogadoresOnline,10000);
-atualizarJogadoresOnline();
 // ===== RANKING =====
 async function carregarRanking(){
     try{

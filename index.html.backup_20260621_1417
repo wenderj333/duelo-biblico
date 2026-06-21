@@ -358,7 +358,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-        <p id="txt-escolhe" style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
+        <p style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
         <div class="idiomas">
             <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
             <button class="idioma-btn" onclick="selecionarIdioma('en',this)">EN</button>
@@ -382,7 +382,7 @@
 <span id="online-count" style="font-size:13px;color:rgba(255,255,255,0.7);">0 jogadores online</span>
         </div>
         <div style="margin-bottom:12px;">
-            <p id="txt-convidar" style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p>
             <div style="display:flex;gap:8px;">
                 <button onclick="partilharWhatsApp()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#25d366;color:white;font-weight:700;font-size:12px;cursor:pointer;">WhatsApp</button>
                 <button onclick="partilharTelegram()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#0088cc;color:white;font-weight:700;font-size:12px;cursor:pointer;">Telegram</button>
@@ -427,57 +427,6 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{
-        procurando:"Aguardando um irmao para o duelo...",
-        oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",
-        convidar:"Convida um amigo:",online:"jogadores online",
-        pix:"Para concorrer ao Premio PIX entra na",
-        escolhe:"Escolhe o teu idioma:",copiar:"Copiar",copiado:"Copiado!"
-    },
-    en:{
-        procurando:"Waiting for an opponent...",
-        oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",
-        convidar:"Invite a friend:",online:"players online",
-        pix:"To compete for the PIX Prize join",
-        escolhe:"Choose your language:",copiar:"Copy",copiado:"Copied!"
-    },
-    es:{
-        procurando:"Esperando un oponente...",
-        oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre...",
-        convidar:"Invita a un amigo:",online:"jugadores online",
-        pix:"Para competir por el Premio PIX entra en",
-        escolhe:"Elige tu idioma:",copiar:"Copiar",copiado:"Copiado!"
-    },
-    fr:{
-        procurando:"En attente d un adversaire...",
-        oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",
-        convidar:"Invite un ami:",online:"joueurs en ligne",
-        pix:"Pour concourir au Prix PIX rejoins",
-        escolhe:"Choisis ta langue:",copiar:"Copier",copiado:"Copie!"
-    },
-    de:{
-        procurando:"Warte auf einen Gegner...",
-        oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",
-        convidar:"Lade einen Freund ein:",online:"Spieler online",
-        pix:"Um den PIX-Preis zu gewinnen tritt bei",
-        escolhe:"Waehle deine Sprache:",copiar:"Kopieren",copiado:"Kopiert!"
-    },
-    it:{
-        procurando:"Aspettando un avversario...",
-        oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",
-        convidar:"Invita un amico:",online:"giocatori online",
-        pix:"Per partecipare al Premio PIX unisciti a",
-        escolhe:"Scegli la tua lingua:",copiar:"Copia",copiado:"Copiato!"
-    },
-    ro:{
-        procurando:"Asteptand un adversar...",
-        oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",
-        convidar:"Invita un prieten:",online:"jucatori online",
-        pix:"Pentru a concura la Premiul PIX intra pe",
-        escolhe:"Alege limba ta:",copiar:"Copiaza",copiado:"Copiat!"
-    }
-};
-const OLD_UI_TEXTOS = {
     pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome..."},
     en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name..."},
     es:{procurando:"Esperando un oponente...",oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre..."},
@@ -565,10 +514,6 @@ function aplicarTraducao(idioma){
     const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
     const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
     const b=document.getElementById("btn-jogar"); if(b)b.textContent=t.jogar||"Procurar Oponente";
-    const e=document.getElementById("txt-escolhe"); if(e)e.textContent=t.escolhe||"Escolhe o teu idioma:";
-    const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
-    const oc=document.getElementById("online-count");
-    if(oc){const n2=oc.textContent.split(" ")[0];oc.textContent=n2+" "+(t.online||"jogadores online");}
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;

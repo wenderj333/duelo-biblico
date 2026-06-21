@@ -431,49 +431,49 @@ const UI_TEXTOS = {
         procurando:"Aguardando um irmao para o duelo...",
         oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",
         convidar:"Convida um amigo:",online:"jogadores online",
-        pix:"Para concorrer ao Premio PIX entra na",
+        pix:"Para concorrer ao",pixJoin:"entra na",
         escolhe:"Escolhe o teu idioma:",copiar:"Copiar",copiado:"Copiado!"
     },
     en:{
         procurando:"Waiting for an opponent...",
         oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",
         convidar:"Invite a friend:",online:"players online",
-        pix:"To compete for the PIX Prize join",
+        pix:"To compete for the PIX Prize",pixJoin:"join",
         escolhe:"Choose your language:",copiar:"Copy",copiado:"Copied!"
     },
     es:{
         procurando:"Esperando un oponente...",
         oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre...",
         convidar:"Invita a un amigo:",online:"jugadores online",
-        pix:"Para competir por el Premio PIX entra en",
+        pix:"Para competir por el Premio PIX",pixJoin:"entra en",
         escolhe:"Elige tu idioma:",copiar:"Copiar",copiado:"Copiado!"
     },
     fr:{
         procurando:"En attente d un adversaire...",
         oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",
         convidar:"Invite un ami:",online:"joueurs en ligne",
-        pix:"Pour concourir au Prix PIX rejoins",
+        pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",
         escolhe:"Choisis ta langue:",copiar:"Copier",copiado:"Copie!"
     },
     de:{
         procurando:"Warte auf einen Gegner...",
         oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",
         convidar:"Lade einen Freund ein:",online:"Spieler online",
-        pix:"Um den PIX-Preis zu gewinnen tritt bei",
+        pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",
         escolhe:"Waehle deine Sprache:",copiar:"Kopieren",copiado:"Kopiert!"
     },
     it:{
         procurando:"Aspettando un avversario...",
         oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",
         convidar:"Invita un amico:",online:"giocatori online",
-        pix:"Per partecipare al Premio PIX unisciti a",
+        pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",
         escolhe:"Scegli la tua lingua:",copiar:"Copia",copiado:"Copiato!"
     },
     ro:{
         procurando:"Asteptand un adversar...",
         oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",
         convidar:"Invita un prieten:",online:"jucatori online",
-        pix:"Pentru a concura la Premiul PIX intra pe",
+        pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",
         escolhe:"Alege limba ta:",copiar:"Copiaza",copiado:"Copiat!"
     }
 };
@@ -569,7 +569,8 @@ function aplicarTraducao(idioma){
     const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
     const cp=document.getElementById("btn-copiar"); if(cp&&!cp.textContent.includes(t.copiado||"Copiado"))cp.textContent=t.copiar||"Copiar";
     const px=document.getElementById("txt-pix"); if(px)px.textContent=t.pix||"Para concorrer ao";
-    const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent="entra na";
+    const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent=t.pixJoin||"entra na";
+    const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent="";
     const oc=document.getElementById("online-count");
     if(oc){const n2=oc.textContent.split(" ")[0];oc.textContent=n2+" "+(t.online||"jogadores online");}
 }

@@ -497,6 +497,16 @@ async function carregarPerfilSigo(){
         
     }catch(e){ console.log('Perfil nao carregado:', e); }
 }
+const urlParams = new URLSearchParams(window.location.search);
+const langParam = urlParams.get('lang');
+if (langParam) {
+    const btn = document.querySelector('.idioma-btn[onclick*="' + langParam + '"]');
+    if (btn) {
+        document.querySelectorAll('.idioma-btn').forEach(b => b.classList.remove('ativo'));
+        btn.classList.add('ativo');
+        selecionarIdioma(langParam, btn);
+    }
+}
 acordarServidor();
 carregarPerfilSigo();
 
@@ -766,7 +776,8 @@ window.addEventListener('message', (event) => {
         if (u.token) localStorage.setItem('sigo_token', u.token);
         if (u.idioma) {
             setTimeout(() => {
-                const btn = document.querySelector('.idioma-btn[onclick*="' + u.idioma + '"]');
+                const lang = u.idioma.toLowerCase().substring(0,2);
+                const btn = document.querySelector('.idioma-btn[onclick*="' + lang + '"]');
                 if (btn) { document.querySelectorAll('.idioma-btn').forEach(b=>b.classList.remove('ativo')); btn.classList.add('ativo'); selecionarIdioma(u.idioma, btn); }
             }, 500);
         }

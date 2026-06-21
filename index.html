@@ -386,12 +386,12 @@
             <div style="display:flex;gap:8px;">
                 <button onclick="partilharWhatsApp()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#25d366;color:white;font-weight:700;font-size:12px;cursor:pointer;">WhatsApp</button>
                 <button onclick="partilharTelegram()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#0088cc;color:white;font-weight:700;font-size:12px;cursor:pointer;">Telegram</button>
-                <button onclick="copiarLink()" id="btn-copiar" style="flex:1;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-weight:700;font-size:12px;cursor:pointer;">Copiar</button>
+                <button onclick="copiarLink()" id="btn-copiar" style="flex:1;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-weight:700;font-size:12px;cursor:pointer;" id="btn-copiar-txt">Copiar</button>
             </div>
         </div>
         <p id="status"></p>
-        <div id="aviso-pix" style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            Para concorrer ao <strong style="color:#f0c040;">Premio PIX</strong> entra na
+        <div id="aviso-pix-div" style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
+            <span id="txt-pix">Para concorrer ao</span> <strong style="color:#f0c040;">Premio PIX</strong> <span id="txt-pix2">entra na</span>
             <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
         </div>
     </div>
@@ -567,6 +567,9 @@ function aplicarTraducao(idioma){
     const b=document.getElementById("btn-jogar"); if(b)b.textContent=t.jogar||"Procurar Oponente";
     const e=document.getElementById("txt-escolhe"); if(e)e.textContent=t.escolhe||"Escolhe o teu idioma:";
     const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
+    const cp=document.getElementById("btn-copiar"); if(cp&&!cp.textContent.includes(t.copiado||"Copiado"))cp.textContent=t.copiar||"Copiar";
+    const px=document.getElementById("txt-pix"); if(px)px.textContent=t.pix||"Para concorrer ao";
+    const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent="entra na";
     const oc=document.getElementById("online-count");
     if(oc){const n2=oc.textContent.split(" ")[0];oc.textContent=n2+" "+(t.online||"jogadores online");}
 }

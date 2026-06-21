@@ -358,7 +358,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-        <p id="txt-escolhe" style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
+        <p style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
         <div class="idiomas">
             <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
             <button class="idioma-btn" onclick="selecionarIdioma('en',this)">EN</button>
@@ -382,7 +382,7 @@
 <span id="online-count" style="font-size:13px;color:rgba(255,255,255,0.7);">0 jogadores online</span>
         </div>
         <div style="margin-bottom:12px;">
-            <p id="txt-convidar" style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:8px;">Convida um amigo:</p>
             <div style="display:flex;gap:8px;">
                 <button onclick="partilharWhatsApp()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#25d366;color:white;font-weight:700;font-size:12px;cursor:pointer;">WhatsApp</button>
                 <button onclick="partilharTelegram()" style="flex:1;padding:9px;border-radius:8px;border:none;background:#0088cc;color:white;font-weight:700;font-size:12px;cursor:pointer;">Telegram</button>
@@ -427,13 +427,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy"},
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome..."},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name..."},
     es:{procurando:"Esperando un oponente...",oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre..."},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza"}
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom..."},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name..."},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome..."},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau..."}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin

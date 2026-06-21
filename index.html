@@ -373,7 +373,7 @@
             <input type="text" id="nomeUsuario" placeholder="O teu nome ou apelido..." maxlength="20" oninput="atualizarAvatar()">
         </div>
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
-        <button class="btn" onclick="conectarAoJogo()">Procurar Oponente</button>
+        <button class="btn" id="btn-jogar" onclick="conectarAoJogo()">Procurar Oponente</button>
 
         
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
@@ -513,7 +513,7 @@ carregarPerfilSigo();
 function aplicarTraducao(idioma){
     const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
     const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
-    const b=document.querySelector('button[onclick="conectarAoJogo()"]'); if(b)b.textContent=t.jogar||"Procurar Oponente";
+    const b=document.getElementById("btn-jogar"); if(b)b.textContent=t.jogar||"Procurar Oponente";
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;

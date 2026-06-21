@@ -809,7 +809,7 @@ function copiarLink(){
 function atualizarOnline(){
     fetch(BACKEND_URL+"/api/duelo/online").then(function(r){return r.json();}).then(function(d){
         var el=document.getElementById("online-count");
-        if(el){const t=UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt; el.textContent=(d.online||0)+" "+(t.online||"jogadores online");}
+        if(el)el.textContent=(d.online||0)+" jogadores online";
     }).catch(function(){});
 }
 atualizarOnline();

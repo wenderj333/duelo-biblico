@@ -514,6 +514,10 @@ function aplicarTraducao(idioma){
     const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
     const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
     const b=document.getElementById("btn-jogar"); if(b)b.textContent=t.jogar||"Procurar Oponente";
+    const e=document.getElementById("txt-escolhe"); if(e)e.textContent=t.escolhe||"Escolhe o teu idioma:";
+    const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
+    const cp=document.getElementById("btn-copiar"); if(cp&&cp.textContent!="Copiado!")cp.textContent=t.copiar||"Copiar";
+    const oc=document.getElementById("online-count"); if(oc){const parts=oc.textContent.split(" ");oc.textContent=parts[0]+" "+(t.online||"jogadores online");}
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;

@@ -321,18 +321,18 @@
     </div>
 
     <div id="ranking-lista">
-        <div class="sem-dados" id="txt-sem-partidas">Nenhuma partida ainda.<br>Seja o primeiro!</div>
+        <div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div>
     </div>
 
     <hr class="sidebar-divider">
     <div class="section-title">⭐ Conquistas</div>
     <div id="conquistas-lista">
-        <div class="sem-dados" id="txt-sem-conquistas">Joga para ganhar conquistas!</div>
+        <div class="sem-dados">Joga para ganhar conquistas!</div>
     </div>
 
     <div class="section-title" style="margin-top:14px;">&#x1F465; <span id="label-jogadores-online">Jogadores Online</span></div>
     <div id="lista-online-jogadores" style="margin-bottom:8px;">
-      <div class="sem-dados" id="txt-sem-online">Nenhum jogador online</div>
+      <div class="sem-dados">Nenhum jogador online</div>
     </div>
 
     <!-- Admin oculto - aparece com 5 cliques no logo -->
@@ -427,13 +427,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online"},
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join"},
     es:{procurando:"Esperando un oponente...",oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre..."},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online"}
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe"}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -520,9 +520,6 @@ function aplicarTraducao(idioma){
     const oc=document.getElementById("online-count"); if(oc){const parts=oc.textContent.split(" ");oc.textContent=parts[0]+" "+(t.online||"jogadores online");}
     const px=document.getElementById("txt-pix"); if(px)px.textContent=t.pix||"Para concorrer ao";
     const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent=t.pixJoin||"entra na";
-    const sp=document.getElementById("txt-sem-partidas"); if(sp)sp.innerHTML=t.semPartidas||"Nenhuma partida ainda.<br>Seja o primeiro!";
-    const sc=document.getElementById("txt-sem-conquistas"); if(sc)sc.textContent=t.semConquistas||"Joga para ganhar conquistas!";
-    const so=document.getElementById("txt-sem-online"); if(so)so.textContent=t.semOnline||"Nenhum jogador online";
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;
@@ -689,7 +686,7 @@ async function carregarRanking(){
         const top3=document.getElementById("top3-container");
 
         if(!d.ranking||d.ranking.length===0){
-            lista.innerHTML='<div class="sem-dados" id="txt-sem-partidas">Nenhuma partida ainda.<br>Seja o primeiro!</div>';
+            lista.innerHTML='<div class="sem-dados">Nenhuma partida ainda.<br>Seja o primeiro!</div>';
             top3.style.display="none";
             return;
         }
@@ -733,7 +730,7 @@ async function carregarRanking(){
         if(total>=5){
             html+='<div class="conquista-item"><div class="conquista-icon">��¥</div><div class="conquista-info"><div class="conquista-nome">'+total+' jogadores</div><div class="conquista-prog">Esta semana</div></div></div>';
         }
-        conquistas.innerHTML=html||'<div class="sem-dados" id="txt-sem-conquistas">Joga para ganhar conquistas!</div>';
+        conquistas.innerHTML=html||'<div class="sem-dados">Joga para ganhar conquistas!</div>';
 
     }catch(e){
         document.getElementById("ranking-lista").innerHTML='<div class="sem-dados">Servidor a acordar...</div>';

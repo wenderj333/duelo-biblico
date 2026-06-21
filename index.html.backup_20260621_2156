@@ -260,14 +260,6 @@
         .placar-item.vencedor { background: rgba(240,192,64,0.2); border: 1px solid #f0c040; }
 
         #jogo { display: none; }
-        .chat-jogo { margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; }
-        .chat-msgs { max-height:80px; overflow-y:auto; margin-bottom:6px; }
-        .chat-msg { font-size:11px; padding:3px 8px; border-radius:8px; margin-bottom:3px; display:inline-block; max-width:90%; }
-        .chat-msg.eu { background:rgba(240,192,64,0.2); color:#f0c040; float:right; clear:both; }
-        .chat-msg.oponente { background:rgba(255,255,255,0.1); color:white; float:left; clear:both; }
-        .chat-rapido { display:flex; flex-wrap:wrap; gap:4px; }
-        .chat-rapido button { padding:4px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:10px; cursor:pointer; }
-        .chat-rapido button:hover { background:rgba(240,192,64,0.2); border-color:#f0c040; }
         #resultado { display: none; }
 
         /* Admin Easter Egg - 5 clicks no logo */
@@ -418,10 +410,6 @@
         <h2 id="perguntaTexto"></h2>
         <div id="alternativas"></div>
         <p class="notif-oponente" id="notifOponente">Oponente ja respondeu!</p>
-        <div class="chat-jogo" id="chat-jogo" style="display:none;">
-            <div class="chat-msgs" id="chat-msgs"></div>
-            <div class="chat-rapido" id="chat-rapido"></div>
-        </div>
     </div>
 
     <!-- RESULTADO -->
@@ -461,13 +449,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",chat:["Boa pergunta!","Foste rapido!","Boa sorte!","Vai la!","Parabens!"],jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Gloria",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",chat:["Good question!","You were fast!","Good luck!","Go for it!","Well done!"],jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online",muralTitulo:"Hall of Fame",conquistasTitulo:"Achievements",jogadoresOnline:"Players Online"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente",chat:["Buena pregunta!","Fuiste rapido!","Buena suerte!","Vamos!","Bien hecho!"],jogar:"Buscar Oponente",nome:"Tu nombre..."},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",chat:["Bonne question!","Tu etais rapide!","Bonne chance!","Allez!","Bravo!"],jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne",muralTitulo:"Mur de la Gloire",conquistasTitulo:"Conquetes",jogadoresOnline:"Joueurs en ligne"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",chat:["Gute Frage!","Du warst schnell!","Viel Glueck!","Los geht s!","Gut gemacht!"],jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online",muralTitulo:"Ruhmeshalle",conquistasTitulo:"Errungenschaften",jogadoresOnline:"Spieler Online"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",chat:["Bella domanda!","Sei stato veloce!","In bocca al lupo!","Dai!","Bravo!"],jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online",muralTitulo:"Muro della Gloria",conquistasTitulo:"Conquiste",jogadoresOnline:"Giocatori Online"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",chat:["Buna intrebare!","Ai fost rapid!","Noroc!","Haide!","Bravo!"],jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online",muralTitulo:"Zidul Gloriei",conquistasTitulo:"Realizari",jogadoresOnline:"Jucatori Online"}
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Gloria",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online",muralTitulo:"Hall of Fame",conquistasTitulo:"Achievements",jogadoresOnline:"Players Online"},
+    es:{procurando:"Esperando un oponente...",oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre..."},
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne",muralTitulo:"Mur de la Gloire",conquistasTitulo:"Conquetes",jogadoresOnline:"Joueurs en ligne"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online",muralTitulo:"Ruhmeshalle",conquistasTitulo:"Errungenschaften",jogadoresOnline:"Spieler Online"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online",muralTitulo:"Muro della Gloria",conquistasTitulo:"Conquiste",jogadoresOnline:"Giocatori Online"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online",muralTitulo:"Zidul Gloriei",conquistasTitulo:"Realizari",jogadoresOnline:"Jucatori Online"}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -604,7 +592,7 @@ function conectarAoJogo(){
         document.getElementById("lobby").style.display="none";
         document.getElementById("jogo").style.display="block";
         document.getElementById("infoOponente").innerText=(UI_TEXTOS[idiomaAtual]?.oponente||"Oponente")+": "+dados.oponente;
-        renderizarRodada(dados.pergunta); iniciarChat();
+        renderizarRodada(dados.pergunta);
     });
     socket.on("atualizarTimer",tempo=>{
         const el=document.getElementById("timer");
@@ -645,7 +633,6 @@ socket.on("fimJogo",jogadores=>{
         });
         setTimeout(carregarRanking,2000);
     });
-    socket.on("chatDuelo",d=>{ adicionarMsgChat(d.msg,"oponente"); });
     socket.on("oponenteSaiu",()=>{alert("O oponente saiu do jogo.");window.location.reload();});
 }
 
@@ -677,28 +664,6 @@ function renderizarRodada(pergunta){
     });
 }
 
-function enviarMsgChat(msg){
-    if(!socket||!salaAtual) return;
-    socket.emit("chatDuelo",{salaId:salaAtual,msg,nome:window.meuNomeGlobal});
-    adicionarMsgChat(msg, "eu");
-}
-function adicionarMsgChat(msg, tipo){
-    const div=document.getElementById("chat-msgs");
-    if(!div) return;
-    const m=document.createElement("div");
-    m.className="chat-msg "+tipo;
-    m.textContent=msg;
-    div.appendChild(m);
-    div.scrollTop=div.scrollHeight;
-}
-function iniciarChat(){
-    const t=UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt;
-    const msgs=t.chat||["Boa!","Rapido!","Sorte!","Vai!","Parabens!"];
-    const div=document.getElementById("chat-rapido");
-    if(!div) return;
-    div.innerHTML=msgs.map(m=>'<button onclick="enviarMsgChat(\'' + m + '\'")>'+m+'</button>').join("");
-    document.getElementById("chat-jogo").style.display="block";
-}
 function bloquearAlternativas(){document.querySelectorAll(".alt-btn").forEach(b=>b.disabled=true);}
 
 

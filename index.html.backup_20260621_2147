@@ -422,13 +422,6 @@
 
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
-
-// Sons
-const somAcerto = new Audio("https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3");
-const somErro = new Audio("https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3");
-const somVitoria = new Audio("https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3");
-const somDerrota = new Audio("https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3");
-function tocarSom(som){ try{ som.currentTime=0; som.volume=0.5; som.play().catch(()=>{}); }catch(e){} }
 let socket, salaAtual="", idiomaAtual="pt", meuspontos=0, perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
@@ -600,8 +593,6 @@ socket.on("fimJogo",jogadores=>{
         const placar=document.getElementById("placarFinal");
         placar.innerHTML="";
         jogadores.sort((a,b)=>b.pontos-a.pontos);
-        const euVenci = jogadores[0].nome === window.meuNomeGlobal;
-        tocarSom(euVenci ? somVitoria : somDerrota);
         jogadores.forEach((j,i)=>{
             const div=document.createElement("div");
             const euSou=j.nome===window.meuNomeGlobal;
@@ -635,12 +626,12 @@ function renderizarRodada(pergunta){
         btn.onclick=()=>{
             bloquearAlternativas();
             if(idx===pergunta.c){
-                btn.classList.add("correta"); tocarSom(somAcerto);
+                btn.classList.add("correta");
                 const t=parseInt(document.getElementById("timer").innerText)||0;
                 meuspontos+=100+(t*5);
                 document.getElementById("meusPontos").innerText=Math.round(meuspontos)+" pts";
             }else{
-                btn.classList.add("errada"); tocarSom(somErro);
+                btn.classList.add("errada");
                 document.querySelectorAll(".alt-btn")[pergunta.c]?.classList.add("correta");
             }
             socket.emit("enviarResposta",{salaId:salaAtual,escolha:idx});

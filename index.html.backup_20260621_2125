@@ -518,8 +518,6 @@ function aplicarTraducao(idioma){
     const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
     const cp=document.getElementById("btn-copiar"); if(cp&&cp.textContent!="Copiado!")cp.textContent=t.copiar||"Copiar";
     const oc=document.getElementById("online-count"); if(oc){const parts=oc.textContent.split(" ");oc.textContent=parts[0]+" "+(t.online||"jogadores online");}
-    const px=document.getElementById("txt-pix"); if(px)px.textContent=t.pix||"Para concorrer ao";
-    const px2=document.getElementById("txt-pix2"); if(px2)px2.textContent=t.pixJoin||"entra na";
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;

@@ -295,7 +295,7 @@
         <div class="sub">Lider no domingo ganha!</div>
     </div>
 
-    <div class="section-title">🏆 Mural da Gloria</div>
+    <div class="section-title">🏆 <span id="txt-mural-titulo">Mural da Gloria</span></div>
 
     <!-- TOP 3 -->
     <div class="top3" id="top3-container" style="display:none;">
@@ -325,7 +325,7 @@
     </div>
 
     <hr class="sidebar-divider">
-    <div class="section-title">⭐ Conquistas</div>
+    <div class="section-title">⭐ <span id="txt-conquistas-titulo">Conquistas</span></div>
     <div id="conquistas-lista">
         <div class="sem-dados" id="txt-sem-conquistas">Joga para ganhar conquistas!</div>
     </div>
@@ -427,13 +427,13 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online"},
+    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Gloria",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online"},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online",muralTitulo:"Hall of Fame",conquistasTitulo:"Achievements",jogadoresOnline:"Players Online"},
     es:{procurando:"Esperando un oponente...",oponente:"Oponente",jogar:"Buscar Oponente",nome:"Tu nombre..."},
-    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne"},
-    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online"},
-    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online"},
-    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online"}
+    fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne",muralTitulo:"Mur de la Gloire",conquistasTitulo:"Conquetes",jogadoresOnline:"Joueurs en ligne"},
+    de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online",muralTitulo:"Ruhmeshalle",conquistasTitulo:"Errungenschaften",jogadoresOnline:"Spieler Online"},
+    it:{procurando:"Aspettando un avversario...",oponente:"Avversario",jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online",muralTitulo:"Muro della Gloria",conquistasTitulo:"Conquiste",jogadoresOnline:"Giocatori Online"},
+    ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online",muralTitulo:"Zidul Gloriei",conquistasTitulo:"Realizari",jogadoresOnline:"Jucatori Online"}
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -523,6 +523,9 @@ function aplicarTraducao(idioma){
     const sp=document.getElementById("txt-sem-partidas"); if(sp)sp.innerHTML=t.semPartidas||"Nenhuma partida ainda.<br>Seja o primeiro!";
     const sc=document.getElementById("txt-sem-conquistas"); if(sc)sc.textContent=t.semConquistas||"Joga para ganhar conquistas!";
     const so=document.getElementById("txt-sem-online"); if(so)so.textContent=t.semOnline||"Nenhum jogador online";
+    const mt=document.getElementById("txt-mural-titulo"); if(mt)mt.textContent=t.muralTitulo||"Mural da Gloria";
+    const ct=document.getElementById("txt-conquistas-titulo"); if(ct)ct.textContent=t.conquistasTitulo||"Conquistas";
+    const jo=document.getElementById("label-jogadores-online"); if(jo)jo.textContent=t.jogadoresOnline||"Jogadores Online";
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;

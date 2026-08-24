@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duelo Biblico - Sigo com Fe</title>
+    <title>Duelo Bíblico Online | Quiz Cristão do Sigo com Fé</title>
+    <meta name="description" content="Jogue Duelo Bíblico online com amigos ou contra o Bot Bíblico. Responda perguntas da Bíblia, ganhe pontos e partilhe as suas vitórias no Sigo com Fé.">
+    <meta name="keywords" content="Duelo Bíblico, quiz bíblico, jogo bíblico online, perguntas da Bíblia, jogo cristão, Sigo com Fé, Bot Bíblico">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://duelo-biblico.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Duelo Bíblico Online | Jogue e teste os seus conhecimentos">
+    <meta property="og:description" content="Desafie amigos ou jogue contra o Bot Bíblico. Um quiz cristão online do Sigo com Fé.">
+    <meta property="og:url" content="https://duelo-biblico.vercel.app/">
+    <meta property="og:site_name" content="Duelo Bíblico">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Duelo Bíblico","url":"https://duelo-biblico.vercel.app/","description":"Quiz bíblico online para jogar com amigos ou contra um bot.","applicationCategory":"Game","genre":"Educational"}</script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -269,6 +280,13 @@
         .chat-rapido button { padding:4px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:10px; cursor:pointer; }
         .chat-rapido button:hover { background:rgba(240,192,64,0.2); border-color:#f0c040; }
         #resultado { display: none; }
+        .progresso-jogador { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:10px 0; }
+        .progresso-jogador div { background:rgba(255,255,255,.07); border:1px solid rgba(240,192,64,.18); border-radius:10px; padding:8px 4px; text-align:center; }
+        .progresso-jogador b { display:block; color:#f0c040; font-size:15px; }
+        .progresso-jogador span { display:block; margin-top:2px; color:rgba(255,255,255,.63); font-size:9px; text-transform:uppercase; letter-spacing:.05em; }
+        .medalhas-resultado { text-align:center; color:#f0c040; font-size:13px; min-height:22px; margin:10px 0 2px; }
+        .resultado-acoes { display:flex; gap:8px; margin-top:14px; }
+        .resultado-acoes button { flex:1; }
 
         /* Admin Easter Egg - 5 clicks no logo */
         #admin-btn { display: none; }
@@ -383,7 +401,13 @@
         </div>
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
         <button id="btn-som" onclick="activarSom()" style="width:100%;padding:10px;margin-top:10px;margin-bottom:6px;border-radius:10px;border:none;background:rgba(255,255,255,0.1);color:white;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;">🔊 Activar Som</button>
-        <button class="btn" id="btn-jogar" onclick="conectarAoJogo()">Procurar Oponente</button>
+        <button class="btn" id="btn-jogar" onclick="conectarAoJogo()">Jogar com uma pessoa</button>
+        <button class="btn" onclick="conectarAoJogo(true)" style="margin-top:8px;background:linear-gradient(135deg,#5f4b8b,#8b6bb8);">Jogar com o Bot Bíblico</button>
+        <div class="progresso-jogador" aria-label="O teu progresso">
+            <div><b id="streak-jogador">0</b><span>Dias seguidos</span></div>
+            <div><b id="vitorias-jogador">0</b><span>Vitórias</span></div>
+            <div><b id="medalhas-jogador">0</b><span>Medalhas</span></div>
+        </div>
 
         
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
@@ -429,7 +453,14 @@
     <div id="resultado">
         <h2 style="text-align:center;font-size:20px;margin-bottom:14px;color:#f0c040;">Fim do Duelo!</h2>
         <div id="placarFinal"></div>
-        <button class="btn" style="margin-top:14px;" onclick="window.location.reload()">Jogar Novamente</button>
+        <div class="medalhas-resultado" id="medalhas-resultado"></div>
+        <div class="resultado-acoes">
+            <button class="btn" onclick="jogarNovamente()">Jogar novamente</button>
+            <button class="btn" style="background:linear-gradient(135deg,#25d366,#168c42);" onclick="partilharResultado()">Partilhar</button>
+            <button class="btn" style="background:#1877f2;" onclick="partilharFacebook()">Facebook</button>
+            <button class="btn" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);" onclick="partilharInstagram()">Instagram</button>
+            <button class="btn" style="background:linear-gradient(135deg,#7052a8,#a071c4);" onclick="publicarDiploma()">Publicar diploma</button>
+        </div>
     </div>
 </div>
 </div>
@@ -460,6 +491,63 @@ function activarSom(){ somActivado=true; getCtx(); document.getElementById("btn-
 let socket, salaAtual="", idiomaAtual="pt", meuspontos=0, perguntaAtualNum=0;
 let fotoBase64=null;
 window.meuNomeGlobal="";
+window.ultimoResultado={pontos:0,vitoria:false};
+let dueloAcertos=0, dueloErros=0, dueloTempo=0;
+
+function hojeDuelo(){ return new Date().toISOString().slice(0,10); }
+function dadosProgresso(){ try { return JSON.parse(localStorage.getItem('duelo_progresso')||'{}'); } catch(e) { return {}; } }
+function atualizarProgresso(){
+    const p=dadosProgresso();
+    const streak=p.streak||0, wins=p.wins||0;
+    const medals=(wins>=1?1:0)+(wins>=5?1:0)+(streak>=3?1:0)+(streak>=7?1:0)+(p.bestScore>=1000?1:0);
+    const a=document.getElementById('streak-jogador'),b=document.getElementById('vitorias-jogador'),c=document.getElementById('medalhas-jogador');
+    if(a)a.textContent=streak; if(b)b.textContent=wins; if(c)c.textContent=medals;
+}
+function registarResultado(vitoria,pontos){
+    const p=dadosProgresso(), hoje=hojeDuelo();
+    if(p.lastDay!==hoje){
+        const ontem=new Date(Date.now()-86400000).toISOString().slice(0,10);
+        p.streak=p.lastDay===ontem?(p.streak||0)+1:1;
+        p.lastDay=hoje;
+    }
+    p.games=(p.games||0)+1; if(vitoria)p.wins=(p.wins||0)+1;
+    p.bestScore=Math.max(p.bestScore||0,pontos||0);
+    localStorage.setItem('duelo_progresso',JSON.stringify(p));
+    window.ultimoResultado={pontos:pontos||0,vitoria:!!vitoria};
+    const badges=[]; if(vitoria)badges.push('Primeira vitória'); if((p.streak||0)>=3)badges.push('Fiel por 3 dias'); if((p.wins||0)>=5)badges.push('5 vitórias'); if((p.bestScore||0)>=1000)badges.push('1.000 pontos');
+    const out=document.getElementById('medalhas-resultado'); if(out)out.textContent=badges.length?'Medalhas: '+badges.join(' · '):'Jogue amanhã para iniciar a sua sequência diária.';
+    atualizarProgresso();
+}
+function jogarNovamente(){ window.location.reload(); }
+function partilharResultado(){
+    const r=window.ultimoResultado||{};
+    const msg=encodeURIComponent((r.vitoria?'Venci':'Joguei')+' o Duelo Bíblico com '+(r.pontos||0)+' pontos. Vem jogar comigo! https://duelo-biblico.vercel.app');
+    window.open('https://wa.me/?text='+msg,'_blank');
+}
+function mensagemPartilha(){
+    const r=window.ultimoResultado||{};
+    return (r.vitoria?'Venci':'Joguei')+' o Duelo Bíblico com '+(r.pontos||0)+' pontos! Vem testar os teus conhecimentos bíblicos comigo: https://duelo-biblico.vercel.app';
+}
+function partilharFacebook(){
+    window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://duelo-biblico.vercel.app'),'_blank','noopener,noreferrer');
+}
+async function partilharInstagram(){
+    const texto=mensagemPartilha();
+    // Em telemóveis, o menu nativo permite selecionar Instagram, quando disponível.
+    if(navigator.share){
+        try { await navigator.share({title:'Duelo Bíblico',text:texto,url:'https://duelo-biblico.vercel.app'}); return; } catch(e) { if(e.name==='AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(texto); alert('A mensagem foi copiada. Abra o Instagram e cole-a numa publicação ou story.'); }
+    catch(e) { prompt('Copie esta mensagem para publicar no Instagram:',texto); }
+}
+function publicarDiploma(){
+    const r=window.ultimoResultado||{};
+    const rapidez=dueloAcertos?Math.round(dueloTempo/dueloAcertos):0;
+    const texto='DIPLOMA DO DUELO BÍBLICO\n\n'+(window.meuNomeGlobal||'Jogador')+' concluiu um Duelo Bíblico!\nPontuação: '+(r.pontos||0)+' pontos\nRespostas certas: '+dueloAcertos+'\nErros: '+dueloErros+'\nRapidez média: '+rapidez+' segundos\n\nVem jogar comigo no Duelo Bíblico!';
+    const destino='https://sigo-com-fe.vercel.app/?dueloDiploma='+encodeURIComponent(texto);
+    window.location.href=destino;
+}
+atualizarProgresso();
 
 const UI_TEXTOS = {
     pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",chat:["Boa pergunta!","Foste rapido!","Boa sorte!","Vai la!","Parabens!"],jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Gloria",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online"},
@@ -587,21 +675,44 @@ function atualizarAvatar(){
     const nome=document.getElementById("nomeUsuario").value.trim();
     const preview=document.getElementById("avatar-preview");
     if(!fotoBase64) preview.innerHTML=nome?nome.charAt(0).toUpperCase():"?";
+    if(nome) registarPresenca(nome);
 }
 
-function conectarAoJogo(){
+// Ao escrever o nome, a pessoa fica visível na lista de jogadores online.
+// Assim é possível receber um desafio antes de iniciar uma partida.
+function registarPresenca(nome){
+    window.meuNomeGlobal=nome;
+    const registar=()=>socket.emit("registrarJogador",{nome,idioma:idiomaAtual,foto:fotoBase64||null});
+    if(!socket||!socket.connected){
+        socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
+        prepararEventosSocket();
+        socket.once("connect",registar);
+    }else registar();
+}
+
+function conectarAoJogo(modoBot=false){
     const nome=document.getElementById("nomeUsuario").value.trim();
     if(!nome){alert("Por favor, escreve o teu nome!");return;}
     window.meuNomeGlobal=nome;
     document.getElementById("status").innerText="A conectar ao servidor...";
-    socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
-    socket.on("connect",()=>{socket.emit("procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});});
+    const entrarNaPartida=()=>socket.emit(modoBot?"jogarComBot":"procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});
+    if(!socket || !socket.connected){
+        socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
+        prepararEventosSocket();
+        socket.once("connect",entrarNaPartida);
+    }else entrarNaPartida();
+}
+
+function prepararEventosSocket(){
+    if(!socket || socket._dueloEventosProntos) return;
+    socket._dueloEventosProntos=true;
     socket.on("status",msg=>{document.getElementById("status").innerText=UI_TEXTOS[idiomaAtual]?.procurando||msg;});
     socket.on("inicioJogo",dados=>{
         window.fotosJogadores = {};
         window.fotosJogadores[window.meuNomeGlobal] = fotoBase64||null;
         if(dados.fotoOponente) window.fotosJogadores[dados.oponente] = dados.fotoOponente;
         salaAtual=dados.salaId; meuspontos=0; perguntaAtualNum=0;
+        dueloAcertos=0; dueloErros=0; dueloTempo=0;
         document.getElementById("lobby").style.display="none";
         document.getElementById("jogo").style.display="block";
         document.getElementById("infoOponente").innerText=(UI_TEXTOS[idiomaAtual]?.oponente||"Oponente")+": "+dados.oponente;
@@ -613,6 +724,7 @@ function conectarAoJogo(){
         el.className=tempo<=5?"timer-urgente":"timer-normal";
     });
     socket.on("oponenteRespondeu",()=>{document.getElementById("notifOponente").style.opacity="1";});
+    socket.on("rodadaEncerrada",()=>{document.getElementById("notifOponente").style.opacity="0"; bloquearAlternativas();});
     socket.on("novaPergunta",dados=>{
         perguntaAtualNum++;
         document.getElementById("notifOponente").style.opacity="0";
@@ -620,8 +732,9 @@ function conectarAoJogo(){
         renderizarRodada(dados.pergunta);
     });
     
-    socket.on("desafioRecebido",function(de){ mostrarNotifDesafio(de); });
-    socket.on("desafioAceite",function(){ document.getElementById("btn-procurar").click(); });
+    socket.on("desafioRecebido",function(desafio){ mostrarNotifDesafio(desafio); });
+    socket.on("desafioAceite",function(){ document.getElementById("status").innerText="Desafio aceite! A iniciar partida..."; });
+    socket.on("desafioIndisponivel",function(){ alert("Este jogador já não está disponível. Atualiza a lista e tenta novamente."); });
 socket.on("fimJogo",jogadores=>{
         document.getElementById("jogo").style.display="none";
         document.getElementById("resultado").style.display="block";
@@ -630,6 +743,7 @@ socket.on("fimJogo",jogadores=>{
         jogadores.sort((a,b)=>b.pontos-a.pontos);
         const euVenci = jogadores[0].nome === window.meuNomeGlobal;
         tocarSom(euVenci ? "vitoria" : "derrota");
+        registarResultado(euVenci, meuspontos);
         jogadores.forEach((j,i)=>{
             const div=document.createElement("div");
             const euSou=j.nome===window.meuNomeGlobal;
@@ -666,9 +780,11 @@ function renderizarRodada(pergunta){
             if(idx===pergunta.c){
                 btn.classList.add("correta"); tocarSom("acerto");
                 const t=parseInt(document.getElementById("timer").innerText)||0;
+                dueloAcertos++; dueloTempo+=(15-t);
                 meuspontos+=100+(t*5);
                 document.getElementById("meusPontos").innerText=Math.round(meuspontos)+" pts";
             }else{
+                dueloErros++;
                 btn.classList.add("errada"); tocarSom("erro");
                 document.querySelectorAll(".alt-btn")[pergunta.c]?.classList.add("correta");
             }
@@ -719,21 +835,32 @@ function atualizarJogadoresOnline(){
     }).catch(()=>{});
 }
 function desafiarJogador(nome){
-    if(!socket||!window.meuNomeGlobal) return;
-    socket.emit("desafiarJogador",{de:window.meuNomeGlobal,para:nome});
-    alert(t("desafioEnviado")||"Desafio enviado!");
+    const meuNome=document.getElementById("nomeUsuario").value.trim()||window.meuNomeGlobal;
+    if(!meuNome){alert("Escreve primeiro o teu nome para enviares o desafio.");return;}
+    window.meuNomeGlobal=meuNome;
+    const enviar=()=>{
+        socket.emit("registrarJogador",{nome:meuNome,idioma:idiomaAtual,foto:fotoBase64||null});
+        socket.emit("desafiarJogador",{para:nome});
+        alert(t("desafioEnviado")||"Desafio enviado!");
+    };
+    if(!socket||!socket.connected){
+        socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
+        prepararEventosSocket();
+        socket.once("connect",enviar);
+    }else enviar();
 }
-function mostrarNotifDesafio(de){
+function mostrarNotifDesafio(desafio){
+    const nome=typeof desafio==="string"?desafio:desafio.nome;
+    const id=typeof desafio==="string"?"":desafio.id;
     const div=document.createElement("div");
     div.className="notif-desafio";
-    div.innerHTML='<div style="font-size:28px;margin-bottom:8px">&#x2694;</div><p style="font-weight:700;font-size:14px;margin:0 0 4px">'+de+'</p><p style="font-size:12px;opacity:0.8;margin:0 0 14px">'+t("desafioRec")+'</p><div style="display:flex;gap:10px;justify-content:center"><button onclick="aceitarDesafio(\''+de+'\',this.parentElement.parentElement)" style="padding:8px 18px;border-radius:10px;background:linear-gradient(135deg,#f6d860,#e5b800);color:#1a0a3e;border:none;font-weight:700;cursor:pointer">'+t("aceitar")+'</button><button onclick="this.parentElement.parentElement.remove()" style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.15);color:white;border:none;font-weight:700;cursor:pointer">'+t("recusar")+'</button></div>';
+    div.innerHTML='<div style="font-size:28px;margin-bottom:8px">&#x2694;</div><p style="font-weight:700;font-size:14px;margin:0 0 4px">'+nome+'</p><p style="font-size:12px;opacity:0.8;margin:0 0 14px">'+t("desafioRec")+'</p><div style="display:flex;gap:10px;justify-content:center"><button onclick="aceitarDesafio(\''+id+'\',this.parentElement.parentElement)" style="padding:8px 18px;border-radius:10px;background:linear-gradient(135deg,#f6d860,#e5b800);color:#1a0a3e;border:none;font-weight:700;cursor:pointer">'+t("aceitar")+'</button><button onclick="this.parentElement.parentElement.remove()" style="padding:8px 18px;border-radius:10px;background:rgba(255,255,255,0.15);color:white;border:none;font-weight:700;cursor:pointer">'+t("recusar")+'</button></div>';
     document.body.appendChild(div);
     setTimeout(()=>div.remove(),30000);
 }
-function aceitarDesafio(de,el){
+function aceitarDesafio(deId,el){
     el.remove();
-    socket.emit("aceitarDesafio",{de:de,para:window.meuNomeGlobal});
-    document.getElementById("btn-procurar").click();
+    socket.emit("aceitarDesafio",{deId:deId});
 }
 setInterval(atualizarJogadoresOnline,10000);
 atualizarJogadoresOnline();
@@ -837,7 +964,7 @@ window.addEventListener('message', (event) => {
             atualizarAvatar();
         }
         if (u.foto) {
-            fotoBase64 = u.foto;
+            fotoBase64 = u.foto; // URL ou base64
             const preview = document.getElementById('avatar-preview');
             preview.innerHTML = '';
             const img = document.createElement('img');

@@ -16,6 +16,17 @@
     <meta name="twitter:card" content="summary">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Duelo Bíblico","url":"https://duelo-biblico.vercel.app/","description":"Quiz bíblico online para jogar com amigos ou contra um bot.","applicationCategory":"Game","genre":"Educational"}</script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0KMESL9M5Z"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-0KMESL9M5Z', { anonymize_ip: true });
+        function trackDuel(eventName, data) {
+            gtag('event', eventName, data || {});
+            if (window.parent !== window) window.parent.postMessage({ type: 'scf_duel_analytics', eventName, data: data || {} }, 'https://sigo-com-fe.vercel.app');
+        }
+    </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -71,6 +82,17 @@
         .pix-side .label { font-size: 10px; font-weight: 700; color: #1a0a3e; text-transform: uppercase; letter-spacing: 0.08em; }
         .pix-side .valor { font-size: 22px; font-weight: 900; color: #1a0a3e; line-height: 1.2; }
         .pix-side .sub { font-size: 10px; color: rgba(26,10,62,0.7); margin-top: 2px; }
+        .pix-side, #aviso-pix { display: none !important; }
+        .info-button { width:20px; height:20px; border-radius:50%; border:1px solid rgba(240,192,64,.5); background:rgba(240,192,64,.12); color:#f6d860; cursor:pointer; font-size:12px; font-weight:900; line-height:18px; }
+        .network-cta { margin-top:12px; padding:14px; border-radius:14px; background:linear-gradient(135deg,rgba(108,63,160,.34),rgba(240,192,64,.16)); border:1px solid rgba(240,192,64,.28); text-align:center; }
+        .network-cta p { margin:0 0 10px; font-size:12px; line-height:1.5; color:rgba(255,255,255,.84); }
+        .network-cta a { display:inline-flex; align-items:center; justify-content:center; padding:9px 13px; border-radius:9px; background:#f0c040; color:#1a0a3e; text-decoration:none; font-size:12px; font-weight:900; }
+        .help-modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(5,2,14,.72); z-index:99999; }
+        .help-modal.open { display:flex; }
+        .help-card { width:min(420px,100%); border-radius:18px; padding:22px; background:linear-gradient(145deg,#2d1551,#150a2e); border:1px solid rgba(240,192,64,.45); box-shadow:0 20px 70px rgba(0,0,0,.55); color:#fff; }
+        .help-card h2 { margin:0 0 10px; font-size:20px; color:#f6d860; }
+        .help-card p { margin:0; color:rgba(255,255,255,.82); line-height:1.6; font-size:14px; }
+        .help-card button { margin-top:18px; width:100%; padding:10px; border:0; border-radius:10px; cursor:pointer; background:#f0c040; color:#1a0a3e; font-weight:900; }
 
         /* TOP 3 */
         .top3 {
@@ -193,6 +215,11 @@
             border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.5);
         }
+
+        .lobby-promise { display:flex; align-items:center; gap:10px; padding:12px 14px; margin:0 0 14px; border-radius:14px; background:linear-gradient(135deg,rgba(240,192,64,.18),rgba(108,63,160,.22)); border:1px solid rgba(240,192,64,.35); color:rgba(255,255,255,.9); font-size:12px; line-height:1.45; }
+        .lobby-promise b { color:#f6d860; display:block; margin-bottom:2px; }
+        .matchmaking-note { margin:9px 0 2px; text-align:center; color:rgba(255,255,255,.55); font-size:11px; min-height:16px; }
+        .btn:disabled { opacity:.62; cursor:wait; filter:saturate(.7); transform:none !important; }
 
         h1 { font-size: 22px; text-align: center; color: #f0c040; margin-bottom: 3px; font-weight: 900; }
         .subtitulo { text-align: center; color: rgba(255,255,255,0.45); font-size: 12px; margin-bottom: 18px; }
@@ -322,7 +349,7 @@
         <div class="sub">Lider no domingo ganha!</div>
     </div>
 
-    <div class="section-title">🏆 <span id="txt-mural-titulo">Mural da Gloria</span></div>
+    <div class="section-title">🏆 <span id="txt-mural-titulo">Mural da Gloria</span><button class="info-button" onclick="mostrarAjuda('mural')" aria-label="Como funciona o Mural da Glória">i</button></div>
 
     <!-- TOP 3 -->
     <div class="top3" id="top3-container" style="display:none;">
@@ -352,12 +379,12 @@
     </div>
 
     <hr class="sidebar-divider">
-    <div class="section-title">⭐ <span id="txt-conquistas-titulo">Conquistas</span></div>
+    <div class="section-title">⭐ <span id="txt-conquistas-titulo">Conquistas</span><button class="info-button" onclick="mostrarAjuda('conquistas')" aria-label="Como funcionam as conquistas">i</button></div>
     <div id="conquistas-lista">
         <div class="sem-dados" id="txt-sem-conquistas">Joga para ganhar conquistas!</div>
     </div>
 
-    <div class="section-title" style="margin-top:14px;">&#x1F465; <span id="label-jogadores-online">Jogadores Online</span></div>
+    <div class="section-title" style="margin-top:14px;">&#x1F465; <span id="label-jogadores-online">Jogadores Online</span><button class="info-button" onclick="mostrarAjuda('online')" aria-label="Como funcionam os jogadores online">i</button></div>
     <div id="lista-online-jogadores" style="margin-bottom:8px;">
       <div class="sem-dados" id="txt-sem-online">Nenhum jogador online</div>
     </div>
@@ -385,6 +412,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
+        <div class="lobby-promise"><span style="font-size:22px">⚔</span><div><b id="txt-duelo-seguro">Duelo justo, com adversário real</b><span id="txt-duelo-seguro-sub">A partida só começa quando outra pessoa entrar.</span></div></div>
         <p id="txt-escolhe" style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-bottom:10px;">Escolhe o teu idioma:</p>
         <div class="idiomas">
             <button class="idioma-btn ativo" onclick="selecionarIdioma('pt',this)">PT</button>
@@ -402,7 +430,8 @@
         <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(this)">
         <button id="btn-som" onclick="activarSom()" style="width:100%;padding:10px;margin-top:10px;margin-bottom:6px;border-radius:10px;border:none;background:rgba(255,255,255,0.1);color:white;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;">🔊 Activar Som</button>
         <button class="btn" id="btn-jogar" onclick="conectarAoJogo()">Jogar com uma pessoa</button>
-        <button class="btn" onclick="conectarAoJogo(true)" style="margin-top:8px;background:linear-gradient(135deg,#5f4b8b,#8b6bb8);">Jogar com o Bot Bíblico</button>
+        <button class="btn" id="btn-bot" onclick="conectarAoJogo(true)" style="margin-top:8px;background:linear-gradient(135deg,#5f4b8b,#8b6bb8);">Jogar com o Bot Bíblico</button>
+        <p class="matchmaking-note" id="matchmaking-note">A partida só começa com um adversário real.</p>
         <div class="progresso-jogador" aria-label="O teu progresso">
             <div><b id="streak-jogador">0</b><span>Dias seguidos</span></div>
             <div><b id="vitorias-jogador">0</b><span>Vitórias</span></div>
@@ -424,10 +453,7 @@
             </div>
         </div>
         <p id="status"></p>
-        <div id="aviso-pix" style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);text-align:center;font-size:12px;color:rgba(255,255,255,0.7);">
-            <span id="txt-pix">Para concorrer ao</span> <strong style="color:#f0c040;">Premio PIX</strong> <span id="txt-pix2">entra na</span>
-            <a href="https://sigo-com-fe.vercel.app" target="_blank" style="color:#f0c040;font-weight:700;">Sigo com Fe</a>
-        </div>
+        <div class="network-cta"><p id="txt-rede-convite">Convide um irmão que conhece bem a Bíblia e mostre o seu conhecimento. Na rede Sigo com Fé pode encontrar amigos, grupos e desafios.</p><a id="btn-rede-social" href="https://sigo-com-fe.vercel.app/register?next=/duelo-biblico">Entrar na rede social</a></div>
     </div>
 
     <!-- JOGO -->
@@ -465,8 +491,44 @@
 </div>
 </div>
 
+<div class="help-modal" id="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+  <div class="help-card"><h2 id="help-title"></h2><p id="help-text"></p><button onclick="fecharAjuda()">Entendi</button></div>
+</div>
+
 <script>
 const BACKEND_URL = "https://sigo-com-fe-api.onrender.com";
+let matchmakingPending = false;
+let selectedGameMode = 'person';
+trackDuel('duel_visit', { page: 'duelo_biblico' });
+const SIGO_REGISTER_URL = 'https://sigo-com-fe.vercel.app/register?next=/duelo-biblico';
+
+function temContaSigo() {
+    return Boolean(localStorage.getItem('sigo_token'));
+}
+
+function atualizarAcessoSigo() {
+    const playButton = document.getElementById('btn-jogar');
+    const botButton = document.getElementById('btn-bot');
+    const note = document.getElementById('matchmaking-note');
+    if (!playButton || !botButton || !note) return;
+    if (temContaSigo()) {
+        const copy = UI_TEXTOS[idiomaAtual] || UI_TEXTOS.pt;
+        playButton.disabled = false;
+        playButton.textContent = copy.jogar || 'Procurar adversário';
+        botButton.textContent = copy.bot || 'Jogar com o Bot Bíblico';
+        note.textContent = copy.esperaReal || 'A partida só começa com um adversário real.';
+        return;
+    }
+    const copy = UI_TEXTOS[idiomaAtual] || UI_TEXTOS.pt;
+    playButton.textContent = copy.criarConta;
+    botButton.textContent = copy.entrarRede;
+    note.textContent = copy.contaNota;
+}
+
+function pedirContaSigo() {
+    trackDuel('duel_registration_prompt', { source: 'game_lobby', language: idiomaAtual });
+    window.location.href = SIGO_REGISTER_URL;
+}
 
 // Sons Web Audio API
 let audioCtx = null;
@@ -550,13 +612,31 @@ function publicarDiploma(){
 atualizarProgresso();
 
 const UI_TEXTOS = {
-    pt:{procurando:"Aguardando um irmao para o duelo...",oponente:"Oponente",chat:["Boa pergunta!","Foste rapido!","Boa sorte!","Vai la!","Parabens!"],jogar:"Procurar Oponente",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Gloria",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online"},
-    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",chat:["Good question!","You were fast!","Good luck!","Go for it!","Well done!"],jogar:"Find Opponent",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online",muralTitulo:"Hall of Fame",conquistasTitulo:"Achievements",jogadoresOnline:"Players Online"},
-    es:{procurando:"Esperando un oponente...",oponente:"Oponente",chat:["Buena pregunta!","Fuiste rapido!","Buena suerte!","Vamos!","Bien hecho!"],jogar:"Buscar Oponente",nome:"Tu nombre..."},
+    pt:{procurando:"Aguardando um irmão para o duelo...",oponente:"Oponente",chat:["Boa pergunta!","Foste rápido!","Boa sorte!","Vai lá!","Parabéns!"],jogar:"Procurar adversário",bot:"Jogar com o Bot Bíblico",nome:"O teu nome...",convidar:"Convida um amigo:",online:"jogadores online",escolhe:"Escolhe o teu idioma:",copiar:"Copiar",pix:"Para concorrer ao",pixJoin:"entra na",semPartidas:"Nenhuma partida ainda. Seja o primeiro!",semConquistas:"Joga para ganhar conquistas!",semOnline:"Nenhum jogador online",muralTitulo:"Mural da Glória",conquistasTitulo:"Conquistas",jogadoresOnline:"Jogadores Online",dueloSeguro:"Duelo justo, com adversário real",dueloSeguroSub:"A partida só começa quando outra pessoa entrar.",esperaReal:"A partida só começa com um adversário real."},
+    en:{procurando:"Waiting for an opponent...",oponente:"Opponent",chat:["Good question!","You were fast!","Good luck!","Go for it!","Well done!"],jogar:"Find opponent",bot:"Play the Bible Bot",nome:"Your name...",convidar:"Invite a friend:",online:"players online",escolhe:"Choose your language:",copiar:"Copy",pix:"To compete for the PIX Prize",pixJoin:"join",semPartidas:"No matches yet. Be the first!",semConquistas:"Play to earn achievements!",semOnline:"No players online",muralTitulo:"Hall of Fame",conquistasTitulo:"Achievements",jogadoresOnline:"Players Online",dueloSeguro:"A fair duel with a real opponent",dueloSeguroSub:"The match only starts when another person joins.",esperaReal:"The match only starts with a real opponent."},
+    es:{procurando:"Esperando un oponente...",oponente:"Oponente",chat:["¡Buena pregunta!","¡Fuiste rápido!","¡Buena suerte!","¡Vamos!","¡Bien hecho!"],jogar:"Buscar oponente",bot:"Jugar con el Bot Bíblico",nome:"Tu nombre...",dueloSeguro:"Duelo justo con un oponente real",dueloSeguroSub:"La partida solo empieza cuando entre otra persona.",esperaReal:"La partida solo empieza con un oponente real."},
     fr:{procurando:"En attente d un adversaire...",oponente:"Adversaire",chat:["Bonne question!","Tu etais rapide!","Bonne chance!","Allez!","Bravo!"],jogar:"Trouver Adversaire",nome:"Ton nom...",convidar:"Invite un ami:",online:"joueurs en ligne",escolhe:"Choisis ta langue:",copiar:"Copier",pix:"Pour concourir au Prix PIX",pixJoin:"rejoins",semPartidas:"Aucun match encore. Soyez le premier!",semConquistas:"Jouez pour gagner des badges!",semOnline:"Aucun joueur en ligne",muralTitulo:"Mur de la Gloire",conquistasTitulo:"Conquetes",jogadoresOnline:"Joueurs en ligne"},
     de:{procurando:"Warte auf einen Gegner...",oponente:"Gegner",chat:["Gute Frage!","Du warst schnell!","Viel Glueck!","Los geht s!","Gut gemacht!"],jogar:"Gegner suchen",nome:"Dein Name...",convidar:"Lade einen Freund ein:",online:"Spieler online",escolhe:"Waehle deine Sprache:",copiar:"Kopieren",pix:"Um den PIX-Preis zu gewinnen",pixJoin:"tritt bei",semPartidas:"Noch keine Partien. Sei der Erste!",semConquistas:"Spiele um Abzeichen zu gewinnen!",semOnline:"Kein Spieler online",muralTitulo:"Ruhmeshalle",conquistasTitulo:"Errungenschaften",jogadoresOnline:"Spieler Online"},
     it:{procurando:"Aspettando un avversario...",oponente:"Avversario",chat:["Bella domanda!","Sei stato veloce!","In bocca al lupo!","Dai!","Bravo!"],jogar:"Cerca Avversario",nome:"Il tuo nome...",convidar:"Invita un amico:",online:"giocatori online",escolhe:"Scegli la lingua:",copiar:"Copia",pix:"Per partecipare al Premio PIX",pixJoin:"unisciti a",semPartidas:"Nessun match ancora. Sii il primo!",semConquistas:"Gioca per guadagnare premi!",semOnline:"Nessun giocatore online",muralTitulo:"Muro della Gloria",conquistasTitulo:"Conquiste",jogadoresOnline:"Giocatori Online"},
     ro:{procurando:"Asteptand un adversar...",oponente:"Adversar",chat:["Buna intrebare!","Ai fost rapid!","Noroc!","Haide!","Bravo!"],jogar:"Cauta Adversar",nome:"Numele tau...",convidar:"Invita un prieten:",online:"jucatori online",escolhe:"Alege limba:",copiar:"Copiaza",pix:"Pentru a concura la Premiul PIX",pixJoin:"intra pe",semPartidas:"Niciun meci inca. Fii primul!",semConquistas:"Joaca pentru a castiga premii!",semOnline:"Niciun jucator online",muralTitulo:"Zidul Gloriei",conquistasTitulo:"Realizari",jogadoresOnline:"Jucatori Online"}
+};
+
+Object.assign(UI_TEXTOS.pt, { criarConta:'Criar conta grátis para jogar', entrarRede:'Entrar no Sigo com Fé', contaNota:'Crie a sua conta gratuita para jogar, guardar resultados e entrar no ranking.', conviteRede:'Convide um irmão que conhece bem a Bíblia e mostre o seu conhecimento. Na rede Sigo com Fé pode encontrar amigos, grupos e desafios.', bot:'Jogar com o Bot Bíblico', redeBotao:'Entrar na rede social' });
+Object.assign(UI_TEXTOS.en, { criarConta:'Create a free account to play', entrarRede:'Join Sigo com Fé', contaNota:'Create your free account to play, save results and enter the ranking.', conviteRede:'Invite a brother or sister who knows the Bible well and show your knowledge. In Sigo com Fé you can find friends, groups and challenges.', bot:'Play the Bible Bot', redeBotao:'Join the social network' });
+Object.assign(UI_TEXTOS.es, { criarConta:'Crea una cuenta gratis para jugar', entrarRede:'Entrar en Sigo com Fé', contaNota:'Crea tu cuenta gratis para jugar, guardar resultados y entrar en el ranking.', conviteRede:'Invita a un hermano que conozca bien la Biblia y demuestra tus conocimientos. En Sigo com Fé puedes encontrar amigos, grupos y desafíos.', redeBotao:'Entrar en la red social' });
+Object.assign(UI_TEXTOS.fr, { bot:'Jouer avec le Bot biblique', dueloSeguro:'Un duel équitable avec un véritable adversaire', dueloSeguroSub:'La partie commence seulement lorsqu’une autre personne entre.', esperaReal:'La partie commence seulement avec un véritable adversaire.', criarConta:'Créer un compte gratuit pour jouer', entrarRede:'Rejoindre Sigo com Fé', contaNota:'Créez votre compte gratuit pour jouer, enregistrer vos résultats et entrer au classement.', conviteRede:'Invitez un frère ou une sœur qui connaît bien la Bible et montrez vos connaissances. Sur Sigo com Fé, vous trouverez des amis, des groupes et des défis.', redeBotao:'Rejoindre le réseau social' });
+Object.assign(UI_TEXTOS.de, { bot:'Mit dem Bibel-Bot spielen', dueloSeguro:'Faires Duell mit einem echten Gegner', dueloSeguroSub:'Das Spiel beginnt erst, wenn eine andere Person beitritt.', esperaReal:'Das Spiel beginnt nur mit einem echten Gegner.', criarConta:'Kostenloses Konto zum Spielen erstellen', entrarRede:'Sigo com Fé beitreten', contaNota:'Erstelle ein kostenloses Konto, um zu spielen, Ergebnisse zu speichern und im Ranking zu erscheinen.', conviteRede:'Lade einen Bruder oder eine Schwester ein, die die Bibel gut kennt, und zeige dein Wissen. Bei Sigo com Fé findest du Freunde, Gruppen und Herausforderungen.', redeBotao:'Dem sozialen Netzwerk beitreten' });
+Object.assign(UI_TEXTOS.it, { bot:'Gioca con il Bot biblico', dueloSeguro:'Duello leale con un vero avversario', dueloSeguroSub:'La partita inizia solo quando entra un’altra persona.', esperaReal:'La partita inizia solo con un vero avversario.', criarConta:'Crea un account gratuito per giocare', entrarRede:'Entra in Sigo com Fé', contaNota:'Crea un account gratuito per giocare, salvare i risultati ed entrare in classifica.', conviteRede:'Invita un fratello o una sorella che conosce bene la Bibbia e mostra la tua conoscenza. In Sigo com Fé trovi amici, gruppi e sfide.', redeBotao:'Entra nel social network' });
+Object.assign(UI_TEXTOS.ro, { bot:'Joacă cu Botul Biblic', dueloSeguro:'Duel corect cu un adversar real', dueloSeguroSub:'Partida începe doar când intră o altă persoană.', esperaReal:'Partida începe doar cu un adversar real.', criarConta:'Creează un cont gratuit pentru a juca', entrarRede:'Intră în Sigo com Fé', contaNota:'Creează un cont gratuit pentru a juca, a salva rezultatele și a intra în clasament.', conviteRede:'Invită un frate sau o soră care cunoaște bine Biblia și arată-ți cunoștințele. În Sigo com Fé găsești prieteni, grupuri și provocări.', redeBotao:'Intră în rețeaua socială' });
+
+const AJUDA_TEXTOS = {
+  pt:{ mural:['Mural da Glória','Aqui aparecem os jogadores com mais pontos da semana. Jogue partidas completas para somar pontos e subir no ranking.'], conquistas:['Conquistas','As conquistas mostram o seu progresso: vitórias, sequência de dias e participação. Elas são atualizadas quando termina uma partida.'], online:['Jogadores online','Esta lista mostra pessoas ligadas ao Duelo neste momento. Toque em Desafiar para convidar alguém para uma partida.'], fechar:'Entendi' },
+  en:{ mural:['Hall of Fame','This shows the players with the most points this week. Complete matches to earn points and rise in the ranking.'], conquistas:['Achievements','Achievements show your progress: victories, streaks and participation. They update when a match ends.'], online:['Players online','This list shows people currently connected to Bible Duel. Tap Challenge to invite someone to a match.'], fechar:'Got it' },
+  es:{ mural:['Mural de la Gloria','Aquí aparecen los jugadores con más puntos de la semana. Completa partidas para sumar puntos y subir en el ranking.'], conquistas:['Logros','Los logros muestran tu progreso: victorias, rachas y participación. Se actualizan cuando termina una partida.'], online:['Jugadores en línea','Esta lista muestra personas conectadas al Duelo en este momento. Pulsa Desafiar para invitar a alguien.'], fechar:'Entendido' },
+  fr:{ mural:['Mur de la Gloire','Voici les joueurs qui ont le plus de points cette semaine. Terminez des parties pour gagner des points et monter au classement.'], conquistas:['Succès','Les succès montrent vos victoires, séries et participations. Ils se mettent à jour à la fin d’une partie.'], online:['Joueurs en ligne','Cette liste montre les personnes connectées au Duel. Cliquez sur Défier pour inviter quelqu’un.'], fechar:'Compris' },
+  de:{ mural:['Ruhmeshalle','Hier stehen die Spieler mit den meisten Punkten dieser Woche. Beende Spiele, um Punkte zu sammeln und im Ranking aufzusteigen.'], conquistas:['Erfolge','Erfolge zeigen Siege, Serien und Teilnahmen. Sie werden am Ende eines Spiels aktualisiert.'], online:['Spieler online','Diese Liste zeigt Personen, die gerade verbunden sind. Klicke auf Herausfordern, um jemanden einzuladen.'], fechar:'Verstanden' },
+  it:{ mural:['Muro della Gloria','Qui compaiono i giocatori con più punti della settimana. Completa le partite per ottenere punti e salire in classifica.'], conquistas:['Traguardi','I traguardi mostrano vittorie, serie e partecipazioni. Si aggiornano alla fine di una partita.'], online:['Giocatori online','Questa lista mostra le persone connesse al Duello. Premi Sfida per invitare qualcuno.'], fechar:'Capito' },
+  ro:{ mural:['Zidul Gloriei','Aici apar jucătorii cu cele mai multe puncte din săptămână. Termină partidele pentru puncte și urcă în clasament.'], conquistas:['Realizări','Realizările arată victorii, serii și participări. Se actualizează la finalul unei partide.'], online:['Jucători online','Această listă arată persoanele conectate acum. Apasă Provocare pentru a invita pe cineva.'], fechar:'Am înțeles' }
 };
 
 // Easter egg - 5 cliques no logo para abrir admin
@@ -579,12 +659,12 @@ async function carregarPerfilSigo(){
         // Verificar token na URL (?token=xxx) ou localStorage
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token') || localStorage.getItem('sigo_token');
-        if(!token) return;
+        if(!token) { atualizarAcessoSigo(); return; }
         
         const r = await fetch('https://sigo-com-fe-api.onrender.com/api/profile', {
             headers: {'Authorization': 'Bearer ' + token}
         });
-        if(!r.ok) return;
+        if(!r.ok) { localStorage.removeItem('sigo_token'); atualizarAcessoSigo(); return; }
         const d = await r.json();
         
         // Preencher nome
@@ -617,6 +697,7 @@ async function carregarPerfilSigo(){
         
         // Guardar token
         if(params.get('token')) localStorage.setItem('sigo_token', token);
+        atualizarAcessoSigo();
         
     }catch(e){ console.log('Perfil nao carregado:', e); }
 }
@@ -637,6 +718,12 @@ function aplicarTraducao(idioma){
     const t=UI_TEXTOS[idioma]||UI_TEXTOS.pt;
     const n=document.getElementById("nomeUsuario"); if(n)n.placeholder=t.nome||"O teu nome...";
     const b=document.getElementById("btn-jogar"); if(b)b.textContent=t.jogar||"Procurar Oponente";
+    const bot=document.getElementById("btn-bot"); if(bot)bot.textContent=t.bot||"Jogar com o Bot Bíblico";
+    const seguro=document.getElementById("txt-duelo-seguro"); if(seguro)seguro.textContent=t.dueloSeguro||"Duelo justo, com adversário real";
+    const seguroSub=document.getElementById("txt-duelo-seguro-sub"); if(seguroSub)seguroSub.textContent=t.dueloSeguroSub||"A partida só começa quando outra pessoa entrar.";
+    const nota=document.getElementById("matchmaking-note"); if(nota)nota.textContent=t.esperaReal||"A partida só começa com um adversário real.";
+    const convite=document.getElementById("txt-rede-convite"); if(convite)convite.textContent=t.conviteRede||"Convide um irmão que conhece bem a Bíblia e mostre o seu conhecimento.";
+    const redeBotao=document.getElementById("btn-rede-social"); if(redeBotao)redeBotao.textContent=t.redeBotao||"Entrar na rede social";
     const e=document.getElementById("txt-escolhe"); if(e)e.textContent=t.escolhe||"Escolhe o teu idioma:";
     const cv=document.getElementById("txt-convidar"); if(cv)cv.textContent=t.convidar||"Convida um amigo:";
     const cp=document.getElementById("btn-copiar"); if(cp&&cp.textContent!="Copiado!")cp.textContent=t.copiar||"Copiar";
@@ -649,6 +736,7 @@ function aplicarTraducao(idioma){
     const mt=document.getElementById("txt-mural-titulo"); if(mt)mt.textContent=t.muralTitulo||"Mural da Gloria";
     const ct=document.getElementById("txt-conquistas-titulo"); if(ct)ct.textContent=t.conquistasTitulo||"Conquistas";
     const jo=document.getElementById("label-jogadores-online"); if(jo)jo.textContent=t.jogadoresOnline||"Jogadores Online";
+    atualizarAcessoSigo();
 }
 function selecionarIdioma(idioma,btn){
     idiomaAtual=idioma;
@@ -691,9 +779,20 @@ function registarPresenca(nome){
 }
 
 function conectarAoJogo(modoBot=false){
+    if (!temContaSigo()) { pedirContaSigo(); return; }
     const nome=document.getElementById("nomeUsuario").value.trim();
     if(!nome){alert("Por favor, escreve o teu nome!");return;}
     window.meuNomeGlobal=nome;
+    if (!modoBot && matchmakingPending) return;
+    selectedGameMode=modoBot?'bot':'person';
+    if (!modoBot) {
+        matchmakingPending=true;
+        const playButton=document.getElementById("btn-jogar");
+        if(playButton) { playButton.disabled=true; playButton.textContent=UI_TEXTOS[idiomaAtual]?.procurando||'Aguardando...'; }
+        trackDuel('duel_matchmaking_started',{ mode:'person', language:idiomaAtual });
+    } else {
+        trackDuel('duel_matchmaking_started',{ mode:'bot', language:idiomaAtual });
+    }
     document.getElementById("status").innerText="A conectar ao servidor...";
     const entrarNaPartida=()=>socket.emit(modoBot?"jogarComBot":"procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});
     if(!socket || !socket.connected){
@@ -708,6 +807,8 @@ function prepararEventosSocket(){
     socket._dueloEventosProntos=true;
     socket.on("status",msg=>{document.getElementById("status").innerText=UI_TEXTOS[idiomaAtual]?.procurando||msg;});
     socket.on("inicioJogo",dados=>{
+        matchmakingPending=false;
+        trackDuel('duel_match_started',{ mode:selectedGameMode, language:idiomaAtual });
         window.fotosJogadores = {};
         window.fotosJogadores[window.meuNomeGlobal] = fotoBase64||null;
         if(dados.fotoOponente) window.fotosJogadores[dados.oponente] = dados.fotoOponente;
@@ -825,12 +926,13 @@ function atualizarJogadoresOnline(){
         const lista=document.getElementById("lista-online-jogadores");
         const label=document.getElementById("label-jogadores-online");
         if(label) label.textContent=t("jogadoresOnline")||"Jogadores Online";
-        const jogadores=(d.jogadores||[]).filter(j=>j!==window.meuNomeGlobal);
+        const jogadores=(d.jogadores||[]).map(j=>typeof j==='string'?{nome:j,foto:null}:j).filter(j=>j.nome!==window.meuNomeGlobal);
         if(!lista) return;
         if(jogadores.length===0){lista.innerHTML='<div class="sem-dados">'+( window.idiomaAtual==="EN"?"No players online":"Nenhum jogador online")+'</div>';return;}
-        lista.innerHTML=jogadores.slice(0,5).map(nome=>{
-            const av=(window.fotosJogadores&&window.fotosJogadores[nome])?'<img src="'+(window.fotosJogadores[nome])+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':nome.charAt(0).toUpperCase();
-            return '<div class="jogador-online-item"><div class="jogador-online-avatar">'+av+'</div><div class="jogador-online-nome">'+nome+'</div><button class="btn-desafiar" onclick="desafiarJogador(\''+nome+'\')">&#x2694; '+t("desafiar")+'</button></div>';
+        lista.innerHTML=jogadores.slice(0,5).map(jogador=>{
+            const nome=String(jogador.nome||'Jogador');
+            const av=jogador.foto?'<img src="'+jogador.foto+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">':nome.charAt(0).toUpperCase();
+            return '<div class="jogador-online-item"><div class="jogador-online-avatar">'+av+'</div><div class="jogador-online-nome">'+nome+'</div><button class="btn-desafiar" onclick="desafiarJogador(\''+nome.replace(/'/g,"\\'")+'\')">&#x2694; '+t("desafiar")+'</button></div>';
         }).join("");
     }).catch(()=>{});
 }
@@ -973,6 +1075,7 @@ window.addEventListener('message', (event) => {
             preview.appendChild(img);
         }
         if (u.token) localStorage.setItem('sigo_token', u.token);
+        atualizarAcessoSigo();
         if (u.idioma) {
             setTimeout(() => {
                 const lang = u.idioma.toLowerCase().substring(0,2);
@@ -1004,9 +1107,20 @@ function copiarLink(){
 function atualizarOnline(){
     fetch(BACKEND_URL+"/api/duelo/online").then(function(r){return r.json();}).then(function(d){
         var el=document.getElementById("online-count");
-        if(el){const t=UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt; el.textContent=(d.online||0)+" "+(t.online||"jogadores online");}
+        if(el){const t=UI_TEXTOS[idiomaAtual]||UI_TEXTOS.pt; const eu=temContaSigo()&&document.getElementById('nomeUsuario')?.value.trim()?1:0; el.textContent=Math.max(Number(d.online)||0,eu)+" "+(t.online||"jogadores online");}
     }).catch(function(){});
 }
+
+function mostrarAjuda(tipo){
+    const idioma = AJUDA_TEXTOS[idiomaAtual] || AJUDA_TEXTOS.pt;
+    const conteudo = idioma[tipo];
+    if(!conteudo) return;
+    document.getElementById('help-title').textContent=conteudo[0];
+    document.getElementById('help-text').textContent=conteudo[1];
+    document.querySelector('#help-modal button').textContent=idioma.fechar;
+    document.getElementById('help-modal').classList.add('open');
+}
+function fecharAjuda(){ document.getElementById('help-modal').classList.remove('open'); }
 atualizarOnline();
 setInterval(atualizarOnline,15000);
 </script>

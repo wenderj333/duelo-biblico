@@ -124,7 +124,7 @@ with SOURCE.open("w", encoding="utf-8", newline="\n") as fh:
 server_text = SERVER.read_text(encoding="utf-8")
 payload = "const perguntasDuelo = " + json.dumps(bank, ensure_ascii=False, separators=(",", ":")) + ";"
 pattern = r"const perguntasDuelo = \{.*?\n\};(?=\n\nfunction shuffleArray)"
-server_text, replacements = re.subn(pattern, payload, server_text, count=1, flags=re.S)
+server_text, replacements = re.subn(pattern, lambda _match: payload, server_text, count=1, flags=re.S)
 if replacements != 1:
     raise RuntimeError("Não encontrei o bloco perguntasDuelo em server.js")
 SERVER.write_text(server_text, encoding="utf-8", newline="\n")

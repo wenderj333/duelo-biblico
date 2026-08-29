@@ -586,7 +586,26 @@ function registarResultado(vitoria,pontos){
     const out=document.getElementById('medalhas-resultado'); if(out)out.textContent=badges.length?'Medalhas: '+badges.join(' · '):'Jogue amanhã para iniciar a sua sequência diária.';
     atualizarProgresso();
 }
-function jogarNovamente(){ window.location.reload(); }
+function jogarNovamente(){
+      // Reinicia apenas o estado visual da partida. Recarregar o iframe fazia
+      // o postMessage de autenticação chegar depois da verificação do token e
+      // mostrava a tela de login novamente.
+    salaAtual = '';
+    matchmakingPending = false;
+    selectedGameMode = 'person';
+    meuspontos = 0;
+    perguntaAtualNum = 0;
+    dueloAcertos = 0;
+    dueloErros = 0;
+    dueloTempo = 0;
+    document.getElementById('resultado').style.display = 'none';
+    document.getElementById('jogo').style.display = 'none';
+    document.getElementById('lobby').style.display = 'block';
+    document.getElementById('status').innerText = '';
+    const chat = document.getElementById('chat-jogo');
+    if (chat) chat.style.display = 'none';
+    atualizarAcessoSigo();
+}
 function partilharResultado(){
     const r=window.ultimoResultado||{};
     const msg=encodeURIComponent((r.vitoria?'Venci':'Joguei')+' o Duelo Bíblico com '+(r.pontos||0)+' pontos. Vem jogar comigo! https://duelo-biblico.vercel.app');

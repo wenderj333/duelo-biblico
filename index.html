@@ -507,6 +507,13 @@ let matchmakingPending = false;
 let selectedGameMode = 'person';
 trackDuel('duel_visit', { page: 'duelo_biblico' });
 const SIGO_REGISTER_URL = 'https://sigo-com-fe.vercel.app/register?next=/duelo-biblico';
+const SIGO_APP_ORIGIN = 'https://sigo-com-fe.vercel.app';
+
+function pedirSessaoSigo() {
+    if (window.parent !== window) {
+        window.parent.postMessage({ type: 'SIGO_AUTH_READY' }, SIGO_APP_ORIGIN);
+    }
+}
 
 function temContaSigo() {
     return Boolean(localStorage.getItem('sigo_token'));
@@ -1083,7 +1090,7 @@ async function zerarRanking(){
 
 // Receber dados do Sigo com Fe via postMessage
 window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://sigo-com-fe.vercel.app') return;
+    if (event.origin !== SIGO_APP_ORIGIN) return;
     if (event.data.type === 'LOGIN_DATA') {
         const u = event.data.user;
         if (u.nome) {
@@ -1099,7 +1106,10 @@ window.addEventListener('message', (event) => {
             img.style = 'width:100%;height:100%;object-fit:cover;';
             preview.appendChild(img);
         }
-        if (u.token) localStorage.setItem('sigo_token', u.token);
+        if (u.token) {
+            localStorage.setItem('sigo_token', u.token);
+            carregarPerfilSigo();
+        }
         atualizarAcessoSigo();
         if (u.idioma) {
             setTimeout(() => {
@@ -1110,6 +1120,9 @@ window.addEventListener('message', (event) => {
         }
     }
 });
+
+// Confirma ao Sigo com Fé que o Duelo já está pronto para receber a sessão.
+pedirSessaoSigo();
 
 carregarRanking();
 setInterval(carregarRanking,30000);

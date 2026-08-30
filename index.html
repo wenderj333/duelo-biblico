@@ -540,6 +540,15 @@ function atualizarAcessoSigo() {
 
 function pedirContaSigo() {
     trackDuel('duel_registration_prompt', { source: 'game_lobby', language: idiomaAtual });
+    // Dentro do Sigo com Fé, pede novamente a sessão em vez de abrir um
+    // cadastro dentro do próprio jogo.
+    if (window.parent !== window) {
+        pedirSessaoSigo();
+        window.parent.postMessage({ type: 'SIGO_AUTH_REQUIRED' }, SIGO_APP_ORIGIN);
+        const status = document.getElementById('status');
+        if (status) status.innerText = 'A ligar à sua conta Sigo com Fé...';
+        return;
+    }
     window.location.href = SIGO_REGISTER_URL;
 }
 
@@ -696,7 +705,7 @@ async function carregarPerfilSigo(){
         const r = await fetch('https://sigo-com-fe-api.onrender.com/api/profile', {
             headers: {'Authorization': 'Bearer ' + token}
         });
-        if(!r.ok) { localStorage.removeItem('sigo_token'); atualizarAcessoSigo(); return; }
+        if(!r.ok) { atualizarAcessoSigo(); return; }
         const d = await r.json();
         
         // Preencher nome
@@ -1108,7 +1117,6 @@ window.addEventListener('message', (event) => {
         }
         if (u.token) {
             localStorage.setItem('sigo_token', u.token);
-            carregarPerfilSigo();
         }
         atualizarAcessoSigo();
         if (u.idioma) {

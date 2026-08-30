@@ -589,7 +589,7 @@ function registarResultado(vitoria,pontos){
     p.bestScore=Math.max(p.bestScore||0,pontos||0);
     localStorage.setItem('duelo_progresso',JSON.stringify(p));
     window.ultimoResultado={pontos:pontos||0,vitoria:!!vitoria};
-    const badges=[]; if(vitoria)badges.push('Primeira vitória'); if((p.streak||0)>=3)badges.push('Fiel por 3 dias'); if((p.wins||0)>=5)badges.push('5 vitórias'); if((p.bestScore||0)>=1000)badges.push('1.000 pontos');
+    const badges=[]; if(vitoria)badges.push('Primeira vitória'); if((p.streak||0)>=3)badges.push('Fiel por 3 dias'); if((p.wins||0)>=5)badges.push('5 vitórias'); if((p.bestScore||0)>=30)badges.push('30 pontos');
     const out=document.getElementById('medalhas-resultado'); if(out)out.textContent=badges.length?'Medalhas: '+badges.join(' · '):'Jogue amanhã para iniciar a sua sequência diária.';
     atualizarProgresso();
 }
@@ -914,7 +914,7 @@ function renderizarRodada(pergunta){
                 btn.classList.add("correta"); tocarSom("acerto");
                 const t=parseInt(document.getElementById("timer").innerText)||0;
                 dueloAcertos++; dueloTempo+=(15-t);
-                meuspontos+=100+(t*5);
+                meuspontos+=3;
                 document.getElementById("meusPontos").innerText=Math.round(meuspontos)+" pts";
             }else{
                 dueloErros++;

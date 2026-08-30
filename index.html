@@ -903,7 +903,22 @@ socket.on("fimJogo",jogadores=>{
         setTimeout(carregarRanking,2000);
     });
     socket.on("chatDuelo",d=>{ adicionarMsgChat(d.msg,"oponente"); });
-    socket.on("oponenteSaiu",()=>{alert("O oponente saiu do jogo.");window.location.reload();});
+    socket.on("oponenteSaiu",()=>{
+        // Não recarrega a página: dentro do Sigo com Fé isso poderia perder a
+        // sessão recebida pelo iframe e mandar a pessoa novamente ao cadastro.
+        alert("O oponente saiu do jogo. Pode procurar outra partida.");
+        matchmakingPending=false;
+        salaAtual=null;
+        document.getElementById("jogo").style.display="none";
+        document.getElementById("resultado").style.display="none";
+        document.getElementById("lobby").style.display="block";
+        const playButton=document.getElementById("btn-jogar");
+        if(playButton){
+            playButton.disabled=false;
+            playButton.textContent=UI_TEXTOS[idiomaAtual]?.jogar||"Procurar adversário";
+        }
+        document.getElementById("status").innerText="Escolhe uma nova partida quando estiver pronto.";
+    });
 }
 
 function renderizarRodada(pergunta){

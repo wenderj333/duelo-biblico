@@ -459,6 +459,7 @@
             </div>
         </div>
         <p id="status"></p>
+        <div id="connection-alert" role="status" aria-live="polite" style="display:none;margin:8px 0 0;padding:10px 12px;border-radius:10px;background:rgba(240,192,64,.16);border:1px solid rgba(240,192,64,.45);color:#fff1b8;font-size:12px;line-height:1.45;text-align:center;"></div>
         <div class="network-cta"><p id="txt-rede-convite">Convide um irmão que conhece bem a Bíblia e mostre o seu conhecimento. Na rede Sigo com Fé pode encontrar amigos, grupos e desafios.</p><a id="btn-rede-social" href="https://sigo-com-fe.vercel.app/register?next=/duelo-biblico">Entrar na rede social</a></div>
     </div>
 
@@ -577,6 +578,49 @@ let fotoBase64=null;
 window.meuNomeGlobal="";
 window.ultimoResultado={pontos:0,vitoria:false};
 let dueloAcertos=0, dueloErros=0, dueloTempo=0;
+let ultimoProblemaReportado = '';
+
+function mostrarAvisoConexao(texto) {
+    const aviso = document.getElementById('connection-alert');
+    if (!aviso) return;
+    aviso.textContent = texto;
+    aviso.style.display = 'block';
+}
+
+function esconderAvisoConexao() {
+    const aviso = document.getElementById('connection-alert');
+    if (aviso) aviso.style.display = 'none';
+}
+
+// Regista apenas o tipo de falha e a hora. Não envia nome, foto, e-mail ou
+// qualquer conteúdo da partida.
+function avisarProblemaTecnico(codigo) {
+    const chave = codigo + ':' + Math.floor(Date.now() / 60000);
+    if (ultimoProblemaReportado === chave) return;
+    ultimoProblemaReportado = chave;
+    fetch(BACKEND_URL + '/api/duelo/issue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({ code: codigo, in_game: Boolean(salaAtual) })
+    }).catch(() => {});
+}
+
+function criarSocketDuelo() {
+    socket = io(BACKEND_URL, {
+        path: '/duelo/socket.io',
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        timeout: 10000
+    });
+    prepararEventosSocket();
+    return socket;
+}
+
+window.addEventListener('error', () => avisarProblemaTecnico('browser_error'));
+window.addEventListener('unhandledrejection', () => avisarProblemaTecnico('browser_rejection'));
 
 function hojeDuelo(){ return new Date().toISOString().slice(0,10); }
 function dadosProgresso(){ try { return JSON.parse(localStorage.getItem('duelo_progresso')||'{}'); } catch(e) { return {}; } }
@@ -809,8 +853,7 @@ function registarPresenca(nome){
     window.meuNomeGlobal=nome;
     const registar=()=>socket.emit("registrarJogador",{nome,idioma:idiomaAtual,foto:fotoBase64||null});
     if(!socket||!socket.connected){
-        socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
-        prepararEventosSocket();
+        criarSocketDuelo();
         socket.once("connect",registar);
     }else registar();
 }
@@ -833,8 +876,7 @@ function conectarAoJogo(modoBot=false){
     document.getElementById("status").innerText="A conectar ao servidor...";
     const entrarNaPartida=()=>socket.emit(modoBot?"jogarComBot":"procurarPartida",{nome,idioma:idiomaAtual,foto:fotoBase64||null});
     if(!socket || !socket.connected){
-        socket=io(BACKEND_URL,{path:"/duelo/socket.io"});
-        prepararEventosSocket();
+        criarSocketDuelo();
         socket.once("connect",entrarNaPartida);
     }else entrarNaPartida();
 }
@@ -842,6 +884,40 @@ function conectarAoJogo(modoBot=false){
 function prepararEventosSocket(){
     if(!socket || socket._dueloEventosProntos) return;
     socket._dueloEventosProntos=true;
+    socket.on('connect', () => {
+        esconderAvisoConexao();
+        if (!salaAtual && !matchmakingPending) {
+            const status = document.getElementById('status');
+            if (status && status.textContent.includes('conexão')) status.textContent = '';
+        }
+    });
+    socket.on('connect_error', () => {
+        avisarProblemaTecnico('connection_error');
+        mostrarAvisoConexao('Estamos a tentar ligar novamente ao Duelo. A sua conta continua segura.');
+        const status = document.getElementById('status');
+        if (status) status.innerText = 'Não foi possível ligar agora. Tentando novamente...';
+    });
+    socket.on('disconnect', (motivo) => {
+        if (motivo === 'io client disconnect') return;
+        avisarProblemaTecnico('connection_lost');
+        mostrarAvisoConexao('A ligação ao Duelo caiu. Estamos a tentar recuperar automaticamente.');
+        if (salaAtual) {
+            const status = document.getElementById('status');
+            if (status) status.innerText = 'A recuperar a ligação à partida...';
+        }
+        if (motivo === 'io server disconnect') socket.connect();
+    });
+    socket.io.on('reconnect_failed', () => {
+        avisarProblemaTecnico('reconnect_failed');
+        matchmakingPending = false;
+        salaAtual = null;
+        mostrarAvisoConexao('Não foi possível recuperar a ligação. Verifique a internet e toque em jogar novamente.');
+        const playButton = document.getElementById('btn-jogar');
+        if (playButton) {
+            playButton.disabled = false;
+            playButton.textContent = UI_TEXTOS[idiomaAtual]?.jogar || 'Procurar adversário';
+        }
+    });
     socket.on("status",msg=>{document.getElementById("status").innerText=UI_TEXTOS[idiomaAtual]?.procurando||msg;});
     socket.on("inicioJogo",dados=>{
         matchmakingPending=false;
